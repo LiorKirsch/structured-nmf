@@ -1,0 +1,103 @@
+function [best_W,best_H,best_diff_record,best_time_record,eucl_dist] = nmf(X,K,alg,parms)
+%
+% NMF wrapper function
+% function [W,H] = nmf(X,K,alg[,maxiter,speak])
+%
+% INPUT:
+%           'X'     Inputmatrix - [num_samples X num_features]
+%           'K'     Number of components
+%           'alg'   Algorithm to use: 
+%                   'mm'     multiplicative updates using euclidean
+%                            distance. Lee, D..D., and Seung, H.S., (2001)
+%                   'cjlin'  alternative non-negative least squares using 
+%                            projected gradients, author: Chih-Jen Lin, 
+%                            National Taiwan University.
+%                   'prob'   probabilistic NFM interpretating X as samples
+%                            from a multinomial, author: Lars Kai Hansen,
+%                            Technical University of Denmark
+%                   'als'    Alternating Least Squares. Set negative
+%                            elements to zero. 
+%                   'alsobs' Alternating Least Squares. Set negative elements
+%                            to zero and adjusts the other elements acording
+%                            to Optimal Brain Surgeon. 
+%           'maxiter'   Maximum number of iterations, default = 1000.
+%           'speak'     Print information to screen unless speak = 0,
+%                       default = 0
+%
+% OUTPUT:
+% W       : N x K matrix
+% H       : K x M matrix
+%
+% Based on the NMF-toolbox by Kasper Winther Joergensen
+% http://cogsys.imm.dtu.dk/toolbox/nmf/
+% 
+% Lior Kirsch 03/2015
+
+
+loglevel = take_from_struct(parms, 'loglevel', 1);
+num_restarts = take_from_struct(parms, 'num_restarts', 1);
+rand_seed = take_from_struct(parms, 'rand_seed', 42);
+maxiter = take_from_struct(parms, 'maxiter', 1000);
+
+% find dimensionallity of X
+[D,N] = size(X);
+parms.debug  =1;
+rng(rand_seed);
+diff_record = nan(1,maxiter);
+time_record = nan(1,maxiter);
+eucl_dist = nan(num_restarts,1);
+for i = 1:num_restarts
+    
+    [W_init, H_init] = get_random_W_H(X,K,parms);
+
+    % switch algorithm 
+    switch alg
+        case 'mm'
+            if loglevel, disp('Using mm algorithm'),end
+            [W,H,diff_record,time_record]=nmf_mm(parms,X,W_init,H_init);
+        case 'prob' 
+            if loglevel, disp('Using prob algorithm'),end
+            [W,H,diff_record,time_record]=nmf_prob(parms,X,W_init,H_init);
+        case 'cjlin'
+            if loglevel, disp('Using cjlin algorithm'),end
+            [W,H,diff_record,time_record]=nmf_cjlin(parms,X,W_init,H_init);
+        case 'alsPinv'
+            parms.als_solver= 'pinv_project';
+            if loglevel, disp('Using als pinv and project'),end
+            [W,H,diff_record,time_record]=nmf_als(parms,X,W_init,H_init);
+        case 'alsBlockpivot'
+            parms.als_solver= 'blockpivot';
+            if loglevel, disp('Using als-blockpivot algorithm'),end
+            [W,H,diff_record,time_record]=nmf_als(parms,X,W_init,H_init);
+        case 'alsActiveSet'
+            parms.als_solver= 'active_set';
+            if loglevel, disp('Using als-active-set algorithm'),end
+            [W,H,diff_record,time_record]=nmf_als(parms,X,W_init,H_init);
+    %     case 'alsobs'
+    %         if loglevel, disp('Using alsobs algorithm'),end
+    %         [W,H]=nmf_alsobs(X,K,maxiter,loglevel);
+        otherwise
+            error('Unknown method. Type "help nmf" for usage.');
+            return
+    end
+
+    eucl_dist(i) = nmf_euclidean_dist(X,W*H);
+    if i==1
+        best_W = W;
+        best_H = H;
+        best_diff_record = diff_record;
+        best_time_record = time_record;
+        best_iteration = 1;
+    else
+        if eucl_dist(i) < eucl_dist(i-1)
+            best_H = H;
+            best_W = W;
+            best_diff_record = diff_record;
+            best_time_record = time_record;
+            best_iteration = i;
+        end
+    end
+end
+
+fprintf('==== best random restart - %d ====\n',best_iteration);
+end
