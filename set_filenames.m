@@ -3,11 +3,15 @@ function [full_name, file_name, dir_name] = set_filenames(file_type, parms)
   switch file_type
       
     case 'demixing', 
-      dir_name = '/cortex/users/lior/nmf/runs/';
+      dir_name = fullfile('/cortex/users/lior/nmf/runs/',parms.dataset_file );
       parmstr = set_parmstr(parms);
       file_name = sprintf('demix_%s.mat', parmstr);
       auto_mkdir = 1;
-
+      case 'figure'
+        dir_name = fullfile('figures',parms.dataset_file);
+        parmstr = set_parmstr(parms);
+        file_name = sprintf('%s_%s.png', parms.fig_x_axis ,parmstr);
+        auto_mkdir = 1;
     otherwise 
       error('invalid file_type = [%s]\n', file_type);
   end

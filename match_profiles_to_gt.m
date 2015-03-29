@@ -13,7 +13,7 @@ function [W, H, best_score] = match_profiles_to_gt(W, H, GT)
    end
    num_perms = size(all_perms,1);   
    
-   r = corr(H', GT');
+   r = corr(H', GT');%,'type','spearman');
    
    scores = zeros(num_perms,1);
    for i=1:num_perms
