@@ -1,10 +1,16 @@
 function scores = loopOverHyperparms(X,GT_profiles,rand_subset,parms, loop_over_var_name, loop_over_var_value ,loop_string)
+% This function calls the nmf factorization but with different parms
+% it loops over the set of parms provided in 
+%  loop_over_var_name
+%     and
+%  loop_over_var_value
+% it returns the scores in a nested cell array.
 
 if isempty(loop_over_var_value)
     subsample_repeats = parms.subsample_repeats;
     scores = nan(subsample_repeats,1);
     set_terminal_title(loop_string);
-    parfor j_sr = 1:subsample_repeats
+    for j_sr = 1:subsample_repeats
         current_parms = parms; % to activiate parfor
         current_parms.subsample_iter = j_sr;
         samples_selected = rand_subset(j_sr,:);
@@ -46,4 +52,5 @@ else
     
 end
 
+set_terminal_title('done');
 end

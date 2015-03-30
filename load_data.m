@@ -18,6 +18,12 @@ function data = load_data(dataset_name, parms)
       filename = 'mouse_cell_type_profiles.mat';
       data = load(fullfile(dirname, filename));
       
+    case 'barres2014', 
+      dirname = fullfile('/', 'cortex', 'data', 'RNA-Seq', 'mouse', ...
+                         'Barres-2014');
+      filename = 'barres_rnaseq.mat';
+      data = load(fullfile(dirname, filename));
+      
     case {'okaty2011_cahoy_MN0.1_PR60-10-30_PVAR0.1',...
           'okaty2011-lin-lin_cahoy_MN0.01_PR60-10-30_PVAR0.1',...
           'okaty2011-lin-lin_cahoy_MN0.05_PR60-10-30_PVAR0.1',...
@@ -30,11 +36,17 @@ function data = load_data(dataset_name, parms)
       filename = sprintf('%s.mat', dataset_name);
       data = load(fullfile(dirname, filename));      
       
-      
+    case {'barres2014-lin-lin_MN0.01_PR60-10-30_PVAR0.1',...
+          'barres2014-lin-lin_MN0.1_PR60-10-30_PVAR0.1' }
+      dirname = '/cortex/data/RNA-Seq/mouse/Barres-2014/Mixtures/';
+%       mixname = strrep(dataset_name, 'barres2014-', '');
+      filename = sprintf('%s.mat', dataset_name);
+      data = load(fullfile(dirname, filename));      
     case 'kang2011', 
       error('not supported yet\n');      
     
     
+      
     otherwise
       error('invalid dataset_name [%s]\n', dataset_name);
   end

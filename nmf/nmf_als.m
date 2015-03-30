@@ -1,4 +1,4 @@
-function [W,H,diff_record,time_record]=nmf_als(parms,X,W_init, H_init,W_regularizer, H_regularizer)
+function [W,H,diff_record,time_record]=nmf_als(parms,X,W_init, H_init)
 % At each iteration it blocks one matrix solve a least squares solution,
 % projects onto the positives and then switches the blocked matrix and does
 % the same thing.
@@ -7,6 +7,10 @@ function [W,H,diff_record,time_record]=nmf_als(parms,X,W_init, H_init,W_regulari
 % X (N,M) : N (dimensionallity) x M (samples) non negative input matrix
 % W_init       : N x K (Number of components) 
 % H_init       : K x M 
+% W_lambda     : (from parms)
+% H_lambda     : (from parms)
+% W_prior      : N x K (from parms)
+% H_prior      : K x M (from parms)
 % parms : 
 %        maxiter : Maximum number of iterations to run
 %        loglevel : prints iteration count and changes in connectivity matrix
@@ -30,22 +34,23 @@ record_scores = take_from_struct(parms, 'record_scores', false);
 early_stop = take_from_struct(parms, 'early_stop', true);
 als_solver = take_from_struct(parms, 'als_solver', 'blockpivot');
 
-use_regularizer = take_from_struct(parms, 'use_regularizer', false);
 W_lambda = take_from_struct(parms, 'W_lambda', 0);
 H_lambda = take_from_struct(parms, 'H_lambda', 0);
+W_prior = take_from_struct(parms, 'W_lambda', nan);
+H_prior = take_from_struct(parms, 'H_lambda', nan);
 
-if use_regularizer
-    if ( ~exist('H_regularizer','var') )
-        H_regularizer = zeros(size(H_init));
-        disp('H regularizer not specified using zero regularization as default');
+if (W_lambda>0) || (H_lambda>0)
+    if ( isnan(H_prior) )
+        H_prior = zeros(size(H_init));
+        disp('H_prior not specified using zero regularization as default');
     end
-    if ( ~exist('W_regularizer','var') )
-        W_regularizer = zeros(size(W_init));
-        disp('W regularizer not specified using zero regularization as default');
+    if ( isnan(W_prior) )
+        W_prior = zeros(size(W_init));
+        disp('W_prior not specified using zero regularization as default');
     end
 else
-    H_regularizer = nan(size(H_init));   
-    W_regularizer = nan(size(W_init));
+    H_prior = nan(size(H_init));   
+    W_prior = nan(size(W_init));
 end
 
 
@@ -83,9 +88,9 @@ for iter=1:maxiter
   end
 
 
-[reg_X_for_H, reg_W_for_H] = get_reg_for_H(X,W, use_regularizer, H_lambda, H_regularizer);
+[reg_X_for_H, reg_W_for_H] = get_reg_for_H(X,W, H_lambda, H_prior);
 H = solve_als_for_H(H, reg_W_for_H,reg_X_for_H,als_solver);
-[reg_X_for_W, reg_H_for_W] = get_reg_for_H(X',H', use_regularizer, W_lambda, W_regularizer);
+[reg_X_for_W, reg_H_for_W] = get_reg_for_H(X',H', W_lambda, W_prior);
 reg_X_for_W = reg_X_for_W';  reg_H_for_W =  reg_H_for_W';
 W = solve_als_for_W(W, reg_H_for_W,reg_X_for_W,als_solver);
 
@@ -171,10 +176,10 @@ function W = solve_als_for_W(init_W, H,X,als_solver)
     end
 end
 
-function [reg_X_for_H, reg_W_for_H] = get_reg_for_H(X,W,use_regularizer,lambda_H, H_regularizer)
+function [reg_X_for_H, reg_W_for_H] = get_reg_for_H(X,W,lambda_H, H_regularizer)
 
     [k,n] = size(H_regularizer);
-    if use_regularizer && (lambda_H > 0)
+    if (lambda_H > 0)
         reg_W_for_H = [W;sqrt(lambda_H)*eye(k)];
         reg_X_for_H = [X;H_regularizer];
     else

@@ -2,7 +2,6 @@ function plot_with_var(loop_over_var_name, loop_over_var_value, scores)
 % scores as a matrix of size [num_sizes x repeats]
 % sample_sizes as a vector of size [num_sizes x 1]
 
-    figure('Name','corr vs sample_size');
     hold on;
 
     alg_name = loop_over_var_value{1};
@@ -33,4 +32,5 @@ function plot_with_var(loop_over_var_name, loop_over_var_value, scores)
     xlabel(x_label);
     ylabel('correlation');
     ylim([0.85 1]);
+    ylim([0.35 0.8]);
 end
