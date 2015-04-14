@@ -10,6 +10,6 @@ addpath('/cortex/code/cellmix/nmf/');
 addpath('/home/lab/lior/Projects/load datasets/');
 addpath('visualization/');
 
-delete(gcp) ;parpool local;
+delete(gcp('nocreate'));parpool local;
 
 inited = 1;

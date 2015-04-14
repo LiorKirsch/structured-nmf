@@ -87,32 +87,14 @@ for iter=1:maxiter
     end
   end
 
-
+%==== Minization step
 [reg_X_for_H, reg_W_for_H] = get_reg_for_H(X,W, H_lambda, H_prior);
 H = solve_als_for_H(H, reg_W_for_H,reg_X_for_H,als_solver);
 [reg_X_for_W, reg_H_for_W] = get_reg_for_H(X',H', W_lambda, W_prior);
 reg_X_for_W = reg_X_for_W';  reg_H_for_W =  reg_H_for_W';
 W = solve_als_for_W(W, reg_H_for_W,reg_X_for_W,als_solver);
 
-%     switch als_solver
-%         case 'pinv_project'
-%             H=(W*pinv(W'*W))'*X;
-%             H=H.*(H>0);
-%             W = ((pinv(H*H')*H)*X')';
-% %             W=(W>0).*W;
-%         case 'active_set'
-%             [H,gradHX,subIterH] = nnlsm_activeset(W,X,1,0,H);
-%             [W,gradW,subIterW] = nnlsm_activeset(H',X',1,0,W'); W=W'; 
-%             gradW=gradW';
-%             gradH = (W'*W)*H - W'*X;
-%         case 'blockpivot'
-%             [H,gradHX,subIterH] = nnlsm_blockpivot(W,X,0,H);
-%             [W,gradW,subIterW] = nnlsm_blockpivot(H',X',0,W');W=W'; 
-%             gradW=gradW';
-%             gradH = (W'*W)*H - W'*X;
-%             
-%     end
-
+%==== Projection step
     switch W_constrains
         case 'on_simplex'
             W = stochasticMatrixProjection(W');
@@ -166,7 +148,9 @@ function W = solve_als_for_W(init_W, H,X,als_solver)
     switch als_solver
         case 'pinv_project'
             W = ((pinv(H*H')*H)*X')';
-%             W=(W>0).*W;
+%===== I removed this because this is done in a next when I project to or on the simplex.
+%             W=(W>0).*W;  
+%=====
         case 'active_set'
             [W,gradW,subIterW] = nnlsm_activeset(H',X',1,0,init_W'); 
             W=W'; 

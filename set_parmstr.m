@@ -41,8 +41,21 @@ function parmstr = set_parmstr(parms)
         parmstr = sprintf('%s_SSI%d', parmstr, parms.subsample_iter);
     end    
 
+    if isfield(parms, 'subsample_repeats')
+        if parms.subsample_repeats ~= 10
+            parmstr = sprintf('%s_SSR%d', parmstr, parms.subsample_repeats);
+        end
+    end    
+    
     if isfield(parms, 'nmf_method')
         parmstr = sprintf('%s_%s', parmstr, parms.nmf_method);
-    end  
+    end 
+
+    if isfield(parms, 'log_transform')
+        if parms.log_transform
+            parmstr = sprintf('%s_log', parmstr);
+        end
+    end 
+    
 
 end

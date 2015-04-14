@@ -1,0 +1,16 @@
+%
+%
+%
+
+Synthetic evaluations: (find parameters where demixing works)
+
+ DONE   1.  Okaty-Cahoy mix 3 types. no priors. 
+
+        2.  Okaty-Cahoy mix 3 types. Use priors from doyle. 
+
+        3.  Okaty-Doyle mix 3 types. Use priors from Sugino 
+
+
+
+
+

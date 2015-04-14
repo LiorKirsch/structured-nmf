@@ -7,11 +7,17 @@ function [full_name, file_name, dir_name] = set_filenames(file_type, parms)
       parmstr = set_parmstr(parms);
       file_name = sprintf('demix_%s.mat', parmstr);
       auto_mkdir = 1;
-      case 'figure'
+    case 'figure'
         dir_name = fullfile('figures',parms.dataset_file);
         parmstr = set_parmstr(parms);
-        file_name = sprintf('%s_%s.png', parms.fig_x_axis ,parmstr);
+        file_name = sprintf('%s_%s_%s.png', parms.fig_x_axis, parms.corr_type,parmstr);
         auto_mkdir = 1;
+    case 'proportions-figure'
+        dir_name = fullfile('figures',parms.dataset_file);
+        parmstr = set_parmstr(parms);
+        file_name = sprintf('proportions_%s_%s_%s.png', parms.fig_x_axis, parms.corr_type ,parmstr);
+        auto_mkdir = 1;
+        
     otherwise 
       error('invalid file_type = [%s]\n', file_type);
   end

@@ -79,7 +79,7 @@ function [do_calc, varargout] = cond_load(filename, do_force, varargin)
   if exist(filename, 'file') == 0
     if verbosity
       filename_prt = shorten_filename(filename);
-      fprintf('File "%s" dosent exist.\n',filename_prt);
+      fprintf('File "%s" doesnt exist.\n',filename_prt);
       fprintf('> Calculate all vars %s\n',datestr(now,13));
     end
     for i_var = 1: n_vars
