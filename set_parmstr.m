@@ -56,6 +56,10 @@ function parmstr = set_parmstr(parms)
             parmstr = sprintf('%s_log', parmstr);
         end
     end 
-    
+
+    if isfield(parms, 'prior_dataset')
+        parmstr = sprintf('%s_Pri_%s', parmstr,parms.prior_dataset);
+        parmstr = sprintf('%s_%s', parmstr,strjoin(parms.prior_types,'_') );
+    end 
 
 end

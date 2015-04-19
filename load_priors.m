@@ -33,7 +33,9 @@ function priors = load_priors(dataset_name, cell_types, parms)
         sample_oligo = logical(is_oligo' .* sample_inds);
     
     case 'mean_cortex',
-        region_inds64 = strmatch('cortex', lower(data.anatomical_region));
+%         region_inds64 = strmatch('cortex', lower(data.anatomical_region));
+% find the word "cortex" even if it is not in the begining of the sentance
+        region_inds64 =  ~cellfun(@isempty,strfind( lower(data.anatomical_region),'cortex') );
         region_inds195 = any((data.sample2type(:,region_inds64))');
 
         sample_neuro = logical(is_neuro' .* experiment_inds195 .* region_inds195);
@@ -72,4 +74,15 @@ function priors = load_priors(dataset_name, cell_types, parms)
           error('invalid cell type = [%s]\n', cell_types{i});
       end          
   end
+  
+  priors = priors';
+  
+  switch dataset_name
+      case {'Cahoy', 'Doyle'}
+          priors = 2.^priors;
+          fprintf('transfored %s priors to linear scale\n',dataset_name);
+      otherwise
+          fprintf('unrecognized dataset_name %s leaving data as is\n', dataset_name);
+  end
+          
 end

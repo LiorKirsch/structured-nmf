@@ -17,41 +17,51 @@ nmf_method = take_from_struct(parms, 'nmf_method', 'alsBlockpivot');
 
 
 % Load the mixture data
-% parms.dataset_file = 'okaty2011-lin-lin_cahoy_MN0.1_PR60-10-30_PVAR0.1';
+parms.dataset_file = 'okaty2011-lin-lin_cahoy_MN0.1_PR60-10-30_PVAR0.1';
 % parms.dataset_file = 'okaty2011-lin-lin_cahoy_MN0.05_PR60-10-30_PVAR0.1';
 % parms.dataset_file = 'okaty2011-lin-lin_cahoy_MN0.01_PR60-10-30_PVAR0.1';
 
-parms.dataset_file = 'barres2014-lin-lin_MN0.1_PR60-10-30_PVAR0.1';
+% parms.dataset_file = 'barres2014-lin-lin_MN0.1_PR60-10-30_PVAR0.1';
 % parms.dataset_file = 'barres2014-lin-lin_MN0.01_PR60-10-30_PVAR0.1';
 
 mix_data = load_data(parms.dataset_file, parms);
-% mix_priors = load_priors(parms.dataset_file, {'neurons', 'astro', 'olig'}, '');
+
+% Load the priors
+parms.prior_dataset = 'Doyle';
+parms.prior_types = {'neuro', 'astro', 'oligo'};
+% parms.prior_dataset = 'Cahoy';
+% parms.prior_types = {'neuro', 'astro', 'oligo'};
+
+prior_data = load_priors(parms.prior_dataset, parms.prior_types, parms);
 
 parms.num_types = 3;
 parms.num_samples = 50;
 parms.maxiter = 500;
 parms.loglevel = 0;
 parms.W_constrains = 'on_simplex';
-parms.corr_type = 'Spearman';
-% parms.corr_type = 'Pearson';
+% parms.corr_type = 'Spearman';
+parms.corr_type = 'Pearson';
 
 parms.record_scores = true;
 parms.rand_seed = 42; % The answer to life the universe and everything
-parms.num_restarts = 30; % <===  increase to 30
+parms.num_restarts = 5; % <===  increase to 30
 
-parms.H_lambda = 0;
+parms.H_lambda = 0.1;
+parms.H_prior = prior_data; 
+
 parms.W_lambda = 0;
 
 parms.log_transform = false;
 
-parms.subsample_repeats = 30; % <=== increase to 30 
+parms.subsample_repeats = 5; % <=== increase to 30 
 alg_list = {'alsPinv', 'alsActiveSet', 'mm'}; % 'alsBlockpivot','cjlin', 'prob'}; 
 num_samples_list = 50;% [5, 10, 20, 50, 100,200];
-num_type_list = 1:8;
+num_type_list = 3 ;%1:8;
 W_constrains_list = {'on_simplex', 'inside_simplex', 'positive'};
 % W_constrains_list = {'on_simplex'};
 % W_constrains_list = {'inside_simplex'};
 % W_constrains_list = {'positive'};
+H_lambda_list = [0 0.001 0.01 0.1 1 10 100 1000];
 loop_over_var_name = {};
 loop_over_var_value = {};
 
@@ -63,7 +73,8 @@ loop_over_var_name{end + 1} = 'num_samples';
 loop_over_var_value{end + 1} =  num_samples_list;
 loop_over_var_name{end + 1} = 'num_types';
 loop_over_var_value{end + 1} = num_type_list;
-
+loop_over_var_name{end + 1} = 'H_lambda';
+loop_over_var_value{end + 1} = H_lambda_list;
 
 
 
