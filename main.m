@@ -7,9 +7,10 @@
 % 2. Add regularizer weights... 
 %
 % 3. repeat #2 for other than Cahoy
-%
-%
-%
+% 4. What to do when all of the values in the proportion vector are zeros
+%       -   add priors to the proportions
+%       -   add some small noise to push it a bit from zero - rand(n,1) *eps;
+%       -   
 
 init;
 
@@ -57,7 +58,7 @@ parms.subsample_repeats = 5; % <=== increase to 30
 alg_list = {'alsPinv', 'alsActiveSet', 'mm'}; % 'alsBlockpivot','cjlin', 'prob'}; 
 num_samples_list = 50;% [5, 10, 20, 50, 100,200];
 num_type_list = 3 ;%1:8;
-W_constrains_list = {'on_simplex', 'inside_simplex', 'positive'};
+W_constrains_list = {'on_simplex', 'inside_simplex', 'positive','on_simplex_with_noise'};
 % W_constrains_list = {'on_simplex'};
 % W_constrains_list = {'inside_simplex'};
 % W_constrains_list = {'positive'};

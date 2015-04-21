@@ -8,8 +8,8 @@ function tree_nmf(X ,K ,alg , sample_node_id, tree_structure,parms)
 % K - number of components in the factorization
 % alg - the nmf solver
 % sample_node_id - for each sample specify the node in the tree [1,num_nodes]
-% tree_structure - [num_nodes X num_nodes] matrix which hold father child
-%     reletions where tree_structure(i,j)=1 means i is a parent of j
+% tree_structure - [num_nodes X num_nodes] holds the parent-child reletions
+%    where tree_structure(i,j)=1 means i is a parent of j
 % parms - hyperparms
 %   parms.H_lambda - controls the strength of the H connection in the tree
 %    (default 0 - connection does not effect the strength)
@@ -18,11 +18,11 @@ function tree_nmf(X ,K ,alg , sample_node_id, tree_structure,parms)
 %
 % TODO:Baseline to compare to
 %      a model that is unique for each child node
-%      a model that is shared across all region
-%      a model that share the profiles but than solve a least squares
-%        problem for each child
+%      a model that is shared across all regions
+%      a model that share the profiles but solves a least squares
+%        problem for each child without taking the relation into account
 % 
-% Current version support at most one parent per node.
+% Current version supports at most one parent per node (tree structure).
 
     num_nodes = size(tree_structure,1);
     H_nodes = cell(num_nodes,1);
@@ -32,16 +32,16 @@ function tree_nmf(X ,K ,alg , sample_node_id, tree_structure,parms)
 
     for i = 1:length(child_level_node_inds)
         current_node_id = child_level_node_inds(i);
-        [H,W, H_nodes,W_nodes] = recursive_do_nmf(current_node_id, tree_structure, H_nodes, W_nodes);
+        [H,W, H_nodes,W_nodes] = recursive_do_nmf(X ,K ,alg , sample_node_id, tree_structure,current_node_id, H_nodes, W_nodes,parms);
         H_nodes{i} = H;
         W_nodes{i} = W;
     end
 
 end
 
-function [H,W, H_nodes,W_nodes] = recursive_do_nmf(node_id, tree_structure, H_nodes, W_nodes)
+function [H,W, H_nodes,W_nodes] = recursive_do_nmf(X ,K ,alg , sample_node_id, tree_structure, structure_node_id, H_nodes, W_nodes, parms)
 
-    node_parents = find( tree_structure(:,node_id));
+    node_parents = find( tree_structure(:,structure_node_id));
     
     
     % recursion step: do nmf for each parent
@@ -49,7 +49,7 @@ function [H,W, H_nodes,W_nodes] = recursive_do_nmf(node_id, tree_structure, H_no
        parent_node_id = node_parents(i);
        if  isempty( H_nodes{ parent_node_id } )
            % calc nmf for parent
-           [H_parent,W_parent] = recursive_do_nmf(parent_node_id, tree_structure, H_nodes, W_nodes);
+           [H_parent,W_parent] = recursive_do_nmf(X ,K ,alg , sample_node_id, tree_structure, parent_node_id, H_nodes, W_nodes, parms);
            H_nodes{parent_node_id} = H_parent;
            W_nodes{parent_node_id} = W_parent;
        end
@@ -64,5 +64,9 @@ function [H,W, H_nodes,W_nodes] = recursive_do_nmf(node_id, tree_structure, H_no
     current_parms.H_prior = mean_parent_H;
     current_parms.W_prior = mean_parent_W;
     
-    [W,H,~,~,~] = nmf(X,K,alg,parms);
+    node_child_recursive =  inv(eye(size(tree_structure)) - tree_structure); % including self
+    node_child_recursive = find( node_child_recursive(structure_node_id,:) );
+
+    X_for_current_structure = ismember(sample_node_id, node_child_recursive);
+    [W,H,~,~,~] = nmf(X(X_for_current_structure,:),K,alg,current_parms);
 end
