@@ -9,6 +9,8 @@ parms.dummy=1;
 addpath('/cortex/code/cellmix/nmf/');
 addpath('/home/lab/lior/Projects/load datasets/');
 addpath('visualization/');
+addpath('evaluation/');
+addpath('baselines/');
 
 delete(gcp('nocreate'));parpool local;
 

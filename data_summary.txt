@@ -1,0 +1,33 @@
+Summary of data gathered in Okaty 2011
+
+Cahoy:
+============
+Astrocytes, Mixed Neurons and Oligodendrocytes
+Cortex,
+P7,P8,P17,P16
+
+Doyle:
+============
+Pyramidal Neurons, Motor, Cholinergic, Interneurons, spiny, golgi Cells, Brush cells, stellate cells, granule cells, oligodendrocytes, purkinje, astroglia
+Cortex, Brainstem, Basal Forebrain, Spinal Cord, Corpus Striatum, Cerebellum.
+Adults.
+
+Sugino:
+============
+Pyramidal neurons, GABAergic Interneurons
+Cortex, Amygdala ,Hippocampus, Thalamus 
+~P60
+
+Okaty 2009:
+============
+Gabaergic interneurons
+Somatosensory Cortex, Motor Cortex
+P7,P10,P15,P25,~P45
+
+Arlotta:
+============
+Pyramidal neurons,
+Cortex
+P3,P6,P14
+
+
