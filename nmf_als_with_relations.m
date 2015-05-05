@@ -29,7 +29,7 @@ function [W,H,diff_record,time_record]=nmf_als_with_relations(parms,X_models,rel
 maxiter = take_from_struct(parms, 'maxiter', 1000);
 loglevel = take_from_struct(parms, 'loglevel', 1);
 print_interval = take_from_struct(parms, 'print_interval', 100);
-W_constrains = take_from_struct(parms, 'W_constrains', 'positive');
+W_constraints = take_from_struct(parms, 'W_constraints', 'positive');
 record_scores = take_from_struct(parms, 'record_scores', false);
 early_stop = take_from_struct(parms, 'early_stop', true);
 als_solver = take_from_struct(parms, 'als_solver', 'blockpivot');
@@ -124,7 +124,7 @@ for iter=1:maxiter
         W = solve_als_for_W(W, H,X,als_solver);
 
     %==== Projection step
-        switch W_constrains
+        switch W_constraints
             case 'on_simplex'
                 W = stochasticMatrixProjection(W');
                 W = W';
@@ -139,7 +139,7 @@ for iter=1:maxiter
                     W=(W>0).*W;
                 end
             otherwise
-                error('unknown option for w_constrains - %s', W_constrains);
+                error('unknown option for w_constraints - %s', W_constraints);
         end
 
         W_models{model_iter} = W;

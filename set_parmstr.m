@@ -1,9 +1,10 @@
-function parmstr = set_parmstr(parms)
+function [parmstr, dirparmstr] = set_parmstr(parms)
 %
 %
 %
 
     parmstr = '';
+    dirparmstr = '';
     
     if isfield(parms, 'num_types')
         parmstr = sprintf('%s_K%d', parmstr, parms.num_types);
@@ -17,8 +18,8 @@ function parmstr = set_parmstr(parms)
         parmstr = sprintf('%s_IT%d', parmstr, parms.maxiter);
     end
         
-    if isfield(parms, 'W_constrains')
-        parmstr = sprintf('%s_%s', parmstr, parms.W_constrains);
+    if isfield(parms, 'W_constraints')
+        parmstr = sprintf('%s_%s', parmstr, parms.W_constraints);
     end    
     
     if isfield(parms, 'rand_seed')
@@ -57,9 +58,19 @@ function parmstr = set_parmstr(parms)
         end
     end 
 
+    if isfield(parms, 'multi_region')
+        if ~strcmp(parms.multi_region,'');
+            parmstr = sprintf('%s_%s', parmstr, parms.multi_region);
+        end
+    end 
+    
     if isfield(parms, 'prior_dataset')
         parmstr = sprintf('%s_Pri_%s', parmstr,parms.prior_dataset);
         parmstr = sprintf('%s_%s', parmstr,strjoin(parms.prior_types,'_') );
     end 
 
+    if isfield(parms, 'mix_files')
+        mix_files = sort(parms.mix_files);
+        dirparmstr = fullfile(dirparmstr,strjoin(mix_files,'/'));
+    end
 end

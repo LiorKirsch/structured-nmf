@@ -39,7 +39,7 @@ parms.num_types = 3;
 parms.num_samples = 50;
 parms.maxiter = 500;
 parms.loglevel = 0;
-parms.W_constrains = 'on_simplex';
+parms.W_constraints = 'on_simplex';
 % parms.corr_type = 'Spearman';
 parms.corr_type = 'Pearson';
 
@@ -58,16 +58,16 @@ parms.subsample_repeats = 5; % <=== increase to 30
 alg_list = {'alsPinv', 'alsActiveSet', 'mm'}; % 'alsBlockpivot','cjlin', 'prob'}; 
 num_samples_list = 50;% [5, 10, 20, 50, 100,200];
 num_type_list = 3 ;%1:8;
-W_constrains_list = {'on_simplex', 'inside_simplex', 'positive','on_simplex_with_noise'};
-% W_constrains_list = {'on_simplex'};
-% W_constrains_list = {'inside_simplex'};
-% W_constrains_list = {'positive'};
+W_constraints_list = {'on_simplex', 'inside_simplex', 'positive','on_simplex_with_noise'};
+% W_constraints_list = {'on_simplex'};
+% W_constraints_list = {'inside_simplex'};
+% W_constraints_list = {'positive'};
 H_lambda_list = [0 0.001 0.01 0.1 1 10 100 1000];
 loop_over_var_name = {};
 loop_over_var_value = {};
 
-loop_over_var_name{end + 1} = 'W_constrains';
-loop_over_var_value{end + 1} = W_constrains_list;
+loop_over_var_name{end + 1} = 'W_constraints';
+loop_over_var_value{end + 1} = W_constraints_list;
 loop_over_var_name{end + 1} = 'nmf_method';
 loop_over_var_value{end + 1} = alg_list;
 loop_over_var_name{end + 1} = 'num_samples';

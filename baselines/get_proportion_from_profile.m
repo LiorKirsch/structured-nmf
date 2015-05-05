@@ -18,7 +18,7 @@ function W = get_proportion_from_profile(X,H, parms)
     end
     
     % Projection step.
-    switch parms.W_constrains
+    switch parms.W_constraints
         case 'on_simplex'
             W = stochasticMatrixProjection(W');
             W = W';
@@ -33,6 +33,6 @@ function W = get_proportion_from_profile(X,H, parms)
                 W=(W>0).*W;
             end
         otherwise
-            error('unknown option for w_constrains - %s', W_constrains);
+            error('unknown option for w_constraints - %s', W_constraints);
     end
 end

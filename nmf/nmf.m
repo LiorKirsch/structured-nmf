@@ -73,6 +73,11 @@ for i = 1:num_restarts
             parms.als_solver= 'active_set';
             if loglevel, disp('Using als-active-set algorithm'),end
             [W,H,diff_record,time_record]=nmf_als(parms,X,W_init,H_init);
+        case 'alsWithRelations'
+            parms.als_solver= parms.nmf_method;
+            if loglevel, disp('Using als-with-relations'),end
+            [W,H,diff_record,time_record]=nmf_als_with_relations(parms,X,...
+                    relation_matrix_for_H,W_init, H_init);
     %     case 'alsobs'
     %         if loglevel, disp('Using alsobs algorithm'),end
     %         [W,H]=nmf_alsobs(X,K,maxiter,loglevel);
@@ -81,7 +86,20 @@ for i = 1:num_restarts
             return
     end
 
-    eucl_dist(i) = nmf_euclidean_dist(X,W*H);
+    if iscell(X) && iscell(W) && iscell(H)
+       num_elements = length(X);
+       assert(length(W) == num_elements, ' X and W should have the same number of elements');
+       assert(length(H) == num_elements, ' X and H should have the same number of elements');
+
+       err = nan(num_elements,1);
+       for m=1:num_elements
+          err(m) =  nmf_euclidean_dist(X{i},W{m}*H{m});
+       end 
+       eucl_dist(i) = sum(err); % compute the sum of err over components
+    else
+       eucl_dist(i) = nmf_euclidean_dist(X,W*H);
+    end
+    
     if i==1
         best_W = W;
         best_H = H;

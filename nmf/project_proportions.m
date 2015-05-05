@@ -26,7 +26,7 @@ function W = project_proportions( W, projection_type )
                 W=(W>0).*W;
             end
         otherwise
-            error('unknown option for w_constrains - %s', projection_type);
+            error('unknown option for projection type - %s', projection_type);
     end
 
 end

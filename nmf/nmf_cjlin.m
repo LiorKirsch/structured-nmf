@@ -29,7 +29,7 @@ function [W,H,diff_record,time_record] = nmf_cjlin(parms,V,Winit,Hinit)
 maxiter = take_from_struct(parms, 'maxiter', 1000);
 loglevel = take_from_struct(parms, 'loglevel', 1);
 print_interval = take_from_struct(parms, 'print_interval', 100);
-W_constrains = take_from_struct(parms, 'W_constrains', 'positive');
+W_constraints = take_from_struct(parms, 'W_constraints', 'positive');
 tol = take_from_struct(parms, 'tolerance', 10^-6);
 timelimit = take_from_struct(parms, 'timelimit', 10000); % 2.7 hours
 record_scores = take_from_struct(parms, 'record_scores', false);
@@ -60,7 +60,7 @@ for iter=1:maxiter,
 
   [W,gradW,iterW] = nlssubprob(V',H',W',tolW,1000,false); W = W'; gradW = gradW';
 
-    switch W_constrains
+    switch W_constraints
         case 'on_simplex'
             W = stochasticMatrixProjection(W');
             W = W';
@@ -73,7 +73,7 @@ for iter=1:maxiter,
         case 'positive'
             %doing nothing already positive
         otherwise
-            error('unknown option for w_constrains - %s', W_constrains);
+            error('unknown option for w_constraints - %s', W_constraints);
     end
 
 
