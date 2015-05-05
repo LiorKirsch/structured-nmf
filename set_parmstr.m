@@ -73,4 +73,10 @@ function [parmstr, dirparmstr] = set_parmstr(parms)
         mix_files = sort(parms.mix_files);
         dirparmstr = fullfile(dirparmstr,strjoin(mix_files,'/'));
     end
+    if isfield(parms, 'dataset_file')
+        dirparmstr = parms.dataset_file;
+    end
+    if isfield(parms, 'dataset_file') && isfield(parms, 'mix_files')
+        error('cannot specifiy both "dataset_file" and "mix_files"');
+    end
 end

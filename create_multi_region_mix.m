@@ -29,8 +29,8 @@ for i = 1:length(mix_files)
     file_name = mix_files{i};
     data = load(file_name);
     
-    profiles{i} = data.profiles;
-    proportions{i} = data.proportions;
+    profiles{i} = data.profiles';
+    proportions{i} = data.proportions';
     expression{i} = data.expression';
     cell_types{i} = data.cell_types';
     region{i}  = data.region;

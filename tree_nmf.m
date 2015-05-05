@@ -35,13 +35,17 @@ assert( length(X) == num_nodes,'every node in the tree should be have a samples 
     
     if (parms.H_lambda == inf) 
         % use samples from all X{i}, build a tree that is 
-        curr_X = get_samples_for_current(X,1, ones(1,num_nodes),parms);
+        parms.H_lambda  = 0;
+        parms.W_lambda  = 0;
+        [curr_X,reverse_map] = get_samples_for_current(X,1, (1:num_nodes),parms);
         [W,H,~,~,~] = nmf(curr_X,K,alg,parms);
-        H_nodes = repmat({H},num_nodes,1);
-        W_nodes = repmat({W},num_nodes,1);
+        for i =1:num_nodes
+            H_nodes{i} = H;
+            W_nodes{i} = W(reverse_map==i,:);
+        end
     else   
        if (parms.H_lambda == 0) % only use leafs - don't use the tree structure
-           tree_structure = logical(eye(num_nodes));
+           tree_structure = false(num_nodes);
        end
        
 
@@ -50,8 +54,8 @@ assert( length(X) == num_nodes,'every node in the tree should be have a samples 
        for tree_i = 1:length(child_level_node_inds)
             current_node_id = child_level_node_inds(tree_i);
             [H,W, H_nodes,W_nodes] = recursive_do_nmf(X ,K ,alg , tree_structure,current_node_id, H_nodes, W_nodes,parms);
-            H_nodes{tree_i} = H;
-            W_nodes{tree_i} = W;
+            H_nodes{current_node_id} = H;
+            W_nodes{current_node_id} = W;
        end
     end
     
@@ -64,15 +68,16 @@ function [H,W, H_nodes,W_nodes] = recursive_do_nmf(X ,K ,alg , tree_structure, s
     
     
     % recursion step: do nmf for each parent
-    for i = 1:node_parents
+    for i = 1:length(node_parents)
        parent_node_id = node_parents(i);
        if  isempty( H_nodes{ parent_node_id } )
            % calc nmf for parent
-           [H_parent,W_parent] = recursive_do_nmf(X ,K ,alg , tree_structure, parent_node_id, H_nodes, W_nodes, parms);
+           [H_parent,W_parent, H_nodes,W_nodes] = recursive_do_nmf(X ,K ,alg , tree_structure, parent_node_id, H_nodes, W_nodes, parms);
            H_nodes{parent_node_id} = H_parent;
            W_nodes{parent_node_id} = W_parent;
        end
     end
+    
     
     %once you are done with all of the parents calc the current node
     % recursion stop (no parents OR all parents already computed)
@@ -80,6 +85,13 @@ function [H,W, H_nodes,W_nodes] = recursive_do_nmf(X ,K ,alg , tree_structure, s
     mean_parent_W = mean(cat(3,W_nodes{node_parents}),3);
     
     current_parms = parms;
+    
+    if isempty(node_parents)
+        current_parms.H_lambda  = 0;
+        current_parms.W_lambda  = 0;
+    else
+       %TODO USE the tree to decide a new H_lambda 
+    end
     current_parms.H_prior = mean_parent_H;
     current_parms.W_prior = mean_parent_W;
     
@@ -94,13 +106,15 @@ function [H,W, H_nodes,W_nodes] = recursive_do_nmf(X ,K ,alg , tree_structure, s
     end
 end
 
-function curr_X = get_samples_for_current(X,current_id, node_to_include,parms)
+function [curr_X,reverse_map] = get_samples_for_current(X,current_id, node_to_include,parms)
     
     curr_X = [];
+    reverse_map = [];
     fprintf('region %s contains:\n', parms.tree_regions{current_id} );
     for i = 1:length(node_to_include)
         child_id = node_to_include(i);
         curr_X = cat(1,curr_X,X{child_id});
+        reverse_map = cat(1,reverse_map, child_id*ones(size(X{child_id},1),1) );
         fprintf('\t%s (%d)\n', parms.tree_regions{child_id}, size(X{child_id},1) );
     end
     

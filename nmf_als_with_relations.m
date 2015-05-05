@@ -201,8 +201,8 @@ function [reg_X_for_H, reg_W_for_H] = get_reg_for_H(X,W,lambda_H, H_regularizer)
     k = size(W,2);
     k_prior = size(H_regularizer,1);
     if (lambda_H > 0)
-        reg_W_for_H = [W;sqrt(lambda_H)*eye(k_prior,k)];
-        reg_X_for_H = [X;H_regularizer];
+        reg_W_for_H = [W;lambda_H*eye(k_prior,k)];
+        reg_X_for_H = [X;lambda_H*H_regularizer];
     else
         reg_W_for_H = W;
         reg_X_for_H = X;

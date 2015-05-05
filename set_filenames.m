@@ -3,9 +3,9 @@ function [full_name, file_name, dir_name] = set_filenames(file_type, parms)
   switch file_type
       
     case 'demixing', 
-      dir_name = fullfile('/cortex/users/lior/nmf/runs/',parms.dataset_file );
+      base_dir_name = fullfile('/cortex/users/lior/nmf/runs/');
       [parmstr, dirparmstr] = set_parmstr(parms);
-      dir_name = fullfile(dir_name,dirparmstr);
+      dir_name = fullfile(base_dir_name,dirparmstr);
       file_name = sprintf('demix_%s.mat', parmstr);
       auto_mkdir = 1;
     case 'figure'

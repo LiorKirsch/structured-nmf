@@ -1,6 +1,5 @@
 function [scores,proportions_scores] = loopOverHyperparms_multi(X, ...
                                      GT_profiles, GT_proportions,...
-                                     sample_group,profile_group,...
                                      rand_subset,parms, loop_over_var_name, ...
                                      loop_over_var_value ,loop_string)
 % This function calls the nmf factorization but with different parms
@@ -19,22 +18,51 @@ if isempty(loop_over_var_value)
     for j_sr = 1:subsample_repeats
         current_parms = parms; % to activiate parfor
         current_parms.subsample_iter = j_sr;
-        samples_selected = rand_subset(j_sr,:);
-        curr_X = X(samples_selected,:);
+        
+        if iscell(X)
+            curr_X = cell(size(X));
+            curr_GT_proportions = cell(size(X));
+            for i_region = 1:length(X)
+                samples_selected = rand_subset{i_region}(j_sr,:);
+                curr_X{i_region} = X{i_region}(samples_selected,:);
+                curr_GT_proportions{i_region} = GT_proportions{i_region}(:,samples_selected);
+            end
+            
+        else
+            samples_selected = rand_subset(j_sr,:);
+            curr_X = X(samples_selected,:);
+            curr_GT_proportions = GT_proportions(:,samples_selected);
+        end
         
         [W, H, diff_record, time_record, eucl_dist] = ...
             load_nmf_results(curr_X, parms.num_types, ...
                              current_parms.nmf_method, current_parms);
+                         
+        if iscell(X)
+            best_score = 0;
+            proportions_score = 0;
+            for i_region = 1:length(X)
+                % Match profiles to ground truth
+                %TOTDO ADD LOOP
+                [W{i_region}, H{i_region}, best_score_i, proportions_score_i] = match_profiles_to_gt(...
+                    W{i_region},H{i_region}, ...
+                    GT_profiles{i_region}, curr_GT_proportions{i_region}, ...
+                    parms.corr_type);
+                fprintf('Best mean corr (%s) is %g (proprtions %g)\n', ...
+                    parms.regions{i_region},best_score_i,proportions_score_i);    
 
-          change to ===> load_nmf_multi( ... , region_structure, ...);
-                         
-                         
-        % Match profiles to ground truth
-        curr_GT_proportions = GT_proportions(:,samples_selected);
-        [W, H, best_score, proportions_score] = match_profiles_to_gt(W,H, ...
-            GT_profiles, curr_GT_proportions, parms.corr_type);
-        fprintf('Best mean corr is %g (proprtions %g)\n', ...
-            best_score,proportions_score);    
+            end
+            best_score = best_score + best_score_i / length(X);
+            proportions_score = proportions_score + proportions_score_i / length(X);
+        else
+            % Match profiles to ground truth
+            curr_GT_proportions = GT_proportions(:,samples_selected);
+            [W, H, best_score, proportions_score] = match_profiles_to_gt(W,H, ...
+                GT_profiles, curr_GT_proportions, parms.corr_type);
+            fprintf('Best mean corr is %g (proprtions %g)\n', ...
+                best_score,proportions_score);    
+        
+        end
         
         scores(j_sr) = best_score;
         proportions_scores(j_sr) = proportions_score;
@@ -68,8 +96,6 @@ else
       
         [scores{i_vars}, proportions_scores{i_vars}] = loopOverHyperparms_multi(X,GT_profiles, ...
                                             GT_proportions, ...
-                                            sample_group,...
-                                            profile_group,...
                                             curr_rand_subset,current_parms, ...
                                             loop_over_var_name, ...
                                             loop_over_var_value, ...

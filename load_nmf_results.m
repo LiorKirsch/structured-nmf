@@ -60,8 +60,8 @@ end
 
 function [tree_X,reverse_map] = map_structure_to_region(X, data_regions, tree_regions)
 
-    tree_X = cell(length(tree_regions));
-    reverse_map = nan(length(data_regions,1);
+    tree_X = cell(length(tree_regions),1);
+    reverse_map = nan(length(data_regions),1);
     for i = 1:length(tree_regions)
         tree_region = tree_regions{i};
         
@@ -75,5 +75,4 @@ function [tree_X,reverse_map] = map_structure_to_region(X, data_regions, tree_re
         end
     end
     
-end
 end
