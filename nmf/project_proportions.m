@@ -16,11 +16,11 @@ function W = project_proportions( W, projection_type )
             W = W';
             W = W + rand(size(W))* eps;
         case 'inside_simplex'
-            W=(W>0).*W;
-            row_sum = sum(W,2);
-            valid_rows =  (0 <= row_sum) & (row_sum <= 1);
-            W_tmp = stochasticMatrixProjection(W(~valid_rows,:)');
-            W(~valid_rows,:) = W_tmp';
+                W=(W>0).*W;
+                row_sum = sum(W,2);
+                valid_rows =  (0 <= row_sum) & (row_sum <= 1);
+                W_tmp = stochasticMatrixProjection(W(~valid_rows,:)');
+                W(~valid_rows,:) = W_tmp';
         case 'positive'
              if strcmp(als_solver, 'pinv_project')
                 W=(W>0).*W;

@@ -68,6 +68,11 @@ function [parmstr, dirparmstr] = set_parmstr(parms)
         parmstr = sprintf('%s_Pri_%s', parmstr,parms.prior_dataset);
         parmstr = sprintf('%s_%s', parmstr,strjoin(parms.prior_types,'_') );
     end 
+    
+    if isfield(parms, 'structre_type')
+        parmstr = sprintf('%s_%s', parmstr, parms.structre_type);
+    end 
+
 
     if isfield(parms, 'mix_files')
         mix_files = sort(parms.mix_files);

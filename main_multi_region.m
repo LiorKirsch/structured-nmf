@@ -14,8 +14,6 @@
 init;
 parms = conf(parms);
 
-nmf_method = take_from_struct(parms, 'nmf_method', 'alsBlockpivot');
-
 mix_dir = '/cortex/data/microarray/mouse/Okaty2011/Mixtures/';
 mix_files = {
     'okaty2011-doyle_cortex_l5a_MN0.01_PR65-10-25_PVAR0.1.mat',...
