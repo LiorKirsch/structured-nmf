@@ -18,21 +18,6 @@ function W = get_proportion_from_profile(X,H, parms)
     end
     
     % Projection step.
-    switch parms.W_constraints
-        case 'on_simplex'
-            W = stochasticMatrixProjection(W');
-            W = W';
-        case 'inside_simplex'
-            W=(W>0).*W;
-            row_sum = sum(W,2);
-            valid_rows =  (0 <= row_sum) & (row_sum <= 1);
-            W_tmp = stochasticMatrixProjection(W(~valid_rows,:)');
-            W(~valid_rows,:) = W_tmp';
-        case 'positive'
-             if strcmp(als_solver, 'pinv_project')
-                W=(W>0).*W;
-            end
-        otherwise
-            error('unknown option for w_constraints - %s', W_constraints);
-    end
+    W = project_proportions( W, W_constraints );
+    
 end

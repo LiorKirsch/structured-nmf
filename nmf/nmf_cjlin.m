@@ -59,23 +59,7 @@ for iter=1:maxiter,
   end
 
   [W,gradW,iterW] = nlssubprob(V',H',W',tolW,1000,false); W = W'; gradW = gradW';
-
-    switch W_constraints
-        case 'on_simplex'
-            W = stochasticMatrixProjection(W');
-            W = W';
-        case 'inside_simplex'
-            W=(W>0).*W;
-            row_sum = sum(W,2);
-            valid_rows =  (0 <= row_sum) & (row_sum <= 1);
-            W_tmp = stochasticMatrixProjection(W(~valid_rows,:)');
-            W(~valid_rows,:) = W_tmp';
-        case 'positive'
-            %doing nothing already positive
-        otherwise
-            error('unknown option for w_constraints - %s', W_constraints);
-    end
-
+  W = project_proportions( W, W_constraints );
 
   if iterW==1,
     tolW = 0.1 * tolW;

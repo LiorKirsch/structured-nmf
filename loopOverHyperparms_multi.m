@@ -15,7 +15,7 @@ if isempty(loop_over_var_value)
     scores = nan(subsample_repeats,1);
     proportions_scores = nan(subsample_repeats,1);
     set_terminal_title(loop_string);
-    for j_sr = 1:subsample_repeats
+    parfor j_sr = 1:subsample_repeats
         current_parms = parms; % to activiate parfor
         current_parms.subsample_iter = j_sr;
         

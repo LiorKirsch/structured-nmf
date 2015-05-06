@@ -36,7 +36,7 @@ parms.structre_type = 'tree';
 
 
 alg_list = {'alsPinv', 'alsActiveSet', 'mm'}; % 'alsBlockpivot','cjlin', 'prob'}; 
-num_samples_list = 10;% [5, 10, 20, 50, 100,200];
+num_samples_list = 5;% [5, 10, 20, 50, 100,200];
 num_type_list = 3 ;%1:8;
 W_constraints_list = {'on_simplex', 'inside_simplex', 'positive','on_simplex_with_noise'};
 H_lambda_list = [inf 0 0.001 0.01 0.1 1 10 100 1000];

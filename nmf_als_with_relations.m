@@ -122,26 +122,10 @@ for iter=1:maxiter
 %         W = solve_als_for_W(W, reg_H_for_W,reg_X_for_W,als_solver);
 
         W = solve_als_for_W(W, H,X,als_solver);
+        %==== Projection step
+        W = project_proportions( W, W_constraints );
 
-    %==== Projection step
-        switch W_constraints
-            case 'on_simplex'
-                W = stochasticMatrixProjection(W');
-                W = W';
-            case 'inside_simplex'
-                W=(W>0).*W;
-                row_sum = sum(W,2);
-                valid_rows =  (0 <= row_sum) & (row_sum <= 1);
-                W_tmp = stochasticMatrixProjection(W(~valid_rows,:)');
-                W(~valid_rows,:) = W_tmp';
-            case 'positive'
-                 if strcmp(als_solver, 'pinv_project')
-                    W=(W>0).*W;
-                end
-            otherwise
-                error('unknown option for w_constraints - %s', W_constraints);
-        end
-
+        
         W_models{model_iter} = W;
         H_models{model_iter} = H;
 

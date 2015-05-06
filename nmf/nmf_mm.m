@@ -73,25 +73,9 @@ for iter=1:maxiter
     % Euclidean multiplicative method
     H = H.*(W'*X)./((W'*W)*H+eps);
     W = W.*(X*H')./(W*(H*H')+eps);
+    W = project_proportions( W, W_constraints );
 
-
-    switch W_constraints
-        case 'on_simplex'
-            W = stochasticMatrixProjection(W');
-            W = W';
-        case 'inside_simplex'
-            W=(W>0).*W;
-            row_sum = sum(W,2);
-            valid_rows =  (0 <= row_sum) & (row_sum <= 1);
-            W_tmp = stochasticMatrixProjection(W(~valid_rows,:)');
-            W(~valid_rows,:) = W_tmp';
-        case 'positive'
-            %doing nothing already positive
-        otherwise
-            error('unknown option for w_constraints - %s', W_constraints);
-    end
-
-
+    
     % print to screen
     if (rem(iter,print_interval)==0) & (loglevel >0)
         Xr = W*H;
