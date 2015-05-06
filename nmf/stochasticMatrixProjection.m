@@ -31,6 +31,10 @@ switch projection_type
     case 'on'
         A = projsplx_matrix(A);
     case 'inside'
+        % First project the entries to non-negative.
+        % Then, for rows which are still not inside the simplex do the
+        % 'on-simplex' projection.
+        
         A=(A>0).*A;
         col_sum = sum(A,1);
         valid_cols =  (0 <= col_sum) & (col_sum <= 1);
@@ -104,7 +108,6 @@ function A = projsplx_matrix(A)
     
     select_indcies = num_rows *(0:(num_cols-1)) + first_val;
     zztmax = tmax(select_indcies);
-
 
     A = max(A-repmat(zztmax,num_rows,1),zeros(size(A)));
 

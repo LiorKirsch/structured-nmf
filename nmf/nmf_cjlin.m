@@ -59,7 +59,7 @@ for iter=1:maxiter,
   end
 
   [W,gradW,iterW] = nlssubprob(V',H',W',tolW,1000,false); W = W'; gradW = gradW';
-  W = project_proportions( W, W_constraints );
+  W = project_proportions( W, W_constraints ,parms);
 
   if iterW==1,
     tolW = 0.1 * tolW;

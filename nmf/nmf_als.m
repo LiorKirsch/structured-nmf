@@ -101,7 +101,7 @@ for iter=1:maxiter
     W = solve_als_for_W(W, reg_H_for_W,reg_X_for_W,als_solver);
 
 %==== Projection step
-W = project_proportions( W, W_constraints );
+W = project_proportions( W, W_constraints ,parms);
    
 
     % print to screen

@@ -75,6 +75,7 @@ for i = 1:num_restarts
             [W,H,diff_record,time_record]=nmf_als(parms,X,W_init,H_init);
         case 'alsWithRelations'
             parms.als_solver= parms.nmf_method;
+            relation_matrix_for_H = parms.structure_matrix;
             if loglevel, disp('Using als-with-relations'),end
             [W,H,diff_record,time_record]=nmf_als_with_relations(parms,X,...
                     relation_matrix_for_H,W_init, H_init);

@@ -73,7 +73,7 @@ for iter=1:maxiter
     % Euclidean multiplicative method
     H = H.*(W'*X)./((W'*W)*H+eps);
     W = W.*(X*H')./(W*(H*H')+eps);
-    W = project_proportions( W, W_constraints );
+    W = project_proportions( W, W_constraints ,parms);
 
     
     % print to screen

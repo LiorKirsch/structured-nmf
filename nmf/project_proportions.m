@@ -1,4 +1,4 @@
-function W = project_proportions( W, projection_type )
+function W = project_proportions( W, projection_type ,parms)
 % project the proportion onto a set
 %   'on_simplex' - projects the W such that each row sums to one
 %   'inside_simplex' - projects W such that each row sums is in the interval [0,1]
@@ -9,20 +9,19 @@ function W = project_proportions( W, projection_type )
 
     switch projection_type
         case 'on_simplex'
-            W = stochasticMatrixProjection(W');
+            W = stochasticMatrixProjection(W','on');
             W = W';
         case 'on_simplex_with_noise'
-            W = stochasticMatrixProjection(W');
+            W = stochasticMatrixProjection(W','on');
             W = W';
-            W = W + rand(size(W))* eps;
+            W = W + rand(size(W))* eps; % moves it away from zero
         case 'inside_simplex'
-                W=(W>0).*W;
-                row_sum = sum(W,2);
-                valid_rows =  (0 <= row_sum) & (row_sum <= 1);
-                W_tmp = stochasticMatrixProjection(W(~valid_rows,:)');
-                W(~valid_rows,:) = W_tmp';
+            W = stochasticMatrixProjection(W','inside');
+            W = W';
         case 'positive'
-             if strcmp(als_solver, 'pinv_project')
+            % other methods (other then 'pinv_project' take care of the
+            % non-negativity so there is no need to project again here
+            if strcmp(parms.nmf_method, 'pinv_project')
                 W=(W>0).*W;
             end
         otherwise

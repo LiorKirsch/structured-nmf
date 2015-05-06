@@ -25,6 +25,9 @@ function [W,H,diff_record,time_record]=nmf_als_with_relations(parms,X_models,rel
 % Based on Lars Kai Hansen, IMM-DTU (c) October 2006
 %
 % Lior Kirsch 03/2015
+% Current version supports at most one parent per node (tree structure).
+%
+assert( parms.W_lambda == 0,'only H structure is supported so far');
 
 maxiter = take_from_struct(parms, 'maxiter', 1000);
 loglevel = take_from_struct(parms, 'loglevel', 1);
@@ -106,7 +109,7 @@ for iter=1:maxiter
         reg_W_for_H = W;
         for relations_iter = 1:length(relation_coeff_inds)
             relation_ind = relation_coeff_inds(relations_iter);
-            [reg_X_for_H, reg_W_for_H] = get_reg_for_H(X,W, H_lambda, H_models{relation_ind});
+            [reg_X_for_H, reg_W_for_H] = get_reg_for_H(reg_X_for_H,reg_W_for_H, H_lambda, H_models{relation_ind});
         end
         H = solve_als_for_H(H, reg_W_for_H,reg_X_for_H,als_solver);
         
@@ -123,7 +126,7 @@ for iter=1:maxiter
 
         W = solve_als_for_W(W, H,X,als_solver);
         %==== Projection step
-        W = project_proportions( W, W_constraints );
+        W = project_proportions( W, W_constraints,parms );
 
         
         W_models{model_iter} = W;

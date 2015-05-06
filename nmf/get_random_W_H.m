@@ -8,7 +8,7 @@ W_init = rand(D,K);
 H_init = rand(K,N);
 
 %==== Projection step
-W_init = project_proportions( W_init, W_constraints );
+W_init = project_proportions( W_init, W_constraints ,parms);
     
 
 Xscale=sum(sum(X));
