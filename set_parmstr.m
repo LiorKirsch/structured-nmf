@@ -80,8 +80,15 @@ function [parmstr, dirparmstr] = set_parmstr(parms)
                 %add a hash for the matrix
                 sum_hash = sum(sum(parms.structure_matrix));
                 parmstr = sprintf('%s_Hash%g', parmstr, sum_hash);
+                
+                if isfield(parms, 'do_sep_init')
+                    if parms.do_sep_init
+                        parmstr = sprintf('%s_sepInit', parmstr);
+                    end
+                end
         end
 
+        
 
     end 
 

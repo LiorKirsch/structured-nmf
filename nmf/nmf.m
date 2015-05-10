@@ -87,6 +87,10 @@ for i = 1:num_restarts
                     error('Unknown nmf method %s', parms.nmf_method);
             end
             
+            if parms.do_sep_init
+                [W_init,H_init]=cellfun(@(x,w,h) nmf_als(parms,x,w,h) ,X,W_init,H_init,'UniformOutput',false);
+            end
+               
             relation_matrix_for_H = parms.structure_matrix;
             if loglevel, disp('Using als-with-relations'),end
             [W,H,diff_record,time_record]=nmf_als_with_relations(parms,X,...
