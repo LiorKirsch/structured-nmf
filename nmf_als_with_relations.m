@@ -1,4 +1,4 @@
-function [W,H,diff_record,time_record]=nmf_als_with_relations(parms,X_models,relation_matrix_for_H,W_init_model, H_init_models)
+function [W_models,H_models,diff_record,time_record]=nmf_als_with_relations(parms,X_models,relation_matrix_for_H,W_init_model, H_init_model)
 % At each iteration it blocks one matrix solve a least squares solution,
 % projects onto the positives and then switches the blocked matrix and does
 % the same thing.
@@ -42,52 +42,54 @@ H_lambda = take_from_struct(parms, 'H_lambda', 0);
 W_prior = take_from_struct(parms, 'W_prior', nan);
 H_prior = take_from_struct(parms, 'H_prior', nan);
 
-if (W_lambda>0)
-    if ( isnan(W_prior) )
-        W_prior = zeros(size(W_init));
-        disp('W_prior not specified using zero regularization as default');
-    end
-    assert( size(W_prior,2) == size(W_init,2) , 'W_prior should have the same number of instances as W (dim=1)');
-else
-    W_prior = nan(size(W_init));
-end
-if (H_lambda>0)
-    if ( isnan(H_prior) )
-        H_prior = zeros(size(H_init));
-        disp('H_prior not specified using zero regularization as default');
-    end
-    assert( size(H_prior,2) == size(H_init,2) , 'H_prior should have the same number of features as H (dim=2)');
-else
-    H_prior = nan(size(H_init));   
-end
+% if (W_lambda>0)
+%     if ( isnan(W_prior) )
+%         W_prior = zeros(size(W_init));
+%         disp('W_prior not specified using zero regularization as default');
+%     end
+%     assert( size(W_prior,2) == size(W_init,2) , 'W_prior should have the same number of instances as W (dim=1)');
+% else
+%     W_prior = cellfun(@(x) nan(size(x)),W_init,'UniformOutput',false);
+% end
+% if (H_lambda>0)
+%     if ( isnan(H_prior) )
+%         H_prior = zeros(size(H_init));
+%         disp('H_prior not specified using zero regularization as default');
+%     end
+%     assert( size(H_prior,2) == size(H_init,2) , 'H_prior should have the same number of features as H (dim=2)');
+% else
+%     H_prior = cellfun(@(x) nan(size(x)),H_init,'UniformOutput',false);
+% end
 
 assert( ~(W_lambda>0 && H_lambda>0), 'priors for both H and W is not supported');
 
 
 
-[N,M]=size(X_all);
-[N,K]=size(W_init);
+[N,M]=cellfun(@size,X_models);
+% [N,K]=size(W_init);
 
 W_models = W_init_model;
 H_models = H_init_model;
 num_models = size(relation_matrix_for_H,1);
 for i=1:num_models
+    W_init = W_models{i};
+    H_init = H_models{i};
+    
     Xscale=sum(sum(X_models{i}));
+    
     %INIT and rescaling
     Rscale=sum(sum(W_init*H_init));
     sqrnorm=sqrt(Rscale/Xscale);
     H_init=H_init/sqrnorm;
     W_init=W_init/sqrnorm;
 
-    Xr_old = W_init*H_init;
+%     Xr_old = W_init*H_init;
 
     diff_record =nan(1,maxiter);
     time_record =nan(1,maxiter); tic;
 
-
-    W_models{i} = W_init{i};
-    H_models{i} = H_init{i};
-    X_models = cell(num_models,1);
+    W_models{i} = W_init;
+    H_models{i} = H_init;
 end
 
 
@@ -109,7 +111,8 @@ for iter=1:maxiter
         reg_W_for_H = W;
         for relations_iter = 1:length(relation_coeff_inds)
             relation_ind = relation_coeff_inds(relations_iter);
-            [reg_X_for_H, reg_W_for_H] = get_reg_for_H(reg_X_for_H,reg_W_for_H, H_lambda, H_models{relation_ind});
+            curr_regulerizer = H_lambda * relation_coeff(relation_ind);
+            [reg_X_for_H, reg_W_for_H] = get_reg_for_H(reg_X_for_H,reg_W_for_H, curr_regulerizer, H_models{relation_ind});
         end
         H = solve_als_for_H(H, reg_W_for_H,reg_X_for_H,als_solver);
         
@@ -166,6 +169,8 @@ function H = solve_als_for_H(init_H, W,X,als_solver)
             [H,gradHX,subIterH] = nnlsm_activeset(W,X,1,0,init_H);
         case 'blockpivot'
             [H,gradHX,subIterH] = nnlsm_blockpivot(W,X,0,init_H);
+        otherwise 
+            error('unknown solver - %s', als_solver);
     end
 end
 function W = solve_als_for_W(init_W, H,X,als_solver)
@@ -180,7 +185,9 @@ function W = solve_als_for_W(init_W, H,X,als_solver)
             W=W'; 
         case 'blockpivot'
             [W,gradW,subIterW] = nnlsm_blockpivot(H',X',0,init_W');
-            W=W'; 
+            W=W';
+        otherwise 
+            error('unknown solver - %s', als_solver);
     end
 end
 

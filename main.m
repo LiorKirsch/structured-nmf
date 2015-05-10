@@ -15,7 +15,7 @@
 init;
 
 nmf_method = take_from_struct(parms, 'nmf_method', 'alsBlockpivot');
-
+parms.draw_log_scale = false;
 
 % Load the mixture data
 parms.dataset_file = 'okaty2011-lin-lin_cahoy_MN0.1_PR60-10-30_PVAR0.1';
@@ -28,12 +28,16 @@ parms.dataset_file = 'okaty2011-lin-lin_cahoy_MN0.1_PR60-10-30_PVAR0.1';
 mix_data = load_data(parms.dataset_file, parms);
 
 % Load the priors
-% parms.prior_dataset = 'Doyle';
-% parms.prior_types = {'neuro', 'astro', 'oligo'};
-parms.prior_dataset = 'Cahoy';
+parms.prior_dataset = 'Doyle';
 parms.prior_types = {'neuro', 'astro', 'oligo'};
+% parms.prior_dataset = 'Cahoy';
+% parms.prior_types = {'neuro', 'astro', 'oligo'};
 
 prior_data = load_priors(parms.prior_dataset, parms.prior_types, parms);
+
+
+% prior_data = mix_data.profiles';
+% parms.prior_dataset = 'SAME_AS_TARGET';
 
 parms.num_types = 3;
 parms.num_samples = 50;
@@ -60,10 +64,12 @@ alg_list = {'alsActiveSet'}; % 'alsBlockpivot','cjlin', 'prob'};
 num_samples_list = 10;% [5, 10, 20, 50, 100,200];
 num_type_list = 3 ;%1:8;
 W_constraints_list = {'on_simplex', 'inside_simplex', 'positive','on_simplex_with_noise'};
-% W_constraints_list = {'on_simplex'};
+W_constraints_list = {'on_simplex'};
 % W_constraints_list = {'inside_simplex'};
-W_constraints_list = {'positive'};
-H_lambda_list = [0 0.001 0.01 0.1 1 10 100 1000];
+%   W_constraints_list = {'on_simplex_with_noise'};
+% W_constraints_list = {'positive'};
+H_lambda_list = 10.^[-5:3];
+parms.draw_log_scale = true;
 loop_over_var_name = {};
 loop_over_var_value = {};
 

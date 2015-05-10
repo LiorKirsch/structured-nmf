@@ -71,6 +71,18 @@ function [parmstr, dirparmstr] = set_parmstr(parms)
     
     if isfield(parms, 'structre_type')
         parmstr = sprintf('%s_%s', parmstr, parms.structre_type);
+        
+        switch parms.structre_type
+            case 'tree'
+
+            case {'relations','relations_dist','relations_parentdist',...
+                    'relations_parent_level'}
+                %add a hash for the matrix
+                sum_hash = sum(sum(parms.structure_matrix));
+                parmstr = sprintf('%s_Hash%g', parmstr, sum_hash);
+        end
+
+
     end 
 
 

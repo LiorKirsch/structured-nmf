@@ -137,6 +137,8 @@ function H = solve_als_for_H(init_H, W,X,als_solver)
             [H,gradHX,subIterH] = nnlsm_activeset(W,X,1,0,init_H);
         case 'blockpivot'
             [H,gradHX,subIterH] = nnlsm_blockpivot(W,X,0,init_H);
+        otherwise 
+            error('unknown solver - %s', als_solver);
     end
 end
 function W = solve_als_for_W(init_W, H,X,als_solver)
@@ -152,6 +154,8 @@ function W = solve_als_for_W(init_W, H,X,als_solver)
         case 'blockpivot'
             [W,gradW,subIterW] = nnlsm_blockpivot(H',X',0,init_W');
             W=W'; 
+        otherwise 
+            error('unknown solver - %s', als_solver);
     end
 end
 

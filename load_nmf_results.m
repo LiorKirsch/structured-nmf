@@ -4,21 +4,19 @@ function  [best_W, best_H, best_diff_record, best_time_record, ...
 %
 %
 
-    if ~isfield(parms, 'structre_type')
-        parms.structre_type = 'none';
-    end
+    structre_type = take_from_struct(parms, 'structre_type', 'none');
     
     vars = {'best_W', 'best_H', 'best_diff_record', ...
             'best_time_record','eucl_dist'};
     filename  = set_filenames('demixing', parms);
-
+%     disp(filename);
     [do_calc, best_W, best_H, best_diff_record, best_time_record, ...
      eucl_dist] = cond_load(filename, 0, vars{1:end});
     if do_calc < 1 
        return
     end
     
-    switch parms.structre_type
+    switch structre_type
         case 'tree', 
           tree_structure = parms.structure_matrix;
           tree_regions = parms.tree_regions;
@@ -28,12 +26,12 @@ function  [best_W, best_H, best_diff_record, best_time_record, ...
               tree_structure,parms);
           best_H = tree_best_H(reverse_map);
           best_W = tree_best_W(reverse_map);
-        case 'relations', 
-          X_models = split_data(X, sample_id);
+        case {'relations','relations_dist','relations_parentdist', 'relations_parent_level'}
+%           X_models = split_data(X, sample_id);
           
           [best_W, best_H, best_diff_record, ...
               best_time_record, eucl_dist] ...
-                    = nmf(X_models, K, 'alsWithRelations', parms);  
+                    = nmf(X, K, 'alsWithRelations', parms);  
         case 'none', 
           [best_W, best_H, best_diff_record, ...
               best_time_record, eucl_dist] ...

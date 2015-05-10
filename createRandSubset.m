@@ -2,6 +2,7 @@ function rand_subset = createRandSubset(total_num_samp, num_samples_list, subsam
 % Select random subsets of size 'num_samples_list' and repeat that process 
 % subsample_repeat number of times.
 
+rng(0); % to make the same selection every time.
 rand_subset = cell(length(num_samples_list),1);
 for i_ns = 1:length(num_samples_list)
     if length(total_num_samp) ==1

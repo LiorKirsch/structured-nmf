@@ -24,4 +24,5 @@ parms.subsample_repeats = 5; % <=== increase to 30
 parms.nmf_method = 'alsActiveSet';
 % alg_list = {'alsPinv', 'alsActiveSet', 'mm', 'alsBlockpivot','cjlin', 'prob'}; 
 
+parms.draw_log_scale = false;
 end

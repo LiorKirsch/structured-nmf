@@ -15,7 +15,8 @@ if isempty(loop_over_var_value)
     scores = nan(subsample_repeats,1);
     proportions_scores = nan(subsample_repeats,1);
     set_terminal_title(loop_string);
-    parfor j_sr = 1:subsample_repeats
+    for j_sr = 1:subsample_repeats
+        
         current_parms = parms; % to activiate parfor
         current_parms.subsample_iter = j_sr;
         
@@ -39,33 +40,34 @@ if isempty(loop_over_var_value)
                              current_parms.nmf_method, current_parms);
                          
         if iscell(X)
-            best_score = 0;
-            proportions_score = 0;
+            best_scores = nan(length(X),1);
+            best_proportions_scores = nan(length(X),1);
             for i_region = 1:length(X)
                 % Match profiles to ground truth
                 %TOTDO ADD LOOP
-                [W{i_region}, H{i_region}, best_score_i, proportions_score_i] = match_profiles_to_gt(...
+               
+                [W{i_region}, H{i_region}, best_scores(i_region), best_proportions_scores(i_region)] = match_profiles_to_gt(...
                     W{i_region},H{i_region}, ...
                     GT_profiles{i_region}, curr_GT_proportions{i_region}, ...
                     parms.corr_type);
                 fprintf('Best mean corr (%s) is %g (proprtions %g)\n', ...
-                    parms.regions{i_region},best_score_i,proportions_score_i);    
+                    parms.regions{i_region},best_scores(i_region),best_proportions_scores(i_region));    
 
             end
-            best_score = best_score + best_score_i / length(X);
-            proportions_score = proportions_score + proportions_score_i / length(X);
+            best_score = mean(best_scores);
+            best_proportions_score = mean(best_proportions_scores);
+
         else
             % Match profiles to ground truth
-            curr_GT_proportions = GT_proportions(:,samples_selected);
-            [W, H, best_score, proportions_score] = match_profiles_to_gt(W,H, ...
+            [W, H, best_score, best_proportions_score] = match_profiles_to_gt(W,H, ...
                 GT_profiles, curr_GT_proportions, parms.corr_type);
             fprintf('Best mean corr is %g (proprtions %g)\n', ...
-                best_score,proportions_score);    
+                best_score,best_proportions_score);    
         
         end
         
         scores(j_sr) = best_score;
-        proportions_scores(j_sr) = proportions_score;
+        proportions_scores(j_sr) = best_proportions_score;
         
     end
        

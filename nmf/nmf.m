@@ -48,8 +48,10 @@ time_record = nan(1,maxiter);
 eucl_dist = nan(num_restarts,1);
 for i = 1:num_restarts
     
-    [W_init, H_init] = get_random_W_H(X,K,parms);
-
+    if iscell(X) 
+        [W_init, H_init] = cellfun(@(x) get_random_W_H(x,K,parms),X,'UniformOutput',false);
+    end
+    
     % switch algorithm 
     switch alg
         case 'mm'
@@ -74,7 +76,17 @@ for i = 1:num_restarts
             if loglevel, disp('Using als-active-set algorithm'),end
             [W,H,diff_record,time_record]=nmf_als(parms,X,W_init,H_init);
         case 'alsWithRelations'
-            parms.als_solver= parms.nmf_method;
+            switch parms.nmf_method
+                case 'alsActiveSet'
+                    parms.als_solver= 'active_set';
+                case 'alsBlockpivot'
+                    parms.als_solver= 'blockpivot';
+                case 'alsPinv'
+                    parms.als_solver= 'pinv_project';
+                otherwise
+                    error('Unknown nmf method %s', parms.nmf_method);
+            end
+            
             relation_matrix_for_H = parms.structure_matrix;
             if loglevel, disp('Using als-with-relations'),end
             [W,H,diff_record,time_record]=nmf_als_with_relations(parms,X,...

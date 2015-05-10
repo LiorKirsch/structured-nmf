@@ -8,7 +8,7 @@ regions = {'cortex_L5A','cortex_L5B','cortex_L6',...
 reference = 'Doyle';
 mix_parms.num_tissues = 1000;
 mix_parms.proportion_variability = 0.1;
-mix_parms.measurement_noise = 0.01;
+mix_parms.measurement_noise = 0.1;
     
 for i = 1:length(regions)
     region = regions{i};

@@ -9,8 +9,9 @@ function [full_name, file_name, dir_name] = set_filenames(file_type, parms)
       file_name = sprintf('demix_%s.mat', parmstr);
       auto_mkdir = 1;
     case 'figure'
-        dir_name = fullfile('figures',parms.dataset_file);
-        parmstr = set_parmstr(parms);
+        base_dir_name = 'figures';
+        [parmstr, dirparmstr] = set_parmstr(parms);
+        dir_name = fullfile(base_dir_name,dirparmstr);
         file_name = sprintf('%s_%s_%s.png', parms.fig_x_axis, parms.corr_type,parmstr);
         auto_mkdir = 1;
     case 'proportions-figure'
