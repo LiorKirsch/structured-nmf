@@ -29,7 +29,9 @@ function [W, H, best_score, proportions_score] = match_profiles_to_gt(W, H, GT, 
    else
        best_perm = (1:num_types) * Hungarian(-r) ;
        best_perm = [best_perm, setdiff(1:num_types, best_perm)];
-       best_score = mean(diag(r(best_perm, :)));  
+       
+%        best_score = mean(diag(r(best_perm, :)));  
+       best_score = mean_corr_coeff(diag(r(best_perm, :)));  
    end
 
    % fprintf('Best mean corr is %g\n', best_score);
@@ -38,8 +40,8 @@ function [W, H, best_score, proportions_score] = match_profiles_to_gt(W, H, GT, 
    W = W(:, best_perm);
    
    r_proportions = corr(W, GT_proportions','type',corr_type);
-   proportions_score = mean(diag(r_proportions));
-     
+%    proportions_score = mean(diag(r_proportions));
+   proportions_score = mean_corr_coeff(diag(r_proportions));
    
 end
 

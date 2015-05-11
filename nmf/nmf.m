@@ -38,6 +38,7 @@ loglevel = take_from_struct(parms, 'loglevel', 1);
 num_restarts = take_from_struct(parms, 'num_restarts', 1);
 rand_seed = take_from_struct(parms, 'rand_seed', 42);
 maxiter = take_from_struct(parms, 'maxiter', 1000);
+do_sep_init = take_from_struct(parms, 'do_sep_init', false);
 
 % find dimensionallity of X
 [D,N] = size(X);
@@ -87,8 +88,10 @@ for i = 1:num_restarts
                     error('Unknown nmf method %s', parms.nmf_method);
             end
             
-            if parms.do_sep_init
-                [W_init,H_init]=cellfun(@(x,w,h) nmf_als(parms,x,w,h) ,X,W_init,H_init,'UniformOutput',false);
+            if do_sep_init
+                curr_parms = parms;
+                curr_parms.H_lambda = 0;
+                [W_init,H_init]=cellfun(@(x,w,h) nmf_als(curr_parms,x,w,h) ,X,W_init,H_init,'UniformOutput',false);
             end
                
             relation_matrix_for_H = parms.structure_matrix;
