@@ -39,9 +39,12 @@ function [W, H, best_score, proportions_score] = match_profiles_to_gt(W, H, GT, 
    H = H(best_perm, :);
    W = W(:, best_perm);
    
-   r_proportions = corr(W, GT_proportions','type',corr_type);
+   
+%    r_proportions = corr(W, GT_proportions','type',corr_type);
 %    proportions_score = mean(diag(r_proportions));
-   proportions_score = mean_corr_coeff(diag(r_proportions));
+
+   r_proportions = KLDiv(W, GT_proportions');
+   proportions_score = mean(r_proportions);
    
 end
 

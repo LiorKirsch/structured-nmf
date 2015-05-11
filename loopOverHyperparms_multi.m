@@ -15,7 +15,7 @@ if isempty(loop_over_var_value)
     scores = nan(subsample_repeats,1);
     proportions_scores = nan(subsample_repeats,1);
     set_terminal_title(loop_string);
-    parfor j_sr = 1:subsample_repeats
+    for j_sr = 1:subsample_repeats
         
         current_parms = parms; % to activiate parfor
         current_parms.subsample_iter = j_sr;
@@ -54,7 +54,7 @@ if isempty(loop_over_var_value)
                     parms.regions{i_region},best_scores(i_region),best_proportions_scores(i_region));    
 
             end
-            best_score = mean(best_scores);
+            best_score = mean_corr_coeff(best_scores);
             best_proportions_score = mean(best_proportions_scores);
 
         else

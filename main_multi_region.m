@@ -45,16 +45,19 @@ W_constraints_list = { 'on_simplex_with_noise'};
 
 % W_constraints_list = {'on_simplex_with_noise'};
 % H_lambda_list = [  0.1 1 10 100 1000];
-H_lambda_list = [0 0.001 0.01 0.1 1 10 ];%100 1000 inf];
+H_lambda_list = [0 0.001 0.01 0.1 1 10 100 1000 inf];
+
+parms.num_restarts = 30; 
+parms.subsample_repeats = 30; 
 
 loop_over_var_name = {};
 loop_over_var_value = {};
+loop_over_var_name{end + 1} = 'W_constraints'; 
+loop_over_var_value{end + 1} = W_constraints_list;
 loop_over_var_name{end + 1} = 'H_lambda';
 loop_over_var_value{end + 1} = H_lambda_list;
 loop_over_var_name{end + 1} = 'nmf_method';
 loop_over_var_value{end + 1} = alg_list;
-loop_over_var_name{end + 1} = 'W_constraints'; 
-loop_over_var_value{end + 1} = W_constraints_list;
 loop_over_var_name{end + 1} = 'num_types';
 loop_over_var_value{end + 1} = num_type_list;
 
@@ -90,7 +93,13 @@ end
 parms.draw_log_scale = true;
 new_loop_over_var_name = loop_over_var_name(2:end);
 new_loop_over_var_value = loop_over_var_value(2:end);
+
+set(groot,'defaultAxesColorOrder',autumn(length(loop_over_var_value{2})));
+
+
 for i = 1:length(loop_over_var_value{1});
+
+    
     if iscell(loop_over_var_value{1})
         curr_val_string = loop_over_var_value{1}{i};
         parms.(loop_over_var_name{1}) = loop_over_var_value{1}{i};
@@ -110,7 +119,7 @@ for i = 1:length(loop_over_var_value{1});
     
 
     plot_with_var(new_loop_over_var_name, new_loop_over_var_value, cur_scores,cur_proportions_scores,X,GT_profiles, GT_proportions, parms);
-    ylim([.88 0.92]);
+    ylim([.88 0.95]);
     subplot(1,2,1);
     title(sprintf('profile - %s',curr_val_string));
     subplot(1,2,2);
@@ -121,3 +130,4 @@ for i = 1:length(loop_over_var_value{1});
     saveas(gcf,fig_file_name);
    
 end
+set(groot,'defaultAxesColorOrder','default');

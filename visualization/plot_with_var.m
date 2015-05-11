@@ -4,10 +4,12 @@ function plot_with_var(loop_over_var_name, loop_over_var_value, scores,score_pro
 
    
     subplot(1,2,1);
-    alg_name = draw_the_main_figure(loop_over_var_name, loop_over_var_value, scores, parms);
+    do_mean_corr = true;
+    alg_name = draw_the_main_figure(loop_over_var_name, loop_over_var_value, scores, parms,do_mean_corr);
    
     subplot(1,2,2);
-    draw_the_main_figure(loop_over_var_name, loop_over_var_value, score_proportions, parms);
+    do_mean_corr = false;
+    draw_the_main_figure(loop_over_var_name, loop_over_var_value, score_proportions, parms,do_mean_corr);
     
 
 %     switch loop_over_var_name{end}
@@ -45,8 +47,11 @@ function plot_with_var(loop_over_var_name, loop_over_var_value, scores,score_pro
 %             errorbar(loop_over_var_value{end},baseline_Mean_prop_score,baseline_Mean_prop_std,'b--','LineWidth',2);
 %     end
         
-    subplot(1,2,1);        
-    legend(alg_name,'Location','northwest');
+    subplot(1,2,2); 
+    if ~iscell(alg_name)
+        alg_name = arrayfun(@num2str, alg_name, 'UniformOutput', false);
+    end
+    legend(alg_name,'Location','southeast');
     hold off;
     
 
@@ -74,7 +79,7 @@ function varargout = do_repmat(new_size, varargin)
     end
 end
 
-function alg_name = draw_the_main_figure(loop_over_var_name, loop_over_var_value, scores, parms)
+function alg_name = draw_the_main_figure(loop_over_var_name, loop_over_var_value, scores, parms,do_mean_corr)
     hold on;
     alg_name = loop_over_var_value{1};
     
@@ -94,8 +99,16 @@ function alg_name = draw_the_main_figure(loop_over_var_name, loop_over_var_value
         curr_scores = curr_scores';
         
         
-        y = mean(curr_scores,2);
-        y_std = std(curr_scores,1,2);
+        if do_mean_corr
+            y = nan(size(curr_scores,1),1);
+            y_std = nan(size(curr_scores,1),1);
+            for m =1:size(curr_scores,1);
+                [y(m),y_std(m)] = mean_corr_coeff(curr_scores(m,:));
+            end
+        else
+            y = mean(curr_scores,2);
+            y_std = std(curr_scores,1,2);
+        end
         ax = errorbar(x,y,y_std,'LineWidth',2);
         
         

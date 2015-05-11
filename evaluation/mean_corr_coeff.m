@@ -1,11 +1,13 @@
-function result = mean_corr_coeff(corr_coefs)
+function [result,result_std] = mean_corr_coeff(corr_coefs)
 
 % first transform the corr_coefs using z transform
     coeff_z = fisherz(corr_coefs);
 % compute the mean value
     mean_z = mean(coeff_z);
+    std_z = std(coeff_z);
 % transform with back
     result = inverse_fisherz(mean_z);
+    result_std = inverse_fisherz(std_z);
 end
 
 
