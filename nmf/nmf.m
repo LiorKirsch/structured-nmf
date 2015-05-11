@@ -113,7 +113,7 @@ for i = 1:num_restarts
 
        err = nan(num_elements,1);
        for m=1:num_elements
-          err(m) =  nmf_euclidean_dist(X{i},W{m}*H{m});
+          err(m) =  nmf_euclidean_dist(X{m},W{m}*H{m});
        end 
        eucl_dist(i) = sum(err); % compute the sum of err over components
     else
