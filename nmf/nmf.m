@@ -147,7 +147,7 @@ for i = 1:num_restarts
     else
        eucl_dist(i) = nmf_euclidean_dist(X,W*H);
     end
-    
+
     if i==1
         best_W = W;
         best_H = H;
@@ -155,7 +155,7 @@ for i = 1:num_restarts
         best_time_record = time_record;
         best_iteration = 1;
     else
-        if eucl_dist(i) < eucl_dist(i-1)
+        if eucl_dist(i) < eucl_dist(best_iteration)
             best_H = H;
             best_W = W;
             best_diff_record = diff_record;
