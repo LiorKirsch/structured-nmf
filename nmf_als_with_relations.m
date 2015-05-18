@@ -71,6 +71,8 @@ assert( ~(W_lambda>0 && H_lambda>0), 'priors for both H and W is not supported')
 W_models = W_init_model;
 H_models = H_init_model;
 num_models = size(relation_matrix_for_H,1);
+
+assert(num_models == length(X_models),'the number of elements in X and in the relation matrix are not the same');
 for i=1:num_models
     W_init = W_models{i};
     H_init = H_models{i};

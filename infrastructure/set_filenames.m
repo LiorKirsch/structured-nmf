@@ -19,6 +19,11 @@ function [full_name, file_name, dir_name] = set_filenames(file_type, parms)
         parmstr = set_parmstr(parms);
         file_name = sprintf('proportions_%s_%s_%s.png', parms.fig_x_axis, parms.corr_type ,parmstr);
         auto_mkdir = 1;
+     case 'figure_confusion'
+        [parmstr, dirparmstr] = set_parmstr(parms);
+%         dir_name = fullfile('figures',parms.dataset_file);
+        file_name = sprintf('confusion_%s.png',parmstr);
+        auto_mkdir = 1;
     case 'mixure'    
         dir_name = fullfile('/', 'cortex', 'data', 'microarray', 'mouse', ...
                    'Okaty2011', 'Mixtures');

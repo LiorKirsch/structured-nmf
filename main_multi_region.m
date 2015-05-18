@@ -15,14 +15,15 @@ init;
 parms = conf(parms);
 
 mix_dir = '/cortex/data/microarray/mouse/Okaty2011/Mixtures/';
-mix_files = {
-    'okaty2011-doyle_cortex_l5a_MN0.1_PR70-10-20_PVAR0.1.mat',...
-    'okaty2011-doyle_cortex_l5b_MN0.1_PR70-10-20_PVAR0.1.mat',...
-    'okaty2011-doyle_cortex_l6_MN0.1_PR70-10-20_PVAR0.1.mat',...
-    'okaty2011-doyle_striatum_MN0.1_PR65-10-25_PVAR0.1.mat',...
-    'okaty2011-doyle_cerebellum_MN0.1_PR50-15-35_PVAR0.1.mat',...
-    'okaty2011-doyle_brainstem_MN0.1_PR65-10-25_PVAR0.1.mat',...
-    'okaty2011-doyle_spinal_cord_MN0.1_PR65-10-25_PVAR0.1.mat'};
+mix_files = {};
+mix_files = [ mix_files ,    {'okaty2011-doyle_cortex_l5a_MN0.1_PR70-10-20_PVAR0.1.mat'}];
+mix_files = [ mix_files ,    {'okaty2011-doyle_cortex_l5b_MN0.1_PR70-10-20_PVAR0.1.mat'}];
+mix_files = [ mix_files ,    {'okaty2011-doyle_cortex_l6_MN0.1_PR70-10-20_PVAR0.1.mat'}];
+mix_files = [ mix_files ,    {'okaty2011-doyle_striatum_MN0.1_PR65-10-25_PVAR0.1.mat'}];
+mix_files = [ mix_files ,    {'okaty2011-doyle_cerebellum_MN0.1_PR50-15-35_PVAR0.1.mat'}];
+mix_files = [ mix_files ,    {'okaty2011-doyle_brainstem_MN0.1_PR65-10-25_PVAR0.1.mat'}];
+mix_files = [ mix_files ,    {'okaty2011-doyle_spinal_cord_MN0.1_PR65-10-25_PVAR0.1.mat'}];
+
 parms.mix_files = mix_files;
 mix_data = create_multi_region_mix(fullfile(mix_dir, mix_files));
 % draw_dendogram(mix_data.profiles, mix_data.cell_types, mix_data.region,'pearson');
@@ -30,15 +31,19 @@ mix_data = create_multi_region_mix(fullfile(mix_dir, mix_files));
 % parms.structre_type = 'tree';
 % [parms.structure_matrix,parms.tree_regions] = get_tree_structure(true,mix_data.region);
 
-parms.structre_type = 'relations_dist';
-parms.structre_type = 'relations_parentdist';
+% parms.structre_type = 'relations_dist';
+% parms.structre_type = 'relations_parentdist';
 parms.structre_type = 'relations_parent_level';
-[parms.structure_matrix,parms.relation_regions] = get_relation_structure(mix_data.region,parms.structre_type);
-parms.do_sep_init = false;
+% parms.structre_type = 'relations_on_expression';
+
+
+[parms.structure_matrix,parms.relation_regions] = get_tree_structure(false,mix_data.region);
+[parms.structure_matrix,parms.relation_regions] = get_relation_structure(parms.structure_matrix,parms.relation_regions,mix_data.region,parms.structre_type,mix_data.expression);
+parms.do_sep_init = true;
 
 % alg_list = {'alsPinv', 'alsActiveSet', 'mm'}; % 'alsBlockpivot','cjlin', 'prob'}; 
 alg_list = {'alsActiveSet'}; 
-num_samples_list = [5, 10, 20, 50, 100,200];
+num_samples_list = [5, 10, 20, 50];%, 100,200];
 num_type_list = 3 ;%1:8;
 W_constraints_list = {'on_simplex', 'inside_simplex', 'positive','on_simplex_with_noise'};
 W_constraints_list = { 'on_simplex_with_noise'};
@@ -46,23 +51,24 @@ W_constraints_list = { 'on_simplex_with_noise'};
 % W_constraints_list = {'on_simplex_with_noise'};
 % H_lambda_list = [  0.1 1 10 100 1000];
 H_lambda_list = [0 0.001 0.01 0.1 1 10 100 1000 inf];
+% H_lambda_list = [ 0.1 1 inf];
 
-parms.num_restarts = 30; 
+parms.num_restarts = 5; 
 parms.subsample_repeats = 30; 
 
 loop_over_var_name = {};
 loop_over_var_value = {};
 loop_over_var_name{end + 1} = 'W_constraints'; 
 loop_over_var_value{end + 1} = W_constraints_list;
-loop_over_var_name{end + 1} = 'H_lambda';
-loop_over_var_value{end + 1} = H_lambda_list;
+loop_over_var_name{end + 1} = 'num_samples';
+loop_over_var_value{end + 1} = num_samples_list;
 loop_over_var_name{end + 1} = 'nmf_method';
 loop_over_var_value{end + 1} = alg_list;
 loop_over_var_name{end + 1} = 'num_types';
 loop_over_var_value{end + 1} = num_type_list;
 
-loop_over_var_name{end + 1} = 'num_samples';
-loop_over_var_value{end + 1} = num_samples_list;
+loop_over_var_name{end + 1} = 'H_lambda';
+loop_over_var_value{end + 1} = H_lambda_list;
 
 
 num_samples =  cellfun( @(x) size(x,1), mix_data.expression);
@@ -94,7 +100,10 @@ parms.draw_log_scale = true;
 new_loop_over_var_name = loop_over_var_name(2:end);
 new_loop_over_var_value = loop_over_var_value(2:end);
 
-set(groot,'defaultAxesColorOrder',autumn(length(loop_over_var_value{2})));
+
+colors_to_use = linspecer(length(loop_over_var_value{2}));
+colors_to_use = autumn(length(loop_over_var_value{2}));
+set(groot,'defaultAxesColorOrder',colors_to_use);
 
 
 for i = 1:length(loop_over_var_value{1});
@@ -124,10 +133,10 @@ for i = 1:length(loop_over_var_value{1});
     title(sprintf('profile - %s',curr_val_string));
     subplot(1,2,2);
     title(sprintf('proportions - %s',curr_val_string));
-    ylim([-1 1 ]);
+    ylim([0 1.5 ]);
     
     fig_file_name = set_filenames('figure', parms);
     saveas(gcf,fig_file_name);
    
 end
-set(groot,'defaultAxesColorOrder','default');
+set(groot,'defaultAxesColorOrder','default');       

@@ -1,10 +1,10 @@
-function [relationMatrix,all_strct] = get_relation_structure(limit_to,relation_type)
+function [relationMatrix,all_strct] = get_relation_structure(tree_structure_matrix,all_strct,limit_to,relation_type,X)
 
     if ~exist('relation_type','var')
         relation_type = 'common_parent_level';
     end
     
-    [tree_structure_matrix,all_strct] = get_tree_structure(false,limit_to);
+%     [tree_structure_matrix,all_strct] = get_tree_structure(false,limit_to);
     tree_structure_matrix = sparse(double(tree_structure_matrix));
 
     switch relation_type
@@ -28,6 +28,15 @@ function [relationMatrix,all_strct] = get_relation_structure(limit_to,relation_t
             relationMatrix(1:size(relationMatrix,1)+1:end) = 0;
             
             relationMatrix = exp(relationMatrix);
+         case 'relations_on_expression'
+            relationMatrix = nan(length(X),length(X));
+            for i =1:length(X)
+                for j=1:length(X)
+                relationMatrix(i,j) = corr(mean(X{i},1)' ,mean(X{j},1)' );
+                relationMatrix(j,i) = corr(mean(X{i},1)' ,mean(X{j},1)' );
+                end
+            end
+            
         otherwise
             error('unkown relation type');
     end

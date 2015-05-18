@@ -51,6 +51,8 @@ for i = 1:num_restarts
     
     if iscell(X) 
         [W_init, H_init] = cellfun(@(x) get_random_W_H(x,K,parms),X,'UniformOutput',false);
+    else
+        [W_init, H_init] = get_random_W_H(X,K,parms);
     end
     
     % switch algorithm 
@@ -93,11 +95,37 @@ for i = 1:num_restarts
                 curr_parms.H_lambda = 0;
                 [W_init,H_init]=cellfun(@(x,w,h) nmf_als(curr_parms,x,w,h) ,X,W_init,H_init,'UniformOutput',false);
             end
-               
-            relation_matrix_for_H = parms.structure_matrix;
-            if loglevel, disp('Using als-with-relations'),end
-            [W,H,diff_record,time_record]=nmf_als_with_relations(parms,X,...
-                    relation_matrix_for_H,W_init, H_init);
+            
+            if isinf(parms.H_lambda)
+                % use samples from all X{i}, build a tree that is 
+                curr_parms = parms;
+                curr_parms.H_lambda  = 0;
+                curr_parms.W_lambda  = 0;
+                
+                reverse_map = [];
+                
+                dim = ndims(H_init{1});          % Get the number of dimensions for your arrays
+                M = cat(dim+1,H_init{:});        % Convert to a (dim+1)-dimensional matrix
+                curr_H_init = mean(M,dim+1);     % Get the mean across arrays
+                
+                curr_W_init = cat(1,W_init{:});  % Concat W_init
+                curr_X = cat(1,X{:});            % Concat X
+                for i_nodes = 1:length(X)
+%                     curr_X = cat(1,curr_X,X{i_nodes});
+                    reverse_map = cat(1,reverse_map, i_nodes*ones(size(X{i_nodes},1),1) );
+                end
+                
+                [W_combined,H_combined] = nmf_als(curr_parms,curr_X,curr_W_init,curr_H_init);
+                for i_nodes =1:length(X)
+                    H{i_nodes} = H_combined;
+                    W{i_nodes} = W_combined(reverse_map==i_nodes,:);
+                end
+            else
+                relation_matrix_for_H = parms.structure_matrix;
+                if loglevel, disp('Using als-with-relations'),end
+                [W,H,diff_record,time_record]=nmf_als_with_relations(parms,X,...
+                        relation_matrix_for_H,W_init, H_init);
+            end
     %     case 'alsobs'
     %         if loglevel, disp('Using alsobs algorithm'),end
     %         [W,H]=nmf_alsobs(X,K,maxiter,loglevel);
