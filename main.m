@@ -101,8 +101,8 @@ if parms.log_transform
 end
 
 
-parms.H_markers = false(parms.num_types,size(X,2));
-parms.H_markers(2, 1 ) = true;
+% parms.H_markers = false(parms.num_types,size(X,2));
+% parms.H_markers(2, 1 ) = true;
 
 
 % [baseline_scores, baseline_std] = get_baseline_profile_mean(X, GT_profiles,loop_over_var_value{end});

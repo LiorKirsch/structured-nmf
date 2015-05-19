@@ -11,11 +11,13 @@ function [aucs,median_within, median_outside] = compare_nmf_to_doyle(cell_mix, g
     % 
     % mouse_cell_types.expression = mouse_cell_types.expression(found_translation,:);
     % mouse_cell_types.gene_affi_id = mouse_cell_types.gene_affi_id(found_translation);
-    
+    mouse_cell_types.expression = 2.^mouse_cell_types.expression;
     if ~exist('limit_to_cortical_cell_types','var');
         parms.limit_to_cortical_cell_types = false;
     end
 
+    [mouse_cell_types,seperation_indices, cell_type_order] = order_sample_by_type(mouse_cell_types, parms.limit_to_cortical_cell_types);
+    
     cell_type_filter = strmatch('Doyle', mouse_cell_types.reference);
     mouse_cell_types = limit_data_by_cell_type_filter(mouse_cell_types, cell_type_filter);
     exp = mouse_cell_types.expression * double(mouse_cell_types.sample2type);
@@ -23,9 +25,14 @@ function [aucs,median_within, median_outside] = compare_nmf_to_doyle(cell_mix, g
     
     switch parms.species
         case 'mouse'
+            % since some genes have more than one name we first use
+            % all_symbols which hold the full symbol list than we map it
+            % back to the indices that are of intrests to us.
             [reorder_mouse_cell_type, reorder_zapala] = reorderUsingId(mouse_cell_types.all_symbols, gene_info.gene_symbols);
             reorder_mouse_cell_type = mouse_cell_types.refer_to_index(reorder_mouse_cell_type);
 %             reorder_mouse_cell_type_expresion = mouse_cell_types.expression(reorder_mouse_cell_type,:);
+% tmp_name_A = mouse_cell_types.gene_symbol(reorder_mouse_cell_type); %CHECKING
+% tmp_name_B =  gene_info.gene_symbols(reorder_zapala); %CHECKING
             reorder_mouse_cell_type_expresion = exp(reorder_mouse_cell_type,:);
             reorder_cellmix_expresion = cell_mix.celltype_profile(reorder_zapala,:);
         otherwise
@@ -34,7 +41,7 @@ function [aucs,median_within, median_outside] = compare_nmf_to_doyle(cell_mix, g
 
     fprintf('Computing correlation using %d genes which can be mapped between the datasets\n',size(reorder_mouse_cell_type_expresion,1) );
 %     corr_matrix = corr(reorder_mouse_cell_type_expresion, reorder_cellmix_expresion, 'type','pearson');
-    corr_matrix = callibrated_corr(reorder_mouse_cell_type_expresion, reorder_cellmix_expresion, 'pearson');
+    corr_matrix = callibrated_corr(reorder_mouse_cell_type_expresion, reorder_cellmix_expresion, 'spearman');
     imagesc(corr_matrix);  
     colormap(jet); 
     imagescwithnan(corr_matrix,jet,[0 1 1]) %# [0 1 1] is cyan

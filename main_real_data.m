@@ -33,7 +33,6 @@ gross_structures_info{strcmp(gross_structures_info,'Isocortex')} = 'Cerebral_cor
 % gene_info.probe_id = gene_info.probe_id(reorder_predicted);
 
 
-
 gross_regions = gross_structures_info(gross_region_vec);
 [X,region_names] = split_to_cell(expression, gross_regions);
 clear('expression','gross_region_vec','gross_regions','gross_structures_info');
@@ -51,16 +50,24 @@ parms.structre_type = 'relations_parent_level';
 %=======================================================================
 
 
-
-
-
-parms.do_sep_init = true;
+parms.do_sep_init = false;
 
 parms.num_types = 3;
 parms.W_constraints = 'on_simplex_with_noise';
 parms.nmf_method = 'alsActiveSet';
 parms.num_restarts = 30; % <===  increase to 30
 parms.W_lambda = 0;
+
+
+neuro_markers = {'Stmn2','Celf4','Syt1','Gria3','Dlg3','Dlg4','Tubb3','Map2'};
+astro_markers = { 'Gfap' , 'Aqp4' ,'Fgfr3' ,'Slc1a2' ,'Gjb6' };
+oligo_markers = {'Mbp' ,'Sox10' ,'Mag' ,'Mog'};
+H_markers = false(parms.num_types,size(X{1},2));
+H_markers(1, ismember(gene_info.gene_symbols,neuro_markers) ) = true;
+H_markers(2, ismember(gene_info.gene_symbols,astro_markers) ) = true;
+H_markers(3, ismember(gene_info.gene_symbols,oligo_markers) ) = true;
+parms.H_markers = H_markers;
+
 
 fprintf('======== nmf seperate ========\n');
 parms.H_lambda = 0;

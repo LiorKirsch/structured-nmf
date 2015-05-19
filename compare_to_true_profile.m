@@ -119,6 +119,7 @@ function mouse_cell_types = load_doyle_true_type()
 
 
     mouse_cell_types = load('mouse_cell_type_profiles.mat');
+    mouse_cell_types.expression = 2.^mouse_cell_types.expression;
 
 
     cell_type_filter = strmatch('Doyle', mouse_cell_types.reference);

@@ -151,8 +151,13 @@ function [all_marker_indices,H_marker_part] = update_H_markers(X, W, H_markers,H
     sum_W = sum(W,1);  % output size K
     sum_W_square = sum(W.^2,1);  % output size K
     for i =1:K
-        H_marker_part(i,H_markers(i,:)) =...
-            ( WT_X(i,H_markers(i,:)) + H_lambda *H_regularizer(i,H_markers(i,:)) ) / (sum_W_square(i) + H_lambda);
+        if H_lambda > 0
+            H_marker_part(i,H_markers(i,:)) =...
+                ( WT_X(i,H_markers(i,:)) + H_lambda *H_regularizer(i,H_markers(i,:)) ) / (sum_W_square(i) + H_lambda);
+        else
+            H_marker_part(i,H_markers(i,:)) =...
+                 WT_X(i,H_markers(i,:))   / sum_W_square(i) ;
+        end
     end
 
     all_marker_indices = any(H_markers,1);
