@@ -100,6 +100,11 @@ if parms.log_transform
     X = log2(X);
 end
 
+
+parms.H_markers = false(parms.num_types,size(X,2));
+parms.H_markers(2, 1 ) = true;
+
+
 % [baseline_scores, baseline_std] = get_baseline_profile_mean(X, GT_profiles,loop_over_var_value{end});
 [scores, proportions_scores] = loopOverHyperparms(X, GT_profiles, GT_proportions, rand_subset,parms, ...
                             loop_over_var_name, loop_over_var_value, '');

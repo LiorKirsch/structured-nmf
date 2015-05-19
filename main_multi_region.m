@@ -35,10 +35,9 @@ mix_data = create_multi_region_mix(fullfile(mix_dir, mix_files));
 % parms.structre_type = 'relations_parentdist';
 parms.structre_type = 'relations_parent_level';
 % parms.structre_type = 'relations_on_expression';
-
-
 [parms.structure_matrix,parms.relation_regions] = get_tree_structure(false,mix_data.region);
 [parms.structure_matrix,parms.relation_regions] = get_relation_structure(parms.structure_matrix,parms.relation_regions,mix_data.region,parms.structre_type,mix_data.expression);
+
 parms.do_sep_init = true;
 
 % alg_list = {'alsPinv', 'alsActiveSet', 'mm'}; % 'alsBlockpivot','cjlin', 'prob'}; 
@@ -53,7 +52,7 @@ W_constraints_list = { 'on_simplex_with_noise'};
 H_lambda_list = [0 0.001 0.01 0.1 1 10 100 1000 inf];
 % H_lambda_list = [ 0.1 1 inf];
 
-parms.num_restarts = 5; 
+parms.num_restarts = 30; 
 parms.subsample_repeats = 30; 
 
 loop_over_var_name = {};

@@ -59,7 +59,7 @@ parms.do_sep_init = true;
 parms.num_types = 3;
 parms.W_constraints = 'on_simplex_with_noise';
 parms.nmf_method = 'alsActiveSet';
-parms.num_restarts = 5; % <===  increase to 30
+parms.num_restarts = 30; % <===  increase to 30
 parms.W_lambda = 0;
 
 fprintf('======== nmf seperate ========\n');
