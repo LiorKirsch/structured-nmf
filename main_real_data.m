@@ -53,7 +53,7 @@ parms = get_structure_matrix(parms.dataset_file, parms.structre_type,region_name
 
 
 % % ====== load cell type specific genetic markers =======
-parms =load_markers(parms.dataset_file, gene_info, size(X{1},2), length(X), parms);
+% parms =load_markers(parms.dataset_file, gene_info, size(X{1},2), length(X), parms);
 
 
 parms.do_sep_init = false;
