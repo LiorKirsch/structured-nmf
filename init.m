@@ -11,6 +11,8 @@ addpath('evaluation/');
 addpath('baselines/');
 addpath('dataset_creation/');
 addpath('infrastructure/');
+addpath('/home/lab/lior/Projects/load datasets/');
+addpath('wet_celltype_compare/');
 
 parms.dummy=1;
 

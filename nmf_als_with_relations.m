@@ -42,6 +42,10 @@ H_lambda = take_from_struct(parms, 'H_lambda', 0);
 W_prior = take_from_struct(parms, 'W_prior', nan);
 H_prior = take_from_struct(parms, 'H_prior', nan);
 
+H_markers_models = take_from_struct(parms, 'H_markers', ...
+    cellfun(@(x) false(size(x)), H_init_model ,'UniformOutput',false) );
+
+
 % if (W_lambda>0)
 %     if ( isnan(W_prior) )
 %         W_prior = zeros(size(W_init));
@@ -61,6 +65,8 @@ H_prior = take_from_struct(parms, 'H_prior', nan);
 %     H_prior = cellfun(@(x) nan(size(x)),H_init,'UniformOutput',false);
 % end
 
+assert( all(size(H_init_model{1}) == size(H_markers_models{1})) , 'H_markers should be a boolean array with same size as H');
+assert( all(sum(H_markers_models{1},1) <=1)  ,'A marker should only be present for a single type');
 assert( ~(W_lambda>0 && H_lambda>0), 'priors for both H and W is not supported');
 
 
@@ -105,29 +111,43 @@ for iter=1:maxiter
         W = W_models{model_iter};
         H = H_models{model_iter};
         X = X_models{model_iter};
+        H_markers = H_markers_models{model_iter};
         
     %==== Minization step
+    
         relation_coeff = relation_matrix_for_H(model_iter,:);
         relation_coeff_inds = find(relation_coeff);
-        reg_X_for_H = X;
+       
+        
+        % split H to markers and non markers
+        all_marker_indices = any(H_markers,1);
+        
+        % First, update the marker genes
+        tmp_priors = zeros(size(H(:,all_marker_indices)));
+        sum_regulerizer = sum(relation_coeff(relation_coeff_inds));
+        for relations_iter = 1:length(relation_coeff_inds)
+            relation_ind = relation_coeff_inds(relations_iter);
+            curr_regulerizer = relation_coeff(relation_ind) / sum_regulerizer;
+            tmp_priors = tmp_priors + curr_regulerizer*H_models{relation_ind}(:,all_marker_indices) ;
+        end
+        H_marker_part = update_H_markers(X(:,all_marker_indices), W, H_markers(:,all_marker_indices),H_lambda*sum_regulerizer,tmp_priors);
+        
+        reg_X_for_H = X(:,~all_marker_indices);
         reg_W_for_H = W;
+        % Then, update the rest of the genes
         for relations_iter = 1:length(relation_coeff_inds)
             relation_ind = relation_coeff_inds(relations_iter);
             curr_regulerizer = H_lambda * relation_coeff(relation_ind);
-            [reg_X_for_H, reg_W_for_H] = get_reg_for_H(reg_X_for_H,reg_W_for_H, curr_regulerizer, H_models{relation_ind});
+            [reg_X_for_H, reg_W_for_H] = get_reg_for_H(reg_X_for_H,...
+                reg_W_for_H, curr_regulerizer, H_models{relation_ind}(:,~all_marker_indices));
         end
-        H = solve_als_for_H(H, reg_W_for_H,reg_X_for_H,als_solver);
-        
-%         relation_coeff = relation_matrix_for_W(model_iter,:);
-%         relation_coeff_inds = find(relation_coeff);
-%         reg_X_for_W = X;
-%         reg_H_for_W = W;
-%         for relations_iter = 1:length(relation_coeff_inds)
-%             relation_ind = relation_coeff_inds(relations_iter);
-%             [reg_X_for_W, reg_H_for_W] = get_reg_for_H(X',H', W_lambda, W_models{relation_ind});
-%             reg_X_for_W = reg_X_for_W';  reg_H_for_W =  reg_H_for_W';
-%         end
-%         W = solve_als_for_W(W, reg_H_for_W,reg_X_for_W,als_solver);
+        H_non_marker_parts = solve_als_for_H(H, reg_W_for_H,reg_X_for_H,als_solver);
+    
+        % join H-markers part and H-non-markers part
+        H = nan(size(H_init));
+        H(:,all_marker_indices) = H_marker_part;
+        H(:,~all_marker_indices) = H_non_marker_parts;
+    
 
         W = solve_als_for_W(W, H,X,als_solver);
         %==== Projection step

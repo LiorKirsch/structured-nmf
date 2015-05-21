@@ -1,13 +1,36 @@
-function compare_to_true_profile(predicted_profiles, predicted_proportions, gene_info, region_name,parms)
+function compare_to_true_profile(predicted_profiles, predicted_proportions, gene_info, region_name,species,parms)
 
     % load doyle
     mouse_cell_types = load_doyle_true_type();
     
-    % select gene which appear in both datasets according to gene symbol
-    [reorder_mouse_cell_type, reorder_predicted] = reorderUsingId(mouse_cell_types.all_symbols, gene_info.gene_symbols);
-    reorder_mouse_cell_type = mouse_cell_types.refer_to_index(reorder_mouse_cell_type);
-    mouse_cell_types.expression = mouse_cell_types.expression(reorder_mouse_cell_type,:);
-    predicted_profiles = cellfun(@(x) x(reorder_predicted,:), predicted_profiles,'UniformOutput',false);
+    switch species
+        case 'mouse'
+            
+            % select gene which appear in both datasets according to gene symbol
+            [reorder_mouse_cell_type, reorder_predicted] = reorderUsingId(mouse_cell_types.all_symbols, gene_info.gene_symbols);
+            reorder_mouse_cell_type = mouse_cell_types.refer_to_index(reorder_mouse_cell_type);
+            mouse_cell_types.expression = mouse_cell_types.expression(reorder_mouse_cell_type,:);
+            predicted_profiles = cellfun(@(x) x(reorder_predicted,:), predicted_profiles,'UniformOutput',false);
+          
+        case {'monkey', 'human'}
+            addpath('/cortex/code/matlab/homologous_gene_mapping/');
+            switch species
+                case 'monkey'
+                    [gene_to_group_mouse, gene_to_group_primate, homologous_group_id] =  gene_to_homolog_group('mouse_laboratory','rhesus_macaque', mouse_cell_types.gene_symbol, 'symbol',gene_info.entrez_ids,'entrez_gene_ID');
+                case 'human'
+                    [gene_to_group_mouse, gene_to_group_primate, homologous_group_id] =  gene_to_homolog_group('mouse_laboratory','human', mouse_cell_types.gene_symbol, 'symbol',gene_info.entrez_ids,'entrez_gene_ID');
+            end
+            
+            groups_with_1_to_1 = sum(gene_to_group_mouse,1) == 1  & sum(gene_to_group_primate,1) == 1;
+            gene_to_group_mouse = gene_to_group_mouse(:,groups_with_1_to_1);
+            gene_to_group_primate = gene_to_group_primate(:,groups_with_1_to_1);
+            gene_to_group_mouse = (1:size(gene_to_group_mouse,1)) * gene_to_group_mouse ;
+            gene_to_group_primate = (1:size(gene_to_group_primate,1)) * gene_to_group_primate ;
+
+            mouse_cell_types.expression = mouse_cell_types.expression(gene_to_group_mouse,:);
+            predicted_profiles = cellfun(@(x) x(gene_to_group_primate,:), predicted_profiles,'UniformOutput',false);
+            
+    end
     
     % get true profile for each region
     true_profiles = match_region_with_true_profile(mouse_cell_types, region_name);

@@ -1,4 +1,4 @@
-function [tree_structure_matrix,all_strct] = zapala_tree_structure(shortcut_only_child,limit_to)
+function [tree_structure_matrix,all_strct] = zapala_tree_structure(limit_to)
 %     Nervous_system -> Telencephalon
 %     Nervous_system -> Diencephalon
 %     Nervous_system -> Mesencephalon
@@ -105,20 +105,4 @@ function [tree_structure_matrix,all_strct] = zapala_tree_structure(shortcut_only
         tree_structure_matrix = tree_structure_matrix(keep_strct,keep_strct);
     end
     
-    if ~exist('shortcut_only_child','var')
-        shortcut_only_child = false;
-    end
-    
-    if shortcut_only_child
-        only_child = find(sum(tree_structure_matrix,2) ==1);
-        for i =1:length(only_child)
-            curr_ind = only_child(i);
-            child_ind = find(tree_structure_matrix( curr_ind,:));
-            parent_ind = find(tree_structure_matrix( :,curr_ind));
-            tree_structure_matrix(parent_ind, child_ind) = true;
-        end
-        tree_structure_matrix(only_child,:) = [];
-        tree_structure_matrix(:,only_child) = [];
-        all_strct(only_child) = [];
-    end
 end

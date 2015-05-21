@@ -1,4 +1,4 @@
-function [aucs,median_within, median_outside] = compare_nmf_to_doyle(cell_mix, gene_info, parms)
+function  compare_nmf_to_doyle(cell_mix, gene_info, parms)
 
 
     mouse_cell_types = load('mouse_cell_type_profiles.mat');
@@ -30,11 +30,27 @@ function [aucs,median_within, median_outside] = compare_nmf_to_doyle(cell_mix, g
             % back to the indices that are of intrests to us.
             [reorder_mouse_cell_type, reorder_zapala] = reorderUsingId(mouse_cell_types.all_symbols, gene_info.gene_symbols);
             reorder_mouse_cell_type = mouse_cell_types.refer_to_index(reorder_mouse_cell_type);
-%             reorder_mouse_cell_type_expresion = mouse_cell_types.expression(reorder_mouse_cell_type,:);
-% tmp_name_A = mouse_cell_types.gene_symbol(reorder_mouse_cell_type); %CHECKING
-% tmp_name_B =  gene_info.gene_symbols(reorder_zapala); %CHECKING
             reorder_mouse_cell_type_expresion = exp(reorder_mouse_cell_type,:);
             reorder_cellmix_expresion = cell_mix.celltype_profile(reorder_zapala,:);
+        case {'monkey', 'human'}
+            addpath('/cortex/code/matlab/homologous_gene_mapping/');
+            switch parms.species
+                case 'monkey'
+                    [gene_to_group_mouse, gene_to_group_primate, homologous_group_id] =  gene_to_homolog_group('mouse_laboratory','rhesus_macaque', mouse_cell_types.gene_symbol, 'symbol',gene_info.entrez_ids,'entrez_gene_ID');
+                case 'human'
+                    [gene_to_group_mouse, gene_to_group_primate, homologous_group_id] =  gene_to_homolog_group('mouse_laboratory','human', mouse_cell_types.gene_symbol, 'symbol',gene_info.entrez_ids,'entrez_gene_ID');
+            end
+            
+            groups_with_1_to_1 = sum(gene_to_group_mouse,1) == 1  & sum(gene_to_group_primate,1) == 1;
+            gene_to_group_mouse = gene_to_group_mouse(:,groups_with_1_to_1);
+            gene_to_group_primate = gene_to_group_primate(:,groups_with_1_to_1);
+            gene_to_group_mouse = (1:size(gene_to_group_mouse,1)) * gene_to_group_mouse ;
+            gene_to_group_primate = (1:size(gene_to_group_primate,1)) * gene_to_group_primate ;
+
+            
+            reorder_mouse_cell_type_expresion = exp(gene_to_group_mouse,:);
+            reorder_cellmix_expresion = cell_mix.celltype_profile(gene_to_group_primate,:);
+
         otherwise
             error('unkown specices');
     end
@@ -53,19 +69,6 @@ function [aucs,median_within, median_outside] = compare_nmf_to_doyle(cell_mix, g
     ax.YTick = 1:length(mouse_cell_types.cell_type_description);
     type_and_region = cellfun(@(x,y) sprintf('%s (%s)',x,y), mouse_cell_types.cell_type_description, mouse_cell_types.anatomical_region, 'UniformOutput',false);
     ax.YTickLabel = type_and_region;
-    
-    full_name = set_filenames('figure_confusion', parms);
-    saveas(gca,[full_name,'_corr'],'png');
-    figure;
-    single_sample_scatter(reorder_mouse_cell_type_expresion(:,28), reorder_cellmix_expresion(:,strcmp('Neurons',cell_mix.cell_types)),parms);
-    saveas(gca,[full_name,'_scatter'],'png');
-    sample_cell_type_id =double(mouse_cell_types.sample2type) * ( ( 1:size(mouse_cell_types.sample2type,2))');
-    mouse_cell_types.is_neuron = mouse_cell_types.is_neuron(sample_cell_type_id);
-    mouse_cell_types.is_astro = mouse_cell_types.is_astro(sample_cell_type_id);
-    mouse_cell_types.is_oligo = mouse_cell_types.is_oligo(sample_cell_type_id);
-    aucs = drawROC(cell_mix, mouse_cell_types, corr_matrix);
-    saveas(gca,[full_name,'_roc'],'png');
-    [median_within, median_outside] = compute_median_corr(corr_matrix, mouse_cell_types);
     
 end
 

@@ -8,6 +8,20 @@ function [relationMatrix,all_strct] = get_relation_structure(tree_structure_matr
     tree_structure_matrix = sparse(double(tree_structure_matrix));
 
     switch relation_type
+        case 'tree'
+            only_child = find(sum(tree_structure_matrix,2) ==1);
+            for i =1:length(only_child)
+                curr_ind = only_child(i);
+                child_ind = find(tree_structure_matrix( curr_ind,:));
+                parent_ind = find(tree_structure_matrix( :,curr_ind));
+                tree_structure_matrix(parent_ind, child_ind) = true;
+            end
+            tree_structure_matrix(only_child,:) = [];
+            tree_structure_matrix(:,only_child) = [];
+            all_strct(only_child) = [];
+            relationMatrix = full(tree_structure_matrix);
+
+            disp('using tree structure');
         case 'relations_dist'
             [~,relationMatrix] = computeDistanceBetweenNodes(tree_structure_matrix);
             relationMatrix = exp(-1*relationMatrix);
@@ -42,10 +56,12 @@ function [relationMatrix,all_strct] = get_relation_structure(tree_structure_matr
     end
 
 
-    mask = ismember(all_strct, limit_to);
-    
-    relationMatrix = relationMatrix(mask, mask);
-    all_strct = all_strct(mask);
+    if ~strcmp('tree', relation_type)
+        mask = ismember(all_strct, limit_to);
+
+        relationMatrix = relationMatrix(mask, mask);
+        all_strct = all_strct(mask);
+    end
 
 %     figure;imagesc(relationMatrix);colorbar; colormap(jet);
 %     ax = gca;
