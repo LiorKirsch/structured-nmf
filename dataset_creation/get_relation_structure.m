@@ -1,5 +1,8 @@
 function [relationMatrix,all_strct] = get_relation_structure(tree_structure_matrix,all_strct,limit_to,relation_type,X)
-
+% get the relation matrix
+% the larger the weight the strong the connection between the region is
+% weight of zero means no connection between the regions
+%
     if ~exist('relation_type','var')
         relation_type = 'common_parent_level';
     end
@@ -25,12 +28,14 @@ function [relationMatrix,all_strct] = get_relation_structure(tree_structure_matr
         case 'relations_dist'
             [~,relationMatrix] = computeDistanceBetweenNodes(tree_structure_matrix);
             relationMatrix = exp(-1*relationMatrix);
+            relationMatrix(1:size(relationMatrix,1)+1:end) = 0;  % the diagonal should be zero
         case 'relations_parentdist'
             directedDistanceMatrix = computeDistanceBetweenNodes(tree_structure_matrix);
             [ closestCommonParentIndex, meanDistanceToParent, shortDistanceToParent, longDistanceToParent] = ...
                 distanceToCommonParent(tree_structure_matrix, directedDistanceMatrix);
             relationMatrix = longDistanceToParent;
             relationMatrix = exp(-1*relationMatrix);
+            relationMatrix(1:size(relationMatrix,1)+1:end) = 0;  % the diagonal should be zero
         case 'relations_parent_level'
             [~, nodeLevel] = allChildNodes(tree_structure_matrix);
             directedDistanceMatrix = computeDistanceBetweenNodes(tree_structure_matrix);
@@ -39,9 +44,9 @@ function [relationMatrix,all_strct] = get_relation_structure(tree_structure_matr
             
             closestCommonParentIndex(1:size(closestCommonParentIndex,1)+1:end) = 1;
             relationMatrix = nodeLevel(closestCommonParentIndex);
-            relationMatrix(1:size(relationMatrix,1)+1:end) = 0;
             
             relationMatrix = exp(relationMatrix);
+            relationMatrix(1:size(relationMatrix,1)+1:end) = 0;  % the diagonal should be zero
          case 'relations_on_expression'
             relationMatrix = nan(length(X),length(X));
             for i =1:length(X)
@@ -50,7 +55,7 @@ function [relationMatrix,all_strct] = get_relation_structure(tree_structure_matr
                 relationMatrix(j,i) = corr(mean(X{i},1)' ,mean(X{j},1)' );
                 end
             end
-            
+            relationMatrix(1:size(relationMatrix,1)+1:end) = 0;  % the diagonal should be zero
         otherwise
             error('unkown relation type');
     end
@@ -65,9 +70,10 @@ function [relationMatrix,all_strct] = get_relation_structure(tree_structure_matr
 
 %     figure;imagesc(relationMatrix);colorbar; colormap(jet);
 %     ax = gca;
+%     ax.XTick = 1:length(all_strct);
 %     ax.XTickLabel = all_strct;
 %     ax.XTickLabelRotation	=45;
-%     
+    
     
 
 end

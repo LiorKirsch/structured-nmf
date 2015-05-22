@@ -25,20 +25,21 @@ show_results = false;
 
 
 % %==== Brainspan ===
-% parms.dataset_file = 'brainspan_rnaseq';
-% parms.species = 'human';
-% [expression, gross_region_vec, gene_info, ~, gross_structures_info] ...
-%     = load_expression_and_regions('brainspan_rnaseq', []);
+parms.dataset_file = 'brainspan_rnaseq_DFC_OFC';
+parms.species = 'human';
+subset_regions = {'DFC' 'OFC'}; % Regions to test
+[expression, gross_region_vec, gene_info, ~, gross_structures_info] ...
+    = load_expression_and_regions('brainspan_rnaseq', subset_regions);
 
 
 % %==== Zapala selected regions ===
-parms.dataset_file = 'Zapala_isocortex_medulla_striatum_cerebellum';
-parms.species = 'mouse';
-regions_to_keep = {'Isocortex';'Motor Cortex';'Entorhinal Cortex';'Perirhinal Cortex';...
-    'Hippocampus';'Dentate Gyrus';'Hippocampus CA1';'Hippocampus CA3';...
-    'Striatum';'Cerebellum';'Medulla'};
-[expression, gross_region_vec, gene_info, ~, gross_structures_info, ~] = load_expression_and_regions('zapalaMouse', regions_to_keep);
-gross_structures_info{strcmp(gross_structures_info,'Isocortex')} = 'Cerebral_cortex';
+% parms.dataset_file = 'Zapala_isocortex_medulla_striatum_cerebellum';
+% parms.species = 'mouse';
+% regions_to_keep = {'Isocortex';'Motor Cortex';'Entorhinal Cortex';'Perirhinal Cortex';...
+%     'Hippocampus';'Dentate Gyrus';'Hippocampus CA1';'Hippocampus CA3';...
+%     'Striatum';'Cerebellum';'Medulla'};
+% [expression, gross_region_vec, gene_info, ~, gross_structures_info, ~] = load_expression_and_regions('zapalaMouse', regions_to_keep);
+% gross_structures_info{strcmp(gross_structures_info,'Isocortex')} = 'Cerebral_cortex';
 
 
 expression = change_to_linear_scale(expression);
@@ -75,9 +76,11 @@ loop_over_var_value{end + 1} = num_type_list;
 loop_over_var_name{end + 1} = 'H_lambda';
 loop_over_var_value{end + 1} = H_lambda_list;
 
-parms.regions = mix_data.region;
-parms.cell_types = mix_data.cell_types;
+parms.regions = region_names;
+parms.cell_types = arrayfun(@(x) sprintf('#%d',x),1:parms.num_types,'UniformOutput',false);
 
 loopOverHyperparms_real(X, parms, loop_over_var_name, loop_over_var_value ,'');
                                  
-
+% parms.H_lambda = 0.01;
+% [cell_mix_single.proportions, cell_mix_single.celltype_profile] = ...
+%     nmf(X, parms.num_types, 'alsWithRelations', parms);
