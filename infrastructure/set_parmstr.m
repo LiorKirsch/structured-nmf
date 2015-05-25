@@ -111,8 +111,16 @@ function [parmstr, dirparmstr] = set_parmstr(parms)
     if isfield(parms, 'gene_subset')
         if ~strcmp( parms.gene_subset,'all')
             parmstr = sprintf('%s_%s', parmstr, parms.gene_subset);
-            parmstr = sprintf('%s_GenesHash%g', parmstr, parms.gene_hash);
+            if isfield(parms, 'gene_hash')
+                parmstr = sprintf('%s_GenesHash%g', parmstr, parms.gene_hash);
+            end
+            
+            
+            if isfield(parms, 'gene_okaty_filter')
+                parmstr = sprintf('%s_%s', parmstr, parms.gene_okaty_filter);
+            end
         end
+        
     end
     
     

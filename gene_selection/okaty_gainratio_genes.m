@@ -8,9 +8,12 @@ function top_gene_symbols = okaty_gainratio_genes(num_top_genes, parms)
 
    if isempty(local_sort_inds)
         mouse_cell_types = load('mouse_cell_type_profiles.mat');
-        sample_neuro = mouse_cell_types.sample2type * double(mouse_cell_types.is_neuron);
-        sample_oligo = mouse_cell_types.sample2type * double(mouse_cell_types.is_oligo);
-        sample_astro = mouse_cell_types.sample2type * double(mouse_cell_types.is_astro);
+        [neuro_inds, oligo_inds, astro_inds] = get_celltype_inds(...
+             mouse_cell_types, parms.gene_okaty_filter);
+
+        sample_neuro = mouse_cell_types.sample2type * neuro_inds;
+        sample_oligo = mouse_cell_types.sample2type * oligo_inds;
+        sample_astro = mouse_cell_types.sample2type * astro_inds;
 
         expression = mouse_cell_types.expression';
 

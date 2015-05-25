@@ -8,6 +8,12 @@ function [full_name, file_name, dir_name] = set_filenames(file_type, parms)
       dir_name = fullfile(base_dir_name,dirparmstr);
       file_name = sprintf('demix_%s.mat', parmstr);
       auto_mkdir = 1;
+    case 'gene_subset', 
+      base_dir_name = fullfile('/cortex/users/lior/nmf/runs/gene_subsets');
+      [parmstr, dirparmstr] = set_parmstr(parms);
+      dir_name = fullfile(base_dir_name,dirparmstr);
+      file_name = sprintf('gene_subset%s.mat', parmstr);
+      auto_mkdir = 1;
     case 'figure'
         base_dir_name = 'figures';
         [parmstr, dirparmstr] = set_parmstr(parms);

@@ -1,88 +1,63 @@
 function [gene_info, expression, parms] = gene_subset_selection(gene_info, ...
                                                       expression, parms)
 %
-    gene_subset = take_from_struct(parms, 'gene_subset', 'barres100')
+    gene_subset = take_from_struct(parms, 'gene_subset', 'barres100');
+    gene_okaty_filter = take_from_struct(parms, 'gene_okaty_filter', 'all_types')
     num_genes = length(gene_info.gene_symbols);
-    switch gene_subset
 
-        case 'all', 
-            gene_mask = true(num_genes,1);
-        
-        case 'allen_subset', % 'genes_with_orthologs'
-            allen_mouse_genes = load('allen_mouse_genes');
-            gene_inds = get_intersecting_genes(...
-                gene_info.gene_symbolst, allen_mouse_genes, parms);
-            gene_mask = false(num_genes, 1);
-            gene_mask(gene_inds) = true;
-
-        case 'orth', % 'genes_with_orthologs'
-            mouse_cell_types = load('mouse_cell_type_profiles.mat');
-            species = take_from_struct(parms, 'species');    
-            [~,gene_inds] = compare_to_true_profile(mouse_cell_types, ...
-                                                    gene_info, species, parms);
-            gene_mask = false(num_genes, 1);
-            gene_mask(gene_inds) = true;
-
-        case 'barres_discrim100' % top 100 discriminative barres
-            top_gene_symbols = load_top_barres_genes(100, parms);
-            gene_inds = get_intersecting_genes(...
-                gene_info.gene_symbols, top_gene_symbols, parms);
-            gene_mask = false(num_genes, 1);
-            gene_mask(gene_inds) = true;
-
-        case 'barres_discrim1000' % top 1000 discriminative barres
-            top_gene_symbols = load_top_barres_genes(1000, parms);
-            gene_inds = get_intersecting_genes(...
-                gene_info.gene_symbols, top_gene_symbols, parms);
-            gene_mask = false(num_genes, 1);
-            gene_mask(gene_inds) = true;
-        
-        case 'okaty_discrim100' % top 1000 discriminative barres
-            top_gene_symbols = load_top_okaty_genes(100, parms);
-            gene_inds = get_intersecting_genes(...
-                gene_info.gene_symbols, top_gene_symbols, parms);
-            gene_mask = false(num_genes, 1);
-            gene_mask(gene_inds) = true;
-            
-        case 'okaty_discrim1000' % top 1000 discriminative barres
-            top_gene_symbols = load_top_okaty_genes(1000, parms);
-            gene_inds = get_intersecting_genes(...
-                gene_info.gene_symbols, top_gene_symbols, parms);
-            gene_mask = false(num_genes, 1);
-            gene_mask(gene_inds) = true;
-        
-        case 'okaty_infogain_1000' % top 1000 infogain okaty
-            top_gene_symbols = okaty_infogain_genes(1000, parms);
-%             [~, ~, gene_inds] = intersect(upper(top_gene_symbols), gene_info.gene_symbols);
-             gene_inds = get_intersecting_genes(...
-                gene_info.gene_symbols, top_gene_symbols, parms);
-            gene_mask = false(num_genes, 1);
-            gene_mask(gene_inds) = true;
-         
-         case 'okaty_gainratio_1000' % top 1000 okaty
-            top_gene_symbols = okaty_gainratio_genes(1000, parms);
-%             [~, ~, gene_inds] = intersect(upper(top_gene_symbols), gene_info.gene_symbols);
-            gene_inds = get_intersecting_genes(...
-                gene_info.gene_symbols, top_gene_symbols, parms);
-            gene_mask = false(num_genes, 1);
-            gene_mask(gene_inds) = true;
-           
-         case 'barres_infogain_1000' % top 1000 infogain barres
-            top_gene_symbols = barres_info_gain_genes(1000, parms);
-%             [~, ~, gene_inds] = intersect(upper(top_gene_symbols), gene_info.gene_symbols);
-             gene_inds = get_intersecting_genes(...
-                gene_info.gene_symbols, top_gene_symbols, parms);
-            gene_mask = false(num_genes, 1);
-            gene_mask(gene_inds) = true;
-        
-        otherwise
-            error('unkown gene_subset = [%s]', gene_subset);
+    pattern = '([a-z_]*)(\d*)';
+    [tokens, match] = regexp(gene_subset, pattern, 'tokens', 'match');
+    selection_method = tokens{1}{1};
+    if ~isempty(tokens{1}{2})
+        num_to_select = str2num(tokens{1}{2});
     end
+    
+    
+       switch selection_method
+            case 'all', 
+                gene_inds = (1:num_genes);
 
-    gene_info.gene_symbols = gene_info.gene_symbols(gene_mask);
-    gene_info.entrez_ids = gene_info.entrez_ids(gene_mask);    
-    expression = expression(:,gene_mask);
-    parms.gene_hash = sum( gene_mask .* ((1:num_genes)') );
+            case 'barres_discrim'
+                top_gene_symbols = load_top_barres_genes(num_to_select, parms);
+
+            case 'okaty_discrim'
+                top_gene_symbols = load_top_okaty_genes(num_to_select, parms);
+
+            case 'okaty_infogain'
+                top_gene_symbols = okaty_infogain_genes(num_to_select, parms);
+
+            case 'okaty_gainratio'
+                top_gene_symbols = okaty_gainratio_genes(num_to_select, parms);
+
+            case 'barres_infogain'
+                top_gene_symbols = barres_info_gain_genes(1000, parms);
+
+            case 'allen_subset', % ?
+                allen_mouse_genes = load('allen_mouse_genes');
+                gene_inds = get_intersecting_genes(...
+                    gene_info.gene_symbols, allen_mouse_genes, parms);
+
+            case 'orth', % 'genes_with_orthologs'
+                mouse_cell_types = load('mouse_cell_type_profiles.mat');
+                species = take_from_struct(parms, 'species');    
+                [~,gene_inds] = compare_to_true_profile(mouse_cell_types, ...
+                                                        gene_info, species, parms);
+            otherwise
+                error('unkown selection_method [%s], gene_subset = [%s]', ...
+                      selection_method, gene_subset);
+        end
+        
+       
+
+    if ~exist('gene_inds', 'var')
+        gene_inds = get_intersecting_genes(...
+            gene_info.gene_symbols, top_gene_symbols, parms);
+    end
+        
+    gene_info.gene_symbols = gene_info.gene_symbols(gene_inds);
+    gene_info.entrez_ids = gene_info.entrez_ids(gene_inds);    
+    expression = expression(:, gene_inds);
+    parms.gene_hash = sum(gene_inds);
 end
 
 % ========================================================
@@ -90,31 +65,23 @@ function top_gene_symbols = load_top_barres_genes(num_top_genes, parms)
 %
 % Select genes basedon Barres2014. 
 %
-
-   persistent local_top_gene_symbols
-   persistent local_num_top_genes
-   if isempty(local_top_gene_symbols) || ...
-           isempty(intersect(local_num_top_genes,num_top_genes))
-
+  
        % load Barres data 
        filename  = fullfile('/','cortex','data','RNA-Seq','mouse', ...
                            'Barres-2014','barres_rnaseq.mat');
        barres = load(filename);
        inds = discriminative_feature_score(barres.data);
        
-       local_top_gene_symbols = barres.gene_symbols(inds(1:num_top_genes));
-       local_num_top_genes = num_top_genes;
-   end
-
-   top_gene_symbols = local_top_gene_symbols;
-
+       top_gene_symbols = barres.gene_symbols(inds(1:num_top_genes));
+    
 end
+
 function top_inds = discriminative_feature_score(data)
        [num_genes, num_tissues] = size(data);
        p = data/sum(data(:));
        mi = zeros(num_genes, 1);
 
-       py = sum(p,1);    
+       py = sum(p,1);
        hy = -sum(py.*log(py));
        fprintf('    ');
        for i_gene = 1:num_genes
@@ -126,6 +93,7 @@ function top_inds = discriminative_feature_score(data)
        end
        [sorted, top_inds] = sort(mi, 'descend');
 end
+
 function mi = compute_mi(pxy, hy)
     px = sum(pxy,2);
     p1 = pxy(1,:) / sum(pxy(1,:));
@@ -146,11 +114,7 @@ function top_gene_symbols = load_top_okaty_genes(num_top_genes, parms)
 % Select genes basedon Okaty2014. 
 %
 
-   persistent local_top_gene_symbols
-   persistent local_num_top_genes
-   if isempty(local_top_gene_symbols) || ...
-           isempty(intersect(local_num_top_genes,num_top_genes))
-
+ 
        % load Okaty data 
        okaty_celltypes = load('mouse_cell_type_profiles.mat');
        mean_expression = okaty_celltypes.expression * okaty_celltypes.sample2type ;
@@ -158,12 +122,8 @@ function top_gene_symbols = load_top_okaty_genes(num_top_genes, parms)
        
        inds = discriminative_feature_score(mean_expression);
        
-       local_top_gene_symbols = okaty_celltypes.gene_symbol(inds(1:num_top_genes));
-       local_num_top_genes = num_top_genes;
-        
-   end
-   
-   top_gene_symbols = local_top_gene_symbols;
+      top_gene_symbols = okaty_celltypes.gene_symbol(inds(1:num_top_genes));
+    
 end
 
 
@@ -208,6 +168,6 @@ function [gene_inds_target, gene_inds_mouse] = ...
             gene_inds_target = any(gene_to_group_target,2);
 
 
- end
+    end
     
 end

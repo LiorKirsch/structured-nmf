@@ -2,8 +2,10 @@ function parms = get_structure_matrix(dataset, structure_type,selected_regions, 
 
 num_regions = length(selected_regions);
 
+dataset = strsplit(dataset,'_');
+dataset = dataset{1};
 switch dataset
-    case 'Human6_selected_regions'
+    case 'Human6'
         addpath('/home/lab/lior/Projects/buildStructureOntology/');
         selected_ontology = load('/home/lab/lior/Projects/buildStructureOntology/humanOntologyObject.mat', 'humanOntology');
         selected_ontology = selected_ontology.humanOntology;
@@ -20,11 +22,11 @@ switch dataset
         
         [parms.structure_matrix,parms.relation_regions] = get_relation_structure(parms.structure_matrix,parms.relation_regions,selected_regions,structure_type);
         
-    case {'kang_regions','brainspan_rnaseq_DFC_OFC'}
+    case {'kang','brainspan'}
         [parms.structure_matrix,parms.relation_regions] = kang_tree_structure(selected_regions);
         [parms.structure_matrix,parms.relation_regions] = get_relation_structure(parms.structure_matrix,parms.relation_regions,selected_regions,structure_type);
             
-    case 'Zapala_isocortex_medulla_striatum_cerebellum'
+    case 'Zapala'
         [parms.structure_matrix,parms.relation_regions] = zapala_tree_structure(selected_regions);
         [parms.structure_matrix,parms.relation_regions] = get_relation_structure(parms.structure_matrix,parms.relation_regions,selected_regions,structure_type);
 

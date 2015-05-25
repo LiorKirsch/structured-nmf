@@ -1,4 +1,6 @@
-function [W, H, best_score, proportions_score, ind_scores] = match_profiles_to_gt(W, H, GT, GT_proportions, corr_type,check_for_best_perm)
+function [W, H, best_score, proportions_score, ind_scores] = ...
+        match_profiles_to_gt(W, H, GT, GT_proportions, corr_type, ...
+                             check_for_best_perm)
 %
 % Find a permutation of the rows of H that matches best the
 % ground-truth data GT

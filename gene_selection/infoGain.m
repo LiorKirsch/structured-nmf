@@ -1,4 +1,4 @@
-function [ bestSplitPoints,gainAttrs,sortedGains,sortedAttr ] = infoGain( X,Y )
+function [bestSplitPoints, gainAttrs, sortedGains, sortedAttr] = infoGain( X,Y )
 % USING THE ATTRIBUTE SELECTION MEASURE INFORMATION GAIN
 % Calculating the expected information needed to classify a tuple in data.
 % https://github.com/iraquitan/matlab-scripts/tree/master/Decision%20Tree
@@ -47,6 +47,6 @@ for attr=1:numAttr
     % Calculating how much would be gained by branching on attribute
     gainAttrs(attr) = infoData - minInfoAttrData;
 end
-[sortedGains,sortedAttr] = sortrows(gainAttrs,-1);
+[sortedGains, sortedAttr] = sortrows(gainAttrs,-1);
 
 end
