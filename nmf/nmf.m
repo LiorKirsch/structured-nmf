@@ -90,10 +90,16 @@ for i = 1:num_restarts
                     error('Unknown nmf method %s', parms.nmf_method);
             end
             
-            if do_sep_init
+             if do_sep_init
                 curr_parms = parms;
                 curr_parms.H_lambda = 0;
-                [W_init,H_init]=cellfun(@(x,w,h) nmf_als(curr_parms,x,w,h) ,X,W_init,H_init,'UniformOutput',false);
+                for i_cell =1 :length(X)
+                    if isfield(curr_parms,'H_markers')
+                        curr_parms.H_markers = parms.H_markers{i_cell};
+                    end
+                    [W_init{i_cell},H_init{i_cell}]=nmf_als(curr_parms,X{i_cell},W_init{i_cell},H_init{i_cell});
+                end
+%                 [W_init,H_init]=cellfun(@(x,w,h) nmf_als(curr_parms,x,w,h) ,X,W_init,H_init,'UniformOutput',false);
             end
             
             if isinf(parms.H_lambda)
@@ -107,6 +113,12 @@ for i = 1:num_restarts
                 dim = ndims(H_init{1});          % Get the number of dimensions for your arrays
                 M = cat(dim+1,H_init{:});        % Convert to a (dim+1)-dimensional matrix
                 curr_H_init = mean(M,dim+1);     % Get the mean across arrays
+                
+                if isfield(curr_parms,'H_markers')
+                    dim = ndims(curr_parms.H_markers{1});          % Get the number of dimensions for your arrays
+                    M = cat(dim+1,curr_parms.H_markers{:});        % Convert to a (dim+1)-dimensional matrix
+                    curr_parms.H_markers = any(M,dim+1);           % Get any marker
+                end
                 
                 curr_W_init = cat(1,W_init{:});  % Concat W_init
                 curr_X = cat(1,X{:});            % Concat X

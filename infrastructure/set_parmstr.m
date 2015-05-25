@@ -95,7 +95,7 @@ function [parmstr, dirparmstr] = set_parmstr(parms)
     if isfield(parms, 'H_markers')
         if iscell(parms.H_markers)
             sum_hash = 0;
-            for i_cell = 1:lenght(parms.H_markers)
+            for i_cell = 1:length(parms.H_markers)
                 tmp_matrix = reshape(1:numel(parms.H_markers{i_cell}), size(parms.H_markers{i_cell}));
                 tmp_matrix = tmp_matrix .* parms.H_markers{i_cell};
                 sum_hash = sum_hash +    sum(tmp_matrix(:)) ;
@@ -108,6 +108,14 @@ function [parmstr, dirparmstr] = set_parmstr(parms)
         parmstr = sprintf('%s_MrkHash%g', parmstr, sum_hash);
     end 
 
+    if isfield(parms, 'gene_subset')
+        if ~strcmp( parms.gene_subset,'all')
+            parmstr = sprintf('%s_%s', parmstr, parms.gene_subset);
+            parmstr = sprintf('%s_GenesHash%g', parmstr, parms.gene_hash);
+        end
+    end
+    
+    
     if isfield(parms, 'mix_files')
         mix_files = sort(parms.mix_files);
         dirparmstr = fullfile(dirparmstr,strjoin(mix_files,'/'));

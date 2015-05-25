@@ -1,7 +1,7 @@
 function parms =load_markers(dataset, gene_info, num_genes,num_regions,parms)
 
     switch dataset
-        case {'kang_all_regions','Human6_selected_regions', 'brainspan_rnaseq'}
+        case {'kang_regions','Human6_selected_regions', 'brainspan_rnaseq_DFC_OFC'}
             neuro_markers = {'STMN2','BRUNOL4','BRUNOL5','BRUNOL6','SYT1'};
             astro_markers = { 'GFAP' , 'ALDH1L1'};
             oligo_markers = {'OLIG2' ,'MBP'};

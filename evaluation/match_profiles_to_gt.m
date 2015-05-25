@@ -1,4 +1,4 @@
-function [W, H, best_score, proportions_score] = match_profiles_to_gt(W, H, GT, GT_proportions, corr_type)
+function [W, H, best_score, proportions_score, ind_scores] = match_profiles_to_gt(W, H, GT, GT_proportions, corr_type,check_for_best_perm)
 %
 % Find a permutation of the rows of H that matches best the
 % ground-truth data GT
@@ -14,6 +14,10 @@ function [W, H, best_score, proportions_score] = match_profiles_to_gt(W, H, GT, 
    if ~exist('corr_type','var')
        corr_type = 'Pearson';
    end
+   if ~exist('check_for_best_perm','var')
+       check_for_best_perm = true;
+   end
+   
    r = corr(H', GT','type',corr_type);
    
    if (num_types  < num_types_GT )
@@ -25,16 +29,19 @@ function [W, H, best_score, proportions_score] = match_profiles_to_gt(W, H, GT, 
            scores(i) = mean(diag(r(perm, :)));       
        end
        [best_score, best] = max(scores);
+       ind_scores = best_score;
        best_perm  = all_perms(best,:);
    else
        if num_types_GT==1
            [best_score, best_perm] = max(r);
+           ind_scores = best_score;
        else
            best_perm = (1:num_types) * Hungarian(-r) ;
            best_perm = [best_perm, setdiff(1:num_types, best_perm)];
 
     %        best_score = mean(diag(r(best_perm, :)));  
            best_score = mean_corr_coeff(diag(r(best_perm, :)));  
+           ind_scores = diag(r(best_perm, :));
        end
    end
 

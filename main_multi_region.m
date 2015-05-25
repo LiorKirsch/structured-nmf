@@ -40,6 +40,7 @@ parms.structre_type = 'relations_parent_level';
 [parms.structure_matrix,parms.relation_regions] = get_relation_structure(parms.structure_matrix,parms.relation_regions,mix_data.region,parms.structre_type,mix_data.expression);
 
 parms.do_sep_init = true;
+parms.num_samples = 50; 
 
 % alg_list = {'alsPinv', 'alsActiveSet', 'mm'}; % 'alsBlockpivot','cjlin', 'prob'}; 
 alg_list = {'alsActiveSet'}; 
@@ -51,10 +52,11 @@ W_constraints_list = { 'on_simplex_with_noise'};
 % W_constraints_list = {'on_simplex_with_noise'};
 % H_lambda_list = [  1 10 ];
 H_lambda_list = [0 0.001 0.01 0.1 1 10 100 1000 inf];
+% H_lambda_list = 1;
 % H_lambda_list = [100 1000 inf];
 
-parms.num_restarts = 5; 
-parms.subsample_repeats = 5; 
+parms.num_restarts = 30; 
+parms.subsample_repeats = 30; 
 
 loop_over_var_name = {};
 loop_over_var_value = {};

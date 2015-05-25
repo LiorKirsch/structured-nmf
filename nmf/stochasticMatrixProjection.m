@@ -62,12 +62,16 @@ function A = projsplx_matrix(A)
 
     [num_rows, num_cols] = size(A);
     sorted_cumsum = cumsum(A_sort,1);
-    tmax = (sorted_cumsum - ones(size(sorted_cumsum)) ) ./ repmat((1:num_rows)',[1,num_cols]);
+%     tmax = (sorted_cumsum - ones(size(sorted_cumsum)) ) ./ repmat((1:num_rows)',[1,num_cols]);
+    tmax = bsxfun(@rdivide, sorted_cumsum -1, (1:num_rows)');
+    
     [~,first_val] = max(tmax >= [A_sort(2:end,:);-inf(1,num_cols)]);
     
     select_indcies = num_rows *(0:(num_cols-1)) + first_val;
     zztmax = tmax(select_indcies);
 
-    A = max(A-repmat(zztmax,num_rows,1),zeros(size(A)));
+    
+%     A = max(A-repmat(zztmax,num_rows,1),zeros(size(A)));
+    A = max(bsxfun(@minus, A, zztmax),0); 
 
 end

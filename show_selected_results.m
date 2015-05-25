@@ -1,11 +1,7 @@
-init;
-
-
+parms.dummy = 1;
 parms = conf(parms);
 
-show_results = false;
-
-dataset = take_from_struct(parms, 'dataset', 'zapala2005');
+dataset = take_from_struct(parms, 'dataset', 'kang2011');
 
 switch dataset
     case 'kang2011',      %==== Kang ===
@@ -51,15 +47,13 @@ switch dataset
     otherwise 
       error('invalid dataset = [%s]\n', dataset);
 end
-
+      
 % limit to a set of specific genes
-parms.gene_subset = 'okaty_discrim1000';
+parms.gene_subset = 'all';
 [gene_info, expression, parms] = gene_subset_selection(gene_info, expression, parms);
 
-expression = change_to_linear_scale(expression);
 gross_regions = gross_structures_info(gross_region_vec);
 [X,region_names] = split_to_cell(expression, gross_regions);
-clear('expression','gross_region_vec','gross_regions','gross_structures_info');
 
 
 parms.structre_type = 'relations_parent_level';
@@ -78,26 +72,22 @@ parms.W_constraints = 'on_simplex_with_noise';
 parms.nmf_method = 'alsActiveSet';
 parms.num_restarts = 5; % <===  increase to 30
 parms.W_lambda = 0;
+parms.H_lambda = 0.01;
+
+[cell_mix.proportions, cell_mix.celltype_profile] = load_nmf_results(...
+     X, parms.num_types, 'alsWithRelations', parms);
+
+[cell_mix.celltype_profile, cell_mix.cell_types] = join_profiles(cell_mix.celltype_profile, region_names); 
+cell_mix.celltype_profile = cell_mix.celltype_profile';
+% cell_mix.celltype_profile = cellfun(@transpose, cell_mix.celltype_profile,'UniformOutput',false);
+figure('Name','Seperate');compare_nmf_to_doyle(cell_mix, gene_info, parms);
 
 
-num_type_list = 3 ;%1:8;
-H_lambda_list = [0 0.001 0.01 0.1 1 10 100 1000 inf];
 
-loop_over_var_name = {};
-loop_over_var_value = {};
-loop_over_var_name{end + 1} = 'num_types';
-loop_over_var_value{end + 1} = num_type_list;
-loop_over_var_name{end + 1} = 'H_lambda';
-loop_over_var_value{end + 1} = H_lambda_list;
+baseline.celltype_profile = cellfun(@(x) mean(x), X,'UniformOutput',false);
+baseline.proportions = cellfun(@(x) zeros(3,3), X ,'UniformOutput',false);
+[baseline.celltype_profile, ~] = join_profiles(baseline.celltype_profile, region_names);
+baseline.celltype_profile = baseline.celltype_profile';
+baseline.cell_types = region_names;
 
-parms.regions = region_names;
-parms.cell_types = arrayfun(@(x) sprintf('#%d',x),1:parms.num_types,'UniformOutput',false);
-
-results = loopOverHyperparms_real(X, gene_info, parms, loop_over_var_name, loop_over_var_value ,'')
-     
-
-
-                            
-% parms.H_lambda = 0.01;
-% [cell_mix_single.proportions, cell_mix_single.celltype_profile] = ...
-%     nmf(X, parms.num_types, 'alsWithRelations', parms);
+figure('Name','Mean profile');compare_nmf_to_doyle(baseline, gene_info, parms);
