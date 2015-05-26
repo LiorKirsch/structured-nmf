@@ -25,6 +25,13 @@ function results = loopOverHyperparms_real(X, gene_info,...
      var_values = loop_over_var_value{1};
      results = cell(length(var_values),1);
      
+     % for each region get only a subset of the genes
+     [curr_gene_info, ~, parms] = gene_subset_selection(gene_info, ...
+                                          X{1}, parms);
+     
+     [~, curr_X, ~] = cellfun(@(x) gene_subset_selection(gene_info, ...
+                                          x, parms), X,'UniformOutput',false);
+     
      % load the true profiles for each region
      mouse_cell_types = load('mouse_cell_type_profiles.mat');
      mouse_cell_types.expression = 2 .^ mouse_cell_types.expression;
@@ -33,19 +40,20 @@ function results = loopOverHyperparms_real(X, gene_info,...
      
      % map the genes used in the true profile in the genes in the data
      [gene_inds_true_type,gene_inds_predictions] = compare_to_true_profile(...
-         mouse_cell_types,gene_info, parms.species,parms);
+         mouse_cell_types,curr_gene_info, parms.species,parms);
       true_profiles = cellfun(@(x) x(gene_inds_true_type,:), ...
                          true_celltype_per_region,'UniformOutput',false);
          
      parfor i_vars = 1: length(var_values)
          current_parms = parms;
          
+         
          [new_loop_string, current_parms, var_current_value] = ...
              add_var_to_loop_string(loop_string, var_values, i_vars, ...
                                     var_name, current_parms);
          set_terminal_title(new_loop_string);
          
-         [W, H] = load_nmf_results(X, current_parms.num_types, ...
+         [W, H] = load_nmf_results(curr_X, current_parms.num_types, ...
                                    current_parms.nmf_method, current_parms);
          
          predicted_profiles = cellfun(@(x) x(:,gene_inds_predictions)', ...
@@ -61,10 +69,10 @@ function results = loopOverHyperparms_real(X, gene_info,...
          
      end
      
-     baseline_celltype_profile = cellfun(@(x) mean(x), X,'UniformOutput',false);
+     baseline_celltype_profile = cellfun(@(x) mean(x), curr_X,'UniformOutput',false);
      baseline_celltype_profile = cellfun(@(x) x(:,gene_inds_predictions)', ...
                                          baseline_celltype_profile,'UniformOutput',false);
-     baseline_proportions = cellfun(@(x) zeros(3,3), X ,'UniformOutput',false);
+     baseline_proportions = cellfun(@(x) zeros(3,3), curr_X ,'UniformOutput',false);
      fprintf('\n===AVERAGE PROFILE SCORES===\n');
      get_all_scores(baseline_celltype_profile, baseline_proportions, ...
                                         true_profiles, region_names,false);  

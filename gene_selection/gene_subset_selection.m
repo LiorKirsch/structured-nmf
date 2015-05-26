@@ -2,7 +2,7 @@ function [gene_info, expression, parms] = gene_subset_selection(gene_info, ...
                                                       expression, parms)
 %
     gene_subset = take_from_struct(parms, 'gene_subset', 'barres100');
-    gene_okaty_filter = take_from_struct(parms, 'gene_okaty_filter', 'all_types')
+%     gene_okaty_filter = take_from_struct(parms, 'gene_okaty_filter', 'all_types');
     num_genes = length(gene_info.gene_symbols);
 
     pattern = '([a-z_]*)(\d*)';

@@ -84,8 +84,8 @@ end
 
 parms.gene_subset = 'okaty_infogain5000' ;%'okaty_infogain5000'; % 'all';
 parms.gene_okaty_filter = 'cortex_doyle'; % 'all';
-[gene_info, expression, parms] = gene_subset_selection(gene_info, ...
-                                                  expression, parms);
+% [gene_info, expression, parms] = gene_subset_selection(gene_info, ...
+%                                                   expression, parms);
 
 expression = change_to_linear_scale(expression);
 gross_regions = gross_structures_info(gross_region_vec);
@@ -112,8 +112,16 @@ parms.W_lambda = 0;
 num_type_list = 3 ;%1:8;
 H_lambda_list = [0 0.001 0.01 0.1 1 10 100 1000 inf];
 
+gene_subset_list = {'okaty_infogain5000' ,'okaty_infogain1000', 'all'};
+gene_okaty_filter_list = {'cortex_doyle','cortex','doyle', 'all'};
+
+
 loop_over_var_name = {};
 loop_over_var_value = {};
+loop_over_var_name{end + 1} = 'gene_subset';     % this cannot be the last list
+loop_over_var_value{end + 1} = gene_subset_list; % this cannot be the last list
+loop_over_var_name{end + 1} = 'gene_okaty_filter';     % this cannot be the last list
+loop_over_var_value{end + 1} = gene_okaty_filter_list; % this cannot be the last list
 loop_over_var_name{end + 1} = 'num_types';
 loop_over_var_value{end + 1} = num_type_list;
 loop_over_var_name{end + 1} = 'H_lambda';

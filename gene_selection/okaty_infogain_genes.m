@@ -13,11 +13,11 @@ function top_gene_symbols = okaty_infogain_genes(num_top_genes, parms)
     curr_parms.gene_okaty_filter = gene_okaty_filter;
     gene_subset_file = set_filenames('gene_subset', curr_parms);
     
+
     if exist(gene_subset_file,'file')
         fprintf('loading info gain from disk - %s\n',gene_subset_file);
-        load(gene_subset_file,'sort_inds');
+        load(gene_subset_file,'sort_inds','mouse_cell_types');
     else
-   
         mouse_cell_types = load('mouse_cell_type_profiles.mat');
         [neuro_inds, oligo_inds, astro_inds] = get_celltype_inds(...
              mouse_cell_types, gene_okaty_filter);
@@ -36,7 +36,7 @@ function top_gene_symbols = okaty_infogain_genes(num_top_genes, parms)
 
         [~, ~, ~, sort_inds] = infoGain(expression, y);
         
-        save(gene_subset_file, 'sort_inds');
+        save(gene_subset_file, 'sort_inds','mouse_cell_types');
     end
         
    top_gene_symbols = mouse_cell_types.gene_symbol(sort_inds(1:num_top_genes));
