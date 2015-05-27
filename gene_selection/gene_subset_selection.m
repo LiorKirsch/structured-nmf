@@ -13,40 +13,42 @@ function [gene_info, expression, parms] = gene_subset_selection(gene_info, ...
     end
     
     
-       switch selection_method
-            case 'all', 
-                gene_inds = (1:num_genes);
-
-            case 'barres_discrim'
-                top_gene_symbols = load_top_barres_genes(num_to_select, parms);
-
-            case 'okaty_discrim'
-                top_gene_symbols = load_top_okaty_genes(num_to_select, parms);
-
-            case 'okaty_infogain'
-                top_gene_symbols = okaty_infogain_genes(num_to_select, parms);
-
-            case 'okaty_gainratio'
-                top_gene_symbols = okaty_gainratio_genes(num_to_select, parms);
-
-            case 'barres_infogain'
-                top_gene_symbols = barres_info_gain_genes(1000, parms);
-
-            case 'allen_subset', % ?
-                allen_mouse_genes = load('allen_mouse_genes');
+    switch selection_method
+      case 'all', 
+        gene_inds = (1:num_genes);
+        
+      case 'barres_discrim'
+        top_gene_symbols = load_top_barres_genes(num_to_select, parms);
+        
+      case 'okaty_discrim'
+        top_gene_symbols = load_top_okaty_genes(num_to_select, parms);
+        
+      case 'okaty_infogain'
+        top_gene_symbols = okaty_select_genes2(num_to_select, 'infogain', parms);
+        
+      case 'okaty_anova'
+        top_gene_symbols = okaty_select_genes2(num_to_select, 'anova', parms);
+        
+      case 'okaty_gainratio'
+        top_gene_symbols = okaty_select_genes2(num_to_select, 'gainratio', parms);        
+        
+      case 'barres_infogain'
+        top_gene_symbols = barres_info_gain_genes(1000, parms);
+        
+      case 'allen_subset', % ?
+        allen_mouse_genes = load('allen_mouse_genes');
                 gene_inds = get_intersecting_genes(...
                     gene_info.gene_symbols, allen_mouse_genes, parms);
 
-            case 'orth', % 'genes_with_orthologs'
-                mouse_cell_types = load('mouse_cell_type_profiles.mat');
-                species = take_from_struct(parms, 'species');    
-                [~,gene_inds] = compare_to_true_profile(mouse_cell_types, ...
-                                                        gene_info, species, parms);
-            otherwise
-                error('unkown selection_method [%s], gene_subset = [%s]', ...
-                      selection_method, gene_subset);
-        end
-        
+      case 'orth', % 'genes_with_orthologs'
+        mouse_cell_types = load('mouse_cell_type_profiles.mat');
+        species = take_from_struct(parms, 'species');    
+        [~,gene_inds] = compare_to_true_profile(mouse_cell_types, ...
+                                                gene_info, species, parms);
+      otherwise
+        error('unkown selection_method [%s], gene_subset = [%s]', ...
+              selection_method, gene_subset);
+    end    
        
 
     if ~exist('gene_inds', 'var')

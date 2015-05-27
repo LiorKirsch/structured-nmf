@@ -5,19 +5,19 @@ function [full_name, file_name, dir_name] = set_filenames(file_type, parms)
     case 'demixing', 
       base_dir_name = fullfile('/cortex/users/lior/nmf/runs/');
       [parmstr, dirparmstr] = set_parmstr(parms);
-      dir_name = fullfile(base_dir_name,dirparmstr);
+      dir_name = fullfile(base_dir_name, dirparmstr);
       file_name = sprintf('demix_%s.mat', parmstr);
       auto_mkdir = 1;
     case 'gene_subset', 
-      base_dir_name = fullfile('/cortex/users/lior/nmf/runs/gene_subsets');
+      base_dir_name = fullfile('/cortex/users/lior/nmf/runs/gene_subset');
       [parmstr, dirparmstr] = set_parmstr(parms);
-      dir_name = fullfile(base_dir_name,dirparmstr);
+      dir_name = fullfile(base_dir_name, dirparmstr);
       file_name = sprintf('gene_subset%s.mat', parmstr);
       auto_mkdir = 1;
     case 'figure'
         base_dir_name = 'figures';
         [parmstr, dirparmstr] = set_parmstr(parms);
-        dir_name = fullfile(base_dir_name,dirparmstr);
+        dir_name = fullfile(base_dir_name, dirparmstr);
         file_name = sprintf('%s_%s_%s.png', parms.fig_x_axis, parms.corr_type,parmstr);
         auto_mkdir = 1;
     case 'proportions-figure'
@@ -32,8 +32,7 @@ function [full_name, file_name, dir_name] = set_filenames(file_type, parms)
         auto_mkdir = 1;
     case 'mixure'    
         dir_name = fullfile('/', 'cortex', 'data', 'microarray', 'mouse', ...
-                   'Okaty2011', 'Mixtures');
-               
+                   'Okaty2011', 'Mixtures');               
         file_name = sprintf('okaty2011-%s_MN%g_PR%d-%d-%d_PVAR%g.mat', ...
                    lower(parms.experiment_name), parms.measurement_noise, ...
                    ceil(parms.base_proportions*100), parms.proportion_variability);
@@ -46,8 +45,8 @@ function [full_name, file_name, dir_name] = set_filenames(file_type, parms)
   if exist(dir_name, 'dir') ~= 7
     if auto_mkdir
       fprintf('\nset_filenames.m:\n');    
-      fprintf('\tAuto-Make directory "%s" for filename %s\n',dir_name, ...
-	      file_name);
+      fprintf('\tAuto-Make directory "%s" for filename %s\n', dir_name, ...
+              file_name);
       mkdir(dir_name);
     end
   end

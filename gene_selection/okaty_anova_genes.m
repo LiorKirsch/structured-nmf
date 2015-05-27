@@ -1,4 +1,4 @@
-function top_gene_symbols = okaty_infogain_genes(num_top_genes, parms)
+function top_gene_symbols = okaty_anova_genes(num_top_genes, parms)
 %
 % Select genes basedon Barres2014. 
 %
@@ -11,9 +11,9 @@ function top_gene_symbols = okaty_infogain_genes(num_top_genes, parms)
         selection_method = tokens{1}{1};    
         curr_parms.gene_subset = selection_method;
         curr_parms.gene_okaty_filter = gene_okaty_filter;
-        gene_subset_file = set_filenames('gene_subset', curr_parms);
+        gene_subset_file = set_filenames('gene_subset', curr_parms)
     
-        vars = {'sort_inds', 'mouse_cell_types', 'sorted_symbols','gainAttrs'};
+        vars = {'sort_inds', 'mouse_cell_types', 'sorted_symbols'};
         if exist(gene_subset_file,'file')
             fprintf('loading info gain from disk - %s\n', gene_subset_file);
             load(gene_subset_file, vars{1:end});
@@ -31,26 +31,19 @@ function top_gene_symbols = okaty_infogain_genes(num_top_genes, parms)
             keep_inds = y>0;
             y = y(keep_inds);
             expression = expression(keep_inds,:);
-            y = arrayfun(@(x) sprintf('%d',x), y, 'Uniformoutput', false);            
-            [~,gainAttrs, sorted_gains, sort_inds] = infoGain(expression, y);
-            
+            for i=1:size(expression,2)
+               if mod(i,100)==0,  fprintf('.'); end
+               p(i) = anova1(expression(:,i), y, 'off');
+            end
+            [sorted_p, sort_inds] = sort(p);
+
             sorted_symbols = mouse_cell_types.gene_symbol(sort_inds);
-            
-            [~, sort_all_names_inds] = sort( gainAttrs(...
-                mouse_cell_types.refer_to_index),'descend');
-            sorted_symbols_with_dup = mouse_cell_types.all_symbols(sort_all_names_inds);
-            
-            sorted_symbols = sorted_symbols_with_dup;
-            
             save(gene_subset_file, vars{1:end});
         end
         local_sorted_symbols = sorted_symbols;
     else
         sorted_symbols = local_sorted_symbols;
     end
-        
-        
-   top_gene_symbols = sorted_symbols(1:num_top_genes);
-   
+   top_gene_symbols = sorted_symbols(1:num_top_genes);   
 end
 

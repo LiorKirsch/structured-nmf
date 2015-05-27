@@ -73,23 +73,21 @@ function [parmstr, dirparmstr] = set_parmstr(parms)
         parmstr = sprintf('%s_%s', parmstr, parms.structre_type);
         
         switch parms.structre_type
-            case 'tree'
+          case 'tree'
 
-            case {'relations','relations_dist','relations_parentdist',...
-                    'relations_parent_level'}
-                %add a hash for the matrix
-                sum_hash = sum(sum(parms.structure_matrix));
-                parmstr = sprintf('%s_Hash%g', parmstr, sum_hash);
-                
-                if isfield(parms, 'do_sep_init')
-                    if parms.do_sep_init
-                        parmstr = sprintf('%s_sepInit', parmstr);
-                    end
+          case {'relations','relations_dist','relations_parentdist',...
+                'relations_parent_level'}
+            %add a hash for the matrix
+            sum_hash = sum(sum(parms.structure_matrix));
+            parmstr = sprintf('%s_Hash%g', parmstr, sum_hash);
+            
+            if isfield(parms, 'do_sep_init')
+                if parms.do_sep_init
+                    parmstr = sprintf('%s_sepInit', parmstr);
                 end
+            end
+          otherwise, error();
         end
-
-        
-
     end 
 
     if isfield(parms, 'H_markers')
@@ -114,8 +112,6 @@ function [parmstr, dirparmstr] = set_parmstr(parms)
             if isfield(parms, 'gene_hash')
                 parmstr = sprintf('%s_GenesHash%g', parmstr, parms.gene_hash);
             end
-            
-            
             if isfield(parms, 'gene_okaty_filter')
                 parmstr = sprintf('%s_%s', parmstr, parms.gene_okaty_filter);
             end

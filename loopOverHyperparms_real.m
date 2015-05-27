@@ -72,11 +72,16 @@ function results = loopOverHyperparms_real(X, gene_info,...
      baseline_celltype_profile = cellfun(@(x) mean(x), curr_X,'UniformOutput',false);
      baseline_celltype_profile = cellfun(@(x) x(:,gene_inds_predictions)', ...
                                          baseline_celltype_profile,'UniformOutput',false);
+     baseline_celltype_profile = cellfun(@(x) repmat(x,1,3), ...
+                                         baseline_celltype_profile,'UniformOutput',false);
      baseline_proportions = cellfun(@(x) zeros(3,3), curr_X ,'UniformOutput',false);
      fprintf('\n===AVERAGE PROFILE SCORES===\n');
-     get_all_scores(baseline_celltype_profile, baseline_proportions, ...
+     baseline_result = get_all_scores(baseline_celltype_profile, baseline_proportions, ...
                                         true_profiles, region_names,false);  
-
+     for i_vars = 1: length(var_values)
+         results{i_vars}.baseline_score = baseline_result.run_score;
+         results{i_vars}.baseline_celltype_score = baseline_result.celltype_region_avg_scores;
+     end
   else
       % Remove one layer from the recursion
       var_name = loop_over_var_name{1};
@@ -131,6 +136,8 @@ function output = get_all_scores(predicted_profiles, predicted_proportions, ...
            'true and predicted profiles should have the same number of elements');        
     best_scores = nan(num_regions,1);
     individual_scores = cell(num_regions,1);
+    
+    
     for i = 1:num_regions
         % need to transpose the expression
         GT_proportions = zeros(size(predicted_proportions{i},1), ...
@@ -153,5 +160,9 @@ function output = get_all_scores(predicted_profiles, predicted_proportions, ...
     output.regions =  region_name;        
     output.run_score = mean_corr_coeff(best_scores);
 
+    dim = ndims(individual_scores);          % Get the number of dimensions for your arrays
+    M = cat(dim+1,individual_scores{:});        % Convert to a (dim+1)-dimensional matrix
+    output.celltype_region_avg_scores = mean(M,dim+1);     % Get the mean across arrays
+                
     fprintf('\tREGION MEAN SCORE: %5.3g====\n', output.run_score);
 end

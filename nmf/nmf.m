@@ -34,18 +34,18 @@ function [best_W,best_H,best_diff_record,best_time_record,eucl_dist] = nmf(X,K,a
 % Lior Kirsch 03/2015
 
 
-loglevel = take_from_struct(parms, 'loglevel', 1);
+% loglevel = take_from_struct(parms, 'loglevel', 1);
 num_restarts = take_from_struct(parms, 'num_restarts', 1);
 rand_seed = take_from_struct(parms, 'rand_seed', 42);
-maxiter = take_from_struct(parms, 'maxiter', 1000);
-do_sep_init = take_from_struct(parms, 'do_sep_init', false);
+% maxiter = take_from_struct(parms, 'maxiter', 1000);
+% do_sep_init = take_from_struct(parms, 'do_sep_init', false);
 
 % find dimensionallity of X
 [D,N] = size(X);
 parms.debug  =1;
 rng(rand_seed);
-diff_record = nan(1,maxiter);
-time_record = nan(1,maxiter);
+% diff_record = nan(1,maxiter);
+% time_record = nan(1,maxiter);
 eucl_dist = nan(num_restarts,1);
 for i = 1:num_restarts
     
@@ -55,6 +55,50 @@ for i = 1:num_restarts
         [W_init, H_init] = get_random_W_H(X,K,parms);
     end
     
+
+    [W,H] = nmf_alg_selection(X,W_init,H_init,alg,parms);
+
+    if iscell(X) && iscell(W) && iscell(H)
+       num_elements = length(X);
+       assert(length(W) == num_elements, ' X and W should have the same number of elements');
+       assert(length(H) == num_elements, ' X and H should have the same number of elements');
+
+       err = nan(num_elements,1);
+       for m=1:num_elements
+          err(m) =  nmf_euclidean_dist(X{m},W{m}*H{m});
+       end 
+       eucl_dist(i) = sum(err); % compute the sum of err over components
+    else
+       eucl_dist(i) = nmf_euclidean_dist(X,W*H);
+    end
+
+    if i==1
+        best_W = W;
+        best_H = H;
+%         best_diff_record = diff_record;
+%         best_time_record = time_record;
+        best_iteration = 1;
+    else
+        if eucl_dist(i) < eucl_dist(best_iteration)
+            best_H = H;
+            best_W = W;
+%             best_diff_record = diff_record;
+%             best_time_record = time_record;
+            best_iteration = i;
+        end
+    end
+end
+
+fprintf('==== best random restart - %d ====\n',best_iteration);
+end
+
+
+function [W,H] = nmf_alg_selection(X,W_init,H_init,alg,parms)
+
+
+loglevel = take_from_struct(parms, 'loglevel', 1);
+do_sep_init = take_from_struct(parms, 'do_sep_init', false);
+
     % switch algorithm 
     switch alg
         case 'mm'
@@ -146,36 +190,4 @@ for i = 1:num_restarts
             return
     end
 
-    if iscell(X) && iscell(W) && iscell(H)
-       num_elements = length(X);
-       assert(length(W) == num_elements, ' X and W should have the same number of elements');
-       assert(length(H) == num_elements, ' X and H should have the same number of elements');
-
-       err = nan(num_elements,1);
-       for m=1:num_elements
-          err(m) =  nmf_euclidean_dist(X{m},W{m}*H{m});
-       end 
-       eucl_dist(i) = sum(err); % compute the sum of err over components
-    else
-       eucl_dist(i) = nmf_euclidean_dist(X,W*H);
-    end
-
-    if i==1
-        best_W = W;
-        best_H = H;
-        best_diff_record = diff_record;
-        best_time_record = time_record;
-        best_iteration = 1;
-    else
-        if eucl_dist(i) < eucl_dist(best_iteration)
-            best_H = H;
-            best_W = W;
-            best_diff_record = diff_record;
-            best_time_record = time_record;
-            best_iteration = i;
-        end
-    end
-end
-
-fprintf('==== best random restart - %d ====\n',best_iteration);
 end

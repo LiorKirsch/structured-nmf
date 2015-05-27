@@ -56,7 +56,8 @@ function [W, H, best_score, proportions_score, ind_scores] = ...
 %    r_proportions = corr(W, GT_proportions','type',corr_type);
 %    proportions_score = mean(diag(r_proportions));
 
-   r_proportions = KLDiv(W, GT_proportions');
+   num_types_W = min(num_types_GT, size(W,2));
+   r_proportions = KLDiv(W(:,1:num_types_W), GT_proportions');
    proportions_score = mean(r_proportions);
    
 end
