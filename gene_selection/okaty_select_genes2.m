@@ -3,18 +3,17 @@ function top_gene_symbols = okaty_select_genes2(num_top_genes, ...
 %
 % Select genes basedon Barres2014. 
 %
-    persistent local_sorted_symbols
-    if isempty(local_sorted_symbols)
-    
+   
         gene_okaty_filter = take_from_struct(parms, 'gene_okaty_filter', 'all');
         pattern = '([a-z_]*)(\d*)';
         [tokens, match] = regexp(parms.gene_subset, pattern, 'tokens', 'match');
         selection_method = tokens{1}{1};    
         curr_parms.gene_subset = selection_method;
         curr_parms.gene_okaty_filter = gene_okaty_filter;
-        gene_subset_file = set_filenames('gene_subset', curr_parms)
+        gene_subset_file = set_filenames('gene_subset', curr_parms);
     
-        vars = {'sort_inds', 'mouse_cell_types', 'sorted_symbols','sort_all_names_inds'};
+        vars = {'sorted_symbols_human','sorted_scores_human',...
+                'sorted_symbols_mouse','sorted_scores_mouse'};
         if exist(gene_subset_file,'file')
             fprintf('loading info gain from disk - %s\n', gene_subset_file);
             load(gene_subset_file, vars{1:end});
@@ -40,32 +39,44 @@ function top_gene_symbols = okaty_select_genes2(num_top_genes, ...
                     printPercentCounter(i, size(expression,2));
                     p(i) = anova1(expression(:,i), y, 'off');
                 end
+                sort_direction = 'ascend';
                 [sorted_p, sort_inds] = sort(p);
-                [sorted_p, sort_all_names_inds] = sort(p(mouse_cell_types.refer_to_index));
-              case  'infogain', 
+                [sorted_scores_mouse, sort_all_names_inds] = sort(p(mouse_cell_types.refer_to_index),sort_direction);
+              case  'infogain',
+                sort_direction = 'descend';
                 y = arrayfun(@(x) sprintf('%d',x),y,'Uniformoutput',false);
                 [~, gainAttrs, ~, sort_inds] = infoGain(expression, y);
-                [~, sort_all_names_inds] = sort( gainAttrs(...
-                mouse_cell_types.refer_to_index),'descend');
-              case  'gainratio', 
+                [sorted_scores_mouse, sort_all_names_inds] = sort( gainAttrs(...
+                mouse_cell_types.refer_to_index),sort_direction);
+              case  'gainratio',
+                sort_direction = 'descend';
                 y = arrayfun(@(x) sprintf('%d',x),y,'Uniformoutput',false);
                 
                 [igsp, iga, sig, siga] = infoGain( expression,y );
         [ ~,gainAttrs,~,sort_inds ] = gainRatio(expression,y,iga);
-                [~, sort_all_names_inds] = sort( gainAttrs(...
-                mouse_cell_types.refer_to_index),'descend');
+                [sorted_scores_mouse, sort_all_names_inds] = sort( gainAttrs(...
+                mouse_cell_types.refer_to_index),sort_direction);
               otherwise, 
                 error('invalid selection_score = [%s]\n', selection_score)
             end
 %             sorted_symbols = mouse_cell_types.gene_symbol(sort_inds);
-            sorted_symbols = mouse_cell_types.all_symbols(sort_all_names_inds);
+            sorted_symbols_mouse = mouse_cell_types.all_symbols(sort_all_names_inds);
 
+            [symbols_human,scores_human] = get_homolog_symbols_and_scores(sorted_symbols_mouse,sorted_scores_mouse, parms);
+            
+            [sorted_scores_human, sort_scores_human_inds] = sort( scores_human,sort_direction);
+            sorted_symbols_human = symbols_human(sort_scores_human_inds);
             save(gene_subset_file, vars{1:end});
         end
-        local_sorted_symbols = sorted_symbols;
-    else
-        sorted_symbols = local_sorted_symbols;
-    end
-   top_gene_symbols = sorted_symbols(1:num_top_genes);   
+        
+    
+        switch parms.species
+            case 'mouse'
+                top_gene_symbols = sorted_symbols_mouse(1:num_top_genes);   
+            case 'human'
+                top_gene_symbols = sorted_symbols_human(1:num_top_genes);   
+            otherwise
+                error('species not supported - %s', parms.species);
+        end
 end
 

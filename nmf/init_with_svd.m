@@ -4,13 +4,7 @@ if ~exist('check_for_most_zeros','var')
     check_for_most_zeros = true;
 end
 
-[U,S,V] = svd(X,'econ') ;
-%  X = U*S*V'.
-% the values in S are ordered, so we can take the top k values
-
-U = U(:,1:k);
-V = V(:,1:k);
-S = S(1:k, 1:k);
+[U,S,V] = svds(X,k) ;
 
 % U2 = max(U,0);
 % V2 = max(V,0);
@@ -32,5 +26,6 @@ V = max(V,0);
 fprintf('distance from svd init %g\n', norm( X - U*S*V' , 'fro') );
 % fprintf('distance from svd init %g\n', norm( X - U2*S*V2' , 'fro') );
 V = V*S;
+V = V';
 
 end

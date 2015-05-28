@@ -15,11 +15,14 @@ if isempty(loop_over_var_value)
     scores = nan(subsample_repeats,1);
     proportions_scores = nan(subsample_repeats,1);
     set_terminal_title(loop_string);
-    parfor j_sr = 1:subsample_repeats
+    for j_sr = 1:subsample_repeats
         
         current_parms = parms; % to activiate parfor
         current_parms.subsample_iter = j_sr;
         
+         current_parms = get_current_markers(GT_profiles,current_parms);
+
+         
         if iscell(X)
             curr_X = cell(size(X));
             curr_GT_proportions = cell(size(X));
@@ -56,7 +59,7 @@ if isempty(loop_over_var_value)
             end
             best_score = mean_corr_coeff(best_scores);
             best_proportions_score = mean(best_proportions_scores);
-
+            
         else
             % Match profiles to ground truth
             [W, H, best_score, best_proportions_score] = match_profiles_to_gt(W,H, ...
@@ -70,7 +73,17 @@ if isempty(loop_over_var_value)
         proportions_scores(j_sr) = best_proportions_score;
         
     end
-       
+
+    figure;
+    subplot(1,2,1);
+    draw_profiles(GT_profiles,GT_proportions,parms);
+    subplot(1,2,2);
+    draw_profiles_with_GT(H,cellfun(@transpose ,W,'UniformOutput',false),GT_profiles,parms);
+    
+
+%    figure; draw_profiles(GT_profiles,cellfun(@transpose ,W,'UniformOutput',false),parms);
+%    figure; draw_profiles(H,cellfun(@transpose ,W,'UniformOutput',false),parms);
+    title(set_parmstr(parms));
 else
     % Remove one layer from the recursion
     var_name = loop_over_var_name{1};
@@ -107,4 +120,23 @@ else
 end
 
 set_terminal_title('done');
+end
+
+function parms = get_current_markers(GT_profiles,parms)
+
+     if isfield(parms,'num_markers')
+         
+         if iscell(GT_profiles)
+             
+            H_markers = cellfun(@(x) get_markers_from_GT(x', parms.num_markers, 1000,parms),...
+                GT_profiles,'UniformOutput',false);
+            parms.H_markers = H_markers;  
+            
+        else
+            H_markers = get_markers_from_GT(GT_profiles', parms.num_markers, 1000,parms);
+            parms.H_markers = H_markers;
+         end
+        
+    end
+    
 end

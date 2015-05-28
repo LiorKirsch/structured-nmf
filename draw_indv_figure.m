@@ -1,6 +1,9 @@
 function draw_indv_figure(loop_over_var_name, loop_over_var_value, results, parms,y_label)
 %
-    figure('Name',parms.dataset_file); clf; hold on;
+    FigHandle = figure('Name',parms.dataset_file); clf; hold on;
+    set(FigHandle, 'Position', [100, 100, 1600, 1000]);
+    set(groot,'defaultAxesColorOrder','default');       
+    
     recursion_levels = length(loop_over_var_value);
     
     assert(recursion_levels ==2 , ...
@@ -28,15 +31,25 @@ function draw_indv_figure(loop_over_var_name, loop_over_var_value, results, parm
         end
     end
     
+    subplot(1,3,1);
+    title('neuro');
+    
+    subplot(1,3,2);
+    title('astro');
+    
+    subplot(1,3,3);
+    title('oligo');
     
     if ~iscell(legend_strings)
-        legend_strings = arrayfun(@(x) sprintf('%g',x), legend_strings, ...
+        legend_strings = arrayfun(@(x) sprintf('%s %g',loop_over_var_name{1},x), legend_strings, ...
                                   'UniformOutput', false);
     end
     
 
+    set(groot,'defaultAxesColorOrder','default');       
     % draw the mean baselines
     for i = 1:length(legend_strings)
+        curr_results = results{i};
          for j=1:3
             subplot(1,3,j);hold on;
             baseline = cellfun(@(x) x.baseline_celltype_score(j), curr_results);
@@ -71,6 +84,12 @@ function draw_indv_figure(loop_over_var_name, loop_over_var_value, results, parm
         end
     end
     
-        
+    suptitle(strrep(set_parmstr(parms),'_',' '));
+    
+    parms.fig_x_axis = x_label;
+    [~,file_name,dir_name] = set_filenames('figure_real', parms);
+    fprintf('drawing figure - %s\n',fullfile(dir_name,file_name));
+
+    saveas(gcf,fullfile(dir_name,['indv_', file_name]));
 
 end

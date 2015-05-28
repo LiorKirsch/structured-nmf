@@ -22,13 +22,28 @@ function [parmstr, dirparmstr] = set_parmstr(parms)
         parmstr = sprintf('%s_%s', parmstr, parms.W_constraints);
     end    
     
-    if isfield(parms, 'rand_seed')
-        parmstr = sprintf('%s_S%d', parmstr, parms.rand_seed);
+    if isfield(parms, 'init_type')
+        if strcmp(parms.init_type, 'random')
+            if isfield(parms, 'rand_seed')
+                parmstr = sprintf('%s_S%d', parmstr, parms.rand_seed);
+            end
+            if isfield(parms, 'num_restarts')
+                parmstr = sprintf('%s_NN%d', parmstr, parms.num_restarts);
+            end    
+        else
+            parmstr = sprintf('%s_init%s', parmstr, parms.init_type);
+        end
+    else
+        if isfield(parms, 'rand_seed')
+            parmstr = sprintf('%s_S%d', parmstr, parms.rand_seed);
+        end
+        if isfield(parms, 'num_restarts')
+            parmstr = sprintf('%s_NN%d', parmstr, parms.num_restarts);
+        end    
     end        
     
-    if isfield(parms, 'num_restarts')
-        parmstr = sprintf('%s_NN%d', parmstr, parms.num_restarts);
-    end    
+    
+    
 
     if isfield(parms, 'H_lambda')
         parmstr = sprintf('%s_HL%g', parmstr, parms.H_lambda);
@@ -86,10 +101,15 @@ function [parmstr, dirparmstr] = set_parmstr(parms)
                     parmstr = sprintf('%s_sepInit', parmstr);
                 end
             end
-          otherwise, error();
+            otherwise
+                error('unkown strcuture type %s',parms.structre_type);
         end
     end 
 
+    if isfield(parms,'num_markers')
+        parmstr = sprintf('%s_nummrk%d', parmstr, parms.num_markers);
+    end
+    
     if isfield(parms, 'H_markers')
         if iscell(parms.H_markers)
             sum_hash = 0;
@@ -113,7 +133,7 @@ function [parmstr, dirparmstr] = set_parmstr(parms)
                 parmstr = sprintf('%s_GenesHash%g', parmstr, parms.gene_hash);
             end
             if isfield(parms, 'gene_okaty_filter')
-                parmstr = sprintf('%s_%s', parmstr, parms.gene_okaty_filter);
+                parmstr = sprintf('%s_fltr%s', parmstr, parms.gene_okaty_filter);
             end
         end
         

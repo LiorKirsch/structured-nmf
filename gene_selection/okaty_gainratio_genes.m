@@ -3,10 +3,6 @@ function top_gene_symbols = okaty_gainratio_genes(num_top_genes, parms)
 % Select genes basedon Barres2014. 
 %
 
-   persistent local_sort_inds
-   persistent local_mouse_cell_types
-
-   if isempty(local_sort_inds)
         mouse_cell_types = load('mouse_cell_type_profiles.mat');
         [neuro_inds, oligo_inds, astro_inds] = get_celltype_inds(...
              mouse_cell_types, parms.gene_okaty_filter);
@@ -28,7 +24,7 @@ function top_gene_symbols = okaty_gainratio_genes(num_top_genes, parms)
         
       local_sort_inds = sortedAttr;
       local_mouse_cell_types = mouse_cell_types;
-   end
+  
 
    top_gene_symbols = local_mouse_cell_types.gene_symbol(local_sort_inds(1:num_top_genes));
    

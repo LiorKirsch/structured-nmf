@@ -32,6 +32,8 @@ function results = loopOverHyperparms_real(X, gene_info,...
      [~, curr_X, ~] = cellfun(@(x) gene_subset_selection(gene_info, ...
                                           x, parms), X,'UniformOutput',false);
      
+   
+    
      % load the true profiles for each region
      mouse_cell_types = load('mouse_cell_type_profiles.mat');
      mouse_cell_types.expression = 2 .^ mouse_cell_types.expression;
@@ -47,11 +49,12 @@ function results = loopOverHyperparms_real(X, gene_info,...
      parfor i_vars = 1: length(var_values)
          current_parms = parms;
          
-         
          [new_loop_string, current_parms, var_current_value] = ...
              add_var_to_loop_string(loop_string, var_values, i_vars, ...
                                     var_name, current_parms);
          set_terminal_title(new_loop_string);
+
+         current_parms = get_current_markers(current_parms, curr_gene_info.gene_symbols);
          
          [W, H] = load_nmf_results(curr_X, current_parms.num_types, ...
                                    current_parms.nmf_method, current_parms);
@@ -64,7 +67,7 @@ function results = loopOverHyperparms_real(X, gene_info,...
                                                         region_names);
          results{i_vars}.cell_type_used = celltypes_used;
          results{i_vars}.var_name = var_name;
-         results{i_vars}.loop_string = loop_string;
+         results{i_vars}.loop_string = new_loop_string;
          results{i_vars}.var_value = var_current_value;
          
      end
@@ -75,7 +78,7 @@ function results = loopOverHyperparms_real(X, gene_info,...
      baseline_celltype_profile = cellfun(@(x) repmat(x,1,3), ...
                                          baseline_celltype_profile,'UniformOutput',false);
      baseline_proportions = cellfun(@(x) zeros(3,3), curr_X ,'UniformOutput',false);
-     fprintf('\n===AVERAGE PROFILE SCORES===\n');
+%      fprintf('\n===AVERAGE PROFILE SCORES===\n');
      baseline_result = get_all_scores(baseline_celltype_profile, baseline_proportions, ...
                                         true_profiles, region_names,false);  
      for i_vars = 1: length(var_values)
@@ -146,14 +149,14 @@ function output = get_all_scores(predicted_profiles, predicted_proportions, ...
             match_profiles_to_gt(predicted_proportions{i}, ...
                                  predicted_profiles{i}', true_profiles{i}', ...
                                  GT_proportions', 'spearman'); 
-        fprintf('%25s: %4.2f ',region_name{i}, 100*best_scores(i));
-        
-        if show_individual
-            for individual_i = 1:length(individual_scores{i})
-                fprintf('\ttype %d: %4.2f', individual_i, 100*individual_scores{i}(individual_i));
-            end
-            fprintf('\n');
-        end
+%         fprintf('%25s: %4.2f ',region_name{i}, 100*best_scores(i));
+%         
+%         if show_individual
+%             for individual_i = 1:length(individual_scores{i})
+%                 fprintf('\ttype %d: %4.2f', individual_i, 100*individual_scores{i}(individual_i));
+%             end
+%             fprintf('\n');
+%         end
     end
     output.celltype_scores =  individual_scores;
     output.region_scores =  best_scores;
@@ -164,5 +167,29 @@ function output = get_all_scores(predicted_profiles, predicted_proportions, ...
     M = cat(dim+1,individual_scores{:});        % Convert to a (dim+1)-dimensional matrix
     output.celltype_region_avg_scores = mean(M,dim+1);     % Get the mean across arrays
                 
-    fprintf('\tREGION MEAN SCORE: %5.3g====\n', output.run_score);
+%     fprintf('\tREGION MEAN SCORE: %5.3g====\n', output.run_score);
+end
+
+function parms = get_current_markers(parms, gene_symbols)
+
+    num_genes = length(gene_symbols);
+    num_regions = length(parms.relation_regions);
+     if isfield(parms,'num_markers')
+        [neuro_mrk,astro_mrk,oligo_mrk] = get_okaty_markers(parms.num_markers, 1000);
+        neuro_inds = get_intersecting_genes(...
+            gene_symbols, neuro_mrk, parms);
+        astro_inds = get_intersecting_genes(...
+            gene_symbols, astro_mrk, parms);
+        oligo_inds = get_intersecting_genes(...
+            gene_symbols, oligo_mrk, parms);
+        
+        H_markers = false(parms.num_types,num_genes);
+        H_markers(1, : ) = neuro_inds;
+        H_markers(2, :) = astro_inds;
+        H_markers(3, : ) = oligo_inds;
+
+        % TODO - change so each region has its own markers
+        parms.H_markers = repmat({H_markers}, num_regions,1);
+    end
+    
 end

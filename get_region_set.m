@@ -1,4 +1,4 @@
-function [region_set, species] = get_region_set(regionset_name, dataset)
+function [region_set, species] = get_region_set(dataset)
 %
 % regionset_name is ignoreed at this point.
   switch dataset

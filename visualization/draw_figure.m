@@ -1,6 +1,9 @@
 function draw_figure(loop_over_var_name, loop_over_var_value, results, parms,y_label)
 %
-    figure('Name',parms.dataset_file); clf; hold on;
+    FigHandle = figure('Name',parms.dataset_file); clf; hold on;
+    set(FigHandle, 'Position', [100, 100, 1600, 1000]);
+set(groot,'defaultAxesColorOrder','default');       
+        
     recursion_levels = length(loop_over_var_value);
     
     assert(recursion_levels ==2 , ...
@@ -24,15 +27,16 @@ function draw_figure(loop_over_var_name, loop_over_var_value, results, parms,y_l
         plot(x,y);
     end
     
-    
     if ~iscell(legend_strings)
-        legend_strings = arrayfun(@(x) sprintf('%g',x), legend_strings, ...
+        legend_strings = arrayfun(@(x) sprintf('%s %g',loop_over_var_name{1},x), legend_strings, ...
                                   'UniformOutput', false);
     end
     
 
+    set(groot,'defaultAxesColorOrder','default');       
     % draw the mean baselines
     for i = 1:length(legend_strings)
+        curr_results = results{i};
         baseline = cellfun(@(x) x.baseline_score, curr_results);
         plot(x,baseline,'--');
         legend_strings{end +1} = sprintf('mean profile (%s)', legend_strings{i});
@@ -59,6 +63,11 @@ function draw_figure(loop_over_var_name, loop_over_var_value, results, parms,y_l
         set(gca,'XTickLabel', tmp);
     end
     
-        
+    title(strrep(set_parmstr(parms),'_',' '));
+    
+    parms.fig_x_axis = x_label;
+    [~,file_name,dir_name] = set_filenames('figure_real', parms);
+    fprintf('drawing figure - %s\n',fullfile(dir_name,file_name));
+    saveas(gcf,fullfile(dir_name,file_name));  
 
 end
