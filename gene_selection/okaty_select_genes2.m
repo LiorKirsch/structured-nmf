@@ -15,7 +15,7 @@ function top_gene_symbols = okaty_select_genes2(num_top_genes, ...
         vars = {'sorted_symbols_human','sorted_scores_human',...
                 'sorted_symbols_mouse','sorted_scores_mouse'};
         if exist(gene_subset_file,'file')
-            fprintf('loading info gain from disk - %s\n', gene_subset_file);
+            fprintf('loading gene selection from disk - %s\n', gene_subset_file);
             load(gene_subset_file, vars{1:end});
         else
             mouse_cell_types = load('mouse_cell_type_profiles.mat');

@@ -1,38 +1,108 @@
-fprintf('======== nmf seperate ========\n');
-parms.H_lambda = 0;
-% [cell_mix_sep.proportions, cell_mix_sep.cell_types] = nmf(X, parms.num_types, 'alsWithRelations', parms);  
-[cell_mix_sep.proportions, cell_mix_sep.celltype_profile]=cellfun(@(x) ...
-       nmf(x,parms.num_types, parms.nmf_method, parms) ,X,'UniformOutput',false);
+init;
+  
 
-fprintf('======== nmf single ========\n');
-parms.H_lambda = inf;
-[cell_mix_single.proportions, cell_mix_single.celltype_profile] = nmf(X, parms.num_types, 'alsWithRelations', parms);  
-cell_mix_single2.cell_types = {'type #1', 'type #2', 'type #3'};
-cell_mix_single2.celltype_profile = cell_mix_single.celltype_profile{1}';
+parms = conf(parms);
+%TODO( ? need this? show_results = false;
 
-[cell_mix_sep2.celltype_profile, cell_mix_sep2.cell_types] = join_profiles(cell_mix_sep.celltype_profile, region_names);
+dataset = take_from_struct(parms, 'dataset', 'brainspan2014');
+[default_regions, parms.species] = get_region_set(dataset);
+regions = take_from_struct(parms, 'regions', default_regions);
+regions = sort(regions);
 
-baseline.celltype_profile = cellfun(@(x) mean(x), X,'UniformOutput',false);
-baseline.proportions = cellfun(@(x) zeros(3,3), X ,'UniformOutput',false);
-[baseline.celltype_profile, ~] = join_profiles(baseline.celltype_profile, region_names);
-baseline.celltype_profile = baseline.celltype_profile';
-baseline.cell_types = region_names;
+switch dataset
+    case 'kang2011',      %==== Kang ===
+      parms.dataset_file = 'kang_regions';
+      [expression, gross_region_vec, gene_info, ~, gross_structures_info, ...
+       ~] = load_expression_and_regions('kangCortexAndStriatum', []);
+      
+    case 'brainspan2014', %==== Brainspan ===
+      parms.dataset_file = sprintf('brainspan_rnaseq_%s', strjoin(regions,'_'));
+      [expression, gross_region_vec, gene_info, ~, gross_structures_info] ...
+          = load_expression_and_regions('brainspan_rnaseq', regions);
+    
+    case 'zapala2005',    %==== Zapala selected regions ===
+      parms.dataset_file = 'Zapala_isocortex_medulla_striatum_cerebellum';
+      [expression, gross_region_vec, gene_info, ~, gross_structures_info, ...
+       ~] = load_expression_and_regions('zapalaMouse', regions);
+      gross_structures_info{strcmp(gross_structures_info, 'Isocortex')} ...
+          = 'Cerebral_cortex';
 
-% compare celltype profile with celltype profiles from Doyle
+      case 'human6' , %==== Human6 selected regions ===
+        parms.dataset_file = 'Human6_selected_regions';
+        [expression, gross_region_vec, gene_info, ~, gross_structures_info, ...
+         ~] = load_expression_and_regions('human6LimitRegions', regions);
+        gross_structures_info = gross_structures_info(:,4);
+        gene_info.entrez_ids = arrayfun(@(x) sprintf('%d',x), ...
+                                        gene_info.entrez_ids, ...
+                                        'UniformOutput',false);
+    otherwise 
+      error('invalid dataset = [%s]\n', dataset);
+end
 
-cell_mix_sep2.celltype_profile = cell_mix_sep2.celltype_profile';
-figure('Name','Seperate');compare_nmf_to_doyle(cell_mix_sep2, gene_info, parms);
-figure('Name','Unified');compare_nmf_to_doyle(cell_mix_single2, gene_info, parms);
-figure('Name','Mean profile');compare_nmf_to_doyle(baseline, gene_info, parms);
+% limit to a set of specific genes
+
+parms.gene_subset = 'all' ;% 'all'; 'okaty_infogain5000'; 'okaty_anova5000'; 'okaty_gainratio5000'
+parms.gene_okaty_filter = 'all'; % 'all'; 'cortex'; 'doyle;'cortex_doyle'
+% [gene_info, expression, parms] = gene_subset_selection(gene_info, ...
+%                                                   expression, parms);
+
+expression = change_to_linear_scale(expression);
+
+gross_regions = gross_structures_info(gross_region_vec);
+[X,region_names] = split_to_cell(expression, gross_regions);
+clear('expression', 'gross_region_vec', 'gross_regions', ...
+      'gross_structures_info');
+
+parms.structre_type = 'relations_parent_level';
+parms = get_structure_matrix(parms.dataset_file, parms.structre_type,region_names, parms);
+%=======================================================================
+
+
+% % ====== load cell type specific genetic markers =======
+% parms =load_markers(parms.dataset_file, gene_info, size(X{1},2), length(X), parms);
+
+
+parms.W_constraints = 'on_simplex_with_noise';   % 'on_simplex', 'inside_simplex', 'positive','on_simplex_with_noise';
+parms.init_type = 'random';
+% parms.num_markers = 20;
+
+num_type_list = take_from_struct(parms, 'num_type_list', [3]) ;%1:8;
+num_markers_list = take_from_struct(parms, 'num_markers_list', [5 20 50 100 200]);
+H_lambda_list = take_from_struct(parms, 'H_lambda_list', [0 0.001 0.01 0.1 1 10 100]);
+
+gene_subset_list = take_from_struct(parms, 'gene_subset_list', {'all'});
+% ,'okaty_anova10000', 'okaty_anova5000' 'okaty_infogain5000', 'okaty_infogain10000
+gene_okaty_filter_list = {'cortex_doyle','cortex','doyle', 'all'};
+constraints_list = {'on_simplex', 'inside_simplex', 'positive','on_simplex_with_noise'};
+
+
+loop_over_var_name = {};
+loop_over_var_value = {};
+% loop_over_var_name{end + 1} = 'W_constraints';           % this cannot be the last list
+% loop_over_var_value{end + 1} = constraints_list;       % this cannot be the last list
+loop_over_var_name{end + 1} = 'gene_subset';           % this cannot be the last list
+loop_over_var_value{end + 1} = gene_subset_list;       % this cannot be the last list
+% loop_over_var_name{end + 1} = 'gene_okaty_filter';     % this cannot be the last list
+% loop_over_var_value{end + 1} = gene_okaty_filter_list; % this cannot be the last list
+% loop_over_var_name{end + 1} = 'num_types';
+% loop_over_var_value{end + 1} = num_type_list;
+% loop_over_var_name{end + 1} = 'num_markers';
+% loop_over_var_value{end + 1} = num_markers_list;
+loop_over_var_name{end + 1} = 'H_lambda';
+loop_over_var_value{end + 1} = H_lambda_list;
+
+parms.regions = region_names;
+parms.cell_types = arrayfun(@(x) sprintf('#%d',x),1:parms.num_types,'UniformOutput',false);
+
+results = loopOverResults_real(X, gene_info, parms, loop_over_var_name, loop_over_var_value ,'');
+
+parms.draw_log_scale = true;
+draw_figure(loop_over_var_name, loop_over_var_value, results, parms, 'Corr');
+draw_indv_figure(loop_over_var_name, loop_over_var_value, results, parms, 'Corr');
+report_results(results);
 
 
 
-% compare_to_true_profile( cellfun(@(x) x',cell_mix_sep.celltype_profile,'UniformOutput',false),...
-%     cell_mix_sep.proportions, gene_info,region_names,'human',parms);
-% compare_to_true_profile( cellfun(@(x) x',cell_mix_single.celltype_profile,'UniformOutput',false),...
-%     cell_mix_single.proportions, gene_info,region_names,'human',parms);
-% compare_to_true_profile( cellfun(@(x) x',baseline.celltype_profile,'UniformOutput',false),...
-%     baseline.proportions, gene_info,region_names,'human',parms);
-
-draw_proprtions_for_regions(cell_mix.proportions, cell_mix.cell_types, gross_structures_info, gross_region_vec); ylim([0,0.8]);
-show_proportions(cell_mix.proportions, cell_mix.cell_types);
+% parms.H_lambda = 0.01;
+% [cell_mix_single.proportions, cell_mix_single.celltype_profile] = ...
+%     nmf(X, parms.num_types, 'alsWithRelations', parms);

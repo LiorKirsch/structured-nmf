@@ -44,7 +44,7 @@ parms.num_samples = 5;
 
 % alg_list = {'alsPinv', 'alsActiveSet', 'mm'}; % 'alsBlockpivot','cjlin', 'prob'}; 
 alg_list = {'alsActiveSet'}; 
-num_samples_list = [5];%, 10, 20, 50];%, 100,200];
+num_samples_list = [20];%, 10, 20, 50];%, 100,200];
 num_type_list = 3 ;%1:8;
 W_constraints_list = {'on_simplex', 'inside_simplex', 'positive','on_simplex_with_noise'};
 W_constraints_list = { 'on_simplex_with_noise'};

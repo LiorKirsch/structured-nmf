@@ -6,7 +6,7 @@ parms = conf(parms);
 
 dataset = take_from_struct(parms, 'dataset', 'brainspan2014');
 [default_regions, parms.species] = get_region_set(dataset);
-regions = take_from_struct(parms, 'subset_regions', default_regions);
+regions = take_from_struct(parms, 'regions', default_regions);
 regions = sort(regions);
 
 switch dataset
@@ -61,24 +61,20 @@ parms = get_structure_matrix(parms.dataset_file, parms.structre_type,region_name
 % % ====== load cell type specific genetic markers =======
 % parms =load_markers(parms.dataset_file, gene_info, size(X{1},2), length(X), parms);
 
-parms.do_sep_init = true;
-parms.num_types = 3;
-parms.W_constraints = 'on_simplex_with_noise';   % 'on_simplex', 'inside_simplex', 'positive','on_simplex_with_noise';
-parms.nmf_method = 'alsActiveSet';
-parms.num_restarts = 5; % <===  increase to 30
-parms.W_lambda = 0;
 
+parms.W_constraints = 'on_simplex_with_noise';   % 'on_simplex', 'inside_simplex', 'positive','on_simplex_with_noise';
 parms.init_type = 'random';
 % parms.num_markers = 20;
 
 num_type_list = take_from_struct(parms, 'num_type_list', [3]) ;%1:8;
 num_markers_list = take_from_struct(parms, 'num_markers_list', [5 20 50 100 200]);
 H_lambda_list = take_from_struct(parms, 'H_lambda_list', [0 0.001 0.01 0.1 1 10 100 1000 inf]);
-
-gene_subset_list = {'all','okaty_anova10000','okaty_anova5000'...
-    'okaty_infogain5000','okaty_infogain10000'}; %,'okaty_anova1000'};
-gene_okaty_filter_list = {'cortex_doyle','cortex','doyle', 'all'};
-
+gene_subset_list = take_from_struct(parms, 'gene_subset_list', ...
+                                    {'all','okaty_anova10000', ...
+                    'okaty_anova5000' 'okaty_infogain5000', ...
+                    'okaty_infogain10000'});
+gene_okaty_filter_list = take_from_struct(parms, 'gene_okaty_filter_list', ...
+                                       {'cortex_doyle', 'cortex', 'doyle', 'all'});
 constraints_list = {'on_simplex', 'inside_simplex', 'positive','on_simplex_with_noise'};
 
 

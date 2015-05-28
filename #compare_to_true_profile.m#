@@ -1,5 +1,5 @@
 function [gene_inds_true_type,gene_inds_predictions] = ...
-        compare_to_true_profile(mouse_cell_types,gene_info, species,parms)
+        compare_to_true_profile(mouse_cell_types, gene_info, species,parms)
 
     % load doyle
 %     mouse_cell_types = load_doyle_true_type();

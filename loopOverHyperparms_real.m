@@ -46,6 +46,22 @@ function results = loopOverHyperparms_real(X, gene_info,...
       true_profiles = cellfun(@(x) x(gene_inds_true_type,:), ...
                          true_celltype_per_region,'UniformOutput',false);
          
+                     
+                     
+     %===== mean profile baseline ======%
+     [baseline_celltype_profile, baseline_proportions] =get_mean_baseline(...
+         curr_X,gene_inds_predictions);
+     baseline_result = get_all_scores(baseline_celltype_profile, baseline_proportions, ...
+                                        true_profiles, region_names,false);  
+     
+	 %===== rand sample baseline ======%
+     [randbase_celltype_profile, randbase_proportions] =...
+           get_randsamp_baseline(curr_X,gene_inds_predictions,parms);
+     randbase_result = get_all_scores(randbase_celltype_profile, randbase_proportions, ...
+                                        true_profiles, region_names,false);  
+                                    
+                                    
+                                    
      parfor i_vars = 1: length(var_values)
          current_parms = parms;
          
@@ -62,39 +78,30 @@ function results = loopOverHyperparms_real(X, gene_info,...
          predicted_profiles = cellfun(@(x) x(:,gene_inds_predictions)', ...
                                       H, 'UniformOutput', false);
 
-         results{i_vars} = get_all_scores(predicted_profiles, W, ...
+         curr_result = get_all_scores(predicted_profiles, W, ...
                                                         true_profiles, ...
                                                         region_names);
-         results{i_vars}.cell_type_used = celltypes_used;
-         results{i_vars}.var_name = var_name;
-         results{i_vars}.loop_string = new_loop_string;
-         results{i_vars}.var_value = var_current_value;
+         curr_result.cell_type_used = celltypes_used;
+         curr_result.var_name = var_name;
+         curr_result.loop_string = new_loop_string;
+         curr_result.var_value = var_current_value;
          
+         
+         curr_result.baseline_score = baseline_result.run_score;
+         curr_result.baseline_celltype_region_avg_scores = baseline_result.celltype_region_avg_scores;
+         curr_result.baseline_region_scores = baseline_result.region_scores ;
+         curr_result.baseline_celltype_score = baseline_result.celltype_scores ;
+         
+         
+         curr_result.randbase_score = randbase_result.run_score;
+         curr_result.randbase_celltype_region_avg_scores = randbase_result.celltype_region_avg_scores;
+         curr_result.randbase_region_scores = randbase_result.region_scores ;
+         curr_result.randbase_celltype_score = randbase_result.celltype_scores ;
+         
+         parsave(curr_result,current_parms);
+         results{i_vars} = curr_result;
      end
-     
-%      fprintf('\n===AVERAGE PROFILE SCORES===\n');
-     [baseline_celltype_profile, baseline_proportions] =get_mean_baseline(...
-         curr_X,gene_inds_predictions);
-     baseline_result = get_all_scores(baseline_celltype_profile, baseline_proportions, ...
-                                        true_profiles, region_names,false);  
-     for i_vars = 1: length(var_values)
-         results{i_vars}.baseline_score = baseline_result.run_score;
-         results{i_vars}.baseline_celltype_region_avg_scores = baseline_result.celltype_region_avg_scores;
-         results{i_vars}.baseline_region_scores = baseline_result.region_scores ;
-         results{i_vars}.baseline_celltype_score = baseline_result.celltype_scores ;
-     end
-     
-     
-     [randbase_celltype_profile, randbase_proportions] =...
-           get_randsamp_baseline(curr_X,gene_inds_predictions,parms);
-     randbase_result = get_all_scores(randbase_celltype_profile, randbase_proportions, ...
-                                        true_profiles, region_names,false);  
-     for i_vars = 1: length(var_values)
-         results{i_vars}.randbase_score = randbase_result.run_score;
-         results{i_vars}.randbase_celltype_region_avg_scores = randbase_result.celltype_region_avg_scores;
-         results{i_vars}.randbase_region_scores = randbase_result.region_scores ;
-         results{i_vars}.randbase_celltype_score = randbase_result.celltype_scores ;
-     end
+  
        
   else
       % Remove one layer from the recursion
@@ -160,6 +167,11 @@ function output = get_all_scores(predicted_profiles, predicted_proportions, ...
             match_profiles_to_gt(predicted_proportions{i}, ...
                                  predicted_profiles{i}', true_profiles{i}', ...
                                  GT_proportions', 'spearman'); 
+        
+        % when the number of true cell type is less then 3 pad the vector with nans
+        individual_scores{i} = [individual_scores{i}; ...
+                nan( max(0,3 -length(individual_scores{i})),1)]; 
+            
 %         fprintf('%25s: %4.2f ',region_name{i}, 100*best_scores(i));
 %         
 %         if show_individual
@@ -176,7 +188,7 @@ function output = get_all_scores(predicted_profiles, predicted_proportions, ...
 
     dim = ndims(individual_scores);          % Get the number of dimensions for your arrays
     M = cat(dim+1,individual_scores{:});        % Convert to a (dim+1)-dimensional matrix
-    output.celltype_region_avg_scores = mean(M,dim+1);     % Get the mean across arrays
+    output.celltype_region_avg_scores = nanmean(M,dim+1);     % Get the mean across arrays
                 
 %     fprintf('\tREGION MEAN SCORE: %5.3g====\n', output.run_score);
 end
@@ -227,4 +239,9 @@ function [baseline_celltype_profile, baseline_proportions] =...
 %      baseline_celltype_profile = cellfun(@(x) x(:,gene_inds_predictions)', ...
 %                                          baseline_celltype_profile,'UniformOutput',false);
      baseline_proportions = cellfun(@(x) zeros(3,3), curr_X ,'UniformOutput',false);
+end
+
+function parsave(curr_result,parms)
+    filename  = set_filenames('results', parms);
+    save(filename, 'curr_result','parms');
 end

@@ -25,4 +25,9 @@ parms.nmf_method = 'alsActiveSet';
 % alg_list = {'alsPinv', 'alsActiveSet', 'mm', 'alsBlockpivot','cjlin', 'prob'}; 
 
 parms.draw_log_scale = false;
+
+parms.do_sep_init = true;
+parms.W_constraints = 'on_simplex_with_noise';   % 'on_simplex', 'inside_simplex', 'positive','on_simplex_with_noise';
+parms.init_type = 'random';
+
 end

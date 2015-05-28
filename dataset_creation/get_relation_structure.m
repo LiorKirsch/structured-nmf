@@ -1,4 +1,6 @@
-function [relationMatrix,all_strct] = get_relation_structure(tree_structure_matrix,all_strct,limit_to,relation_type,X)
+function [relationMatrix, all_strct] = ...
+        get_relation_structure(tree_structure_matrix, all_strct, ...
+                                             limit_to, relation_type, X)
 % get the relation matrix
 % the larger the weight the strong the connection between the region is
 % weight of zero means no connection between the regions
@@ -7,16 +9,16 @@ function [relationMatrix,all_strct] = get_relation_structure(tree_structure_matr
         relation_type = 'common_parent_level';
     end
     
-%     [tree_structure_matrix,all_strct] = get_tree_structure(false,limit_to);
+%   [tree_structure_matrix, all_strct] = get_tree_structure(false,limit_to);
     tree_structure_matrix = sparse(double(tree_structure_matrix));
 
     switch relation_type
         case 'tree'
-            only_child = find(sum(tree_structure_matrix,2) ==1);
+            only_child = find(sum(tree_structure_matrix, 2) ==1);
             for i =1:length(only_child)
                 curr_ind = only_child(i);
-                child_ind = find(tree_structure_matrix( curr_ind,:));
-                parent_ind = find(tree_structure_matrix( :,curr_ind));
+                child_ind = find(tree_structure_matrix( curr_ind, :));
+                parent_ind = find(tree_structure_matrix( :, curr_ind));
                 tree_structure_matrix(parent_ind, child_ind) = true;
             end
             tree_structure_matrix(only_child,:) = [];
@@ -25,17 +27,22 @@ function [relationMatrix,all_strct] = get_relation_structure(tree_structure_matr
             relationMatrix = full(tree_structure_matrix);
 
             disp('using tree structure');
+
         case 'relations_dist'
-            [~,relationMatrix] = computeDistanceBetweenNodes(tree_structure_matrix);
+            [~, relationMatrix] = computeDistanceBetweenNodes(tree_structure_matrix);
             relationMatrix = exp(-1*relationMatrix);
             relationMatrix(1:size(relationMatrix,1)+1:end) = 0;  % the diagonal should be zero
+
         case 'relations_parentdist'
             directedDistanceMatrix = computeDistanceBetweenNodes(tree_structure_matrix);
-            [ closestCommonParentIndex, meanDistanceToParent, shortDistanceToParent, longDistanceToParent] = ...
-                distanceToCommonParent(tree_structure_matrix, directedDistanceMatrix);
+            [ closestCommonParentIndex, meanDistanceToParent, ...
+              shortDistanceToParent, longDistanceToParent] = ...
+                distanceToCommonParent(tree_structure_matrix, ...
+                                       directedDistanceMatrix);
             relationMatrix = longDistanceToParent;
             relationMatrix = exp(-1*relationMatrix);
             relationMatrix(1:size(relationMatrix,1)+1:end) = 0;  % the diagonal should be zero
+
         case 'relations_parent_level'
             [~, nodeLevel] = allChildNodes(tree_structure_matrix);
             directedDistanceMatrix = computeDistanceBetweenNodes(tree_structure_matrix);
@@ -47,6 +54,7 @@ function [relationMatrix,all_strct] = get_relation_structure(tree_structure_matr
             
             relationMatrix = exp(relationMatrix);
             relationMatrix(1:size(relationMatrix,1)+1:end) = 0;  % the diagonal should be zero
+
          case 'relations_on_expression'
             relationMatrix = nan(length(X),length(X));
             for i =1:length(X)
@@ -73,10 +81,9 @@ function [relationMatrix,all_strct] = get_relation_structure(tree_structure_matr
 %     ax.XTick = 1:length(all_strct);
 %     ax.XTickLabel = all_strct;
 %     ax.XTickLabelRotation	=45;
-    
-    
-
 end
+
+
 function [directedDistanceMatrix,unDirectedDistanceMatrix] =...
         computeDistanceBetweenNodes(dependecyMatrix)
 % This function computes distances between nodes in the graph
@@ -91,8 +98,7 @@ function [directedDistanceMatrix,unDirectedDistanceMatrix] =...
         directedDistanceMatrix(:,i) = nodeDistance;
         
         [nodeDistance ~] = dijkstra_sp(undirectedMatrix,i);
-        unDirectedDistanceMatrix(:,i) = nodeDistance;
-        
+        unDirectedDistanceMatrix(:,i) = nodeDistance;        
     end
 end
 
@@ -103,9 +109,7 @@ end
 
 function [ closestCommonParentIndex, meanDistanceToParent, shortDistanceToParent, longDistanceToParent] = ...
     distanceToCommonParent(dependencyMatrix, directedDistanceMatrix)
-    [allChilds, nodeLevel] = allChildNodes(dependencyMatrix);
-
-    
+    [allChilds, nodeLevel] = allChildNodes(dependencyMatrix);    
 
     closestCommonParentIndex = zeros(size(directedDistanceMatrix));
     meanDistanceToParent = zeros(size(directedDistanceMatrix));
@@ -113,7 +117,6 @@ function [ closestCommonParentIndex, meanDistanceToParent, shortDistanceToParent
     longDistanceToParent = zeros(size(directedDistanceMatrix));
 
     numberOfNodes = size(directedDistanceMatrix,1);
-
 
     for i = 1: numberOfNodes
         for j= i+1 : numberOfNodes
@@ -132,13 +135,10 @@ function [ closestCommonParentIndex, meanDistanceToParent, shortDistanceToParent
             longDistanceToParent(i,j) = sortedDist(2);
             meanDistanceToParent(i,j) = mean(distances);
             closestCommonParentIndex(i,j) = bestParentmInIndex;
-
         end
     end
-
     closestCommonParentIndex = closestCommonParentIndex + closestCommonParentIndex';
     meanDistanceToParent = meanDistanceToParent + meanDistanceToParent';
     shortDistanceToParent = shortDistanceToParent + shortDistanceToParent';
     longDistanceToParent = longDistanceToParent + longDistanceToParent';
-
 end
