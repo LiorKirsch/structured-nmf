@@ -4,6 +4,7 @@ function draw_indv_figure(loop_over_var_name, loop_over_var_value, results, parm
     set(FigHandle, 'Position', [100, 100, 1600, 1000]);
     set(groot,'defaultAxesColorOrder','default');       
     
+    n = length(loop_over_var_value{1});
     recursion_levels = length(loop_over_var_value);
     
     assert(recursion_levels ==2 , ...
@@ -19,15 +20,15 @@ function draw_indv_figure(loop_over_var_name, loop_over_var_value, results, parm
        x(isinf(x)) = 10^+7;
     end
 
-    
-    for i = 1:length(legend_strings)
+    plot_h = nan(n,1);
+    for i = 1:n
         curr_results = results{i};
         
         for j=1:3
             assert(length(curr_results) ==  length(x),'problem with build the results');
             y = cellfun(@(x) x.celltype_region_avg_scores(j), curr_results);
             subplot(1,3,j);hold on;
-            plot(x,y);
+            plot_h(i) = plot(x,y);
         end
     end
     
@@ -48,20 +49,34 @@ function draw_indv_figure(loop_over_var_name, loop_over_var_value, results, parm
 
     set(groot,'defaultAxesColorOrder','default');       
     % draw the mean baselines
-    for i = 1:length(legend_strings)
+    for i = 1:n
         curr_results = results{i};
          for j=1:3
             subplot(1,3,j);hold on;
-            baseline = cellfun(@(x) x.baseline_celltype_score(j), curr_results);
-            plot(x,baseline,'--');
+            baseline = cellfun(@(x) x.baseline_celltype_region_avg_scores(j), curr_results);
+            plot_h(n +1) = plot(x,baseline,'--');
         end
-        legend_strings{end +1} = sprintf('mean profile (%s)', legend_strings{i});
+        
     end
+    legend_strings{end +1} = sprintf('mean-profile baseline');
+    
+
+    set(groot,'defaultAxesColorOrder','default');       
+    % draw the rand baselines
+    for i = 1:n
+        curr_results = results{i};
+         for j=1:3
+            subplot(1,3,j);hold on;
+            baseline = cellfun(@(x) x.randbase_celltype_region_avg_scores(j), curr_results);
+            plot_h(n +2) = plot(x,baseline,'.');
+        end
+        
+    end
+    legend_strings{end +1} = sprintf('rand-sample baseline');
 
     
-        
     legend_strings = strrep(legend_strings, '_', ' ');
-    legend(legend_strings, 'location', 'best');
+    legend(plot_h, legend_strings, 'location', 'best');
     x_label = strrep(loop_over_var_name{end},'_',' ') ;
     xlabel(x_label);
     ylabel(y_label);

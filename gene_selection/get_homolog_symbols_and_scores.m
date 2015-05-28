@@ -1,6 +1,6 @@
 function [gene_symbol_output,scores_output] = get_homolog_symbols_and_scores(gene_symbols_mouse,gene_scores, parms)
 % 
-
+            gene_scores = gene_scores(:)';
             addpath('/cortex/code/matlab/homologous_gene_mapping/');
             
             [gene_to_group_mouse, gene_to_group_target, ...

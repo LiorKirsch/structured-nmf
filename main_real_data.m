@@ -41,8 +41,8 @@ end
 
 % limit to a set of specific genes
 
-parms.gene_subset = 'okaty_anova5000' ;%'okaty_infogain5000'; 'okaty_anova5000';% 'all';
-parms.gene_okaty_filter = 'cortex_doyle'; % 'all'; 'cortex'; 'cortex_doyle'
+parms.gene_subset = 'all' ;% 'all'; 'okaty_infogain5000'; 'okaty_anova5000'; 'okaty_gainratio5000'
+parms.gene_okaty_filter = 'all'; % 'all'; 'cortex'; 'doyle;'cortex_doyle'
 % [gene_info, expression, parms] = gene_subset_selection(gene_info, ...
 %                                                   expression, parms);
 
@@ -86,12 +86,12 @@ loop_over_var_name = {};
 loop_over_var_value = {};
 % loop_over_var_name{end + 1} = 'W_constraints';           % this cannot be the last list
 % loop_over_var_value{end + 1} = constraints_list;       % this cannot be the last list
-% loop_over_var_name{end + 1} = 'gene_subset';           % this cannot be the last list
-% loop_over_var_value{end + 1} = gene_subset_list;       % this cannot be the last list
+loop_over_var_name{end + 1} = 'gene_subset';           % this cannot be the last list
+loop_over_var_value{end + 1} = gene_subset_list;       % this cannot be the last list
 % loop_over_var_name{end + 1} = 'gene_okaty_filter';     % this cannot be the last list
 % loop_over_var_value{end + 1} = gene_okaty_filter_list; % this cannot be the last list
-loop_over_var_name{end + 1} = 'num_types';
-loop_over_var_value{end + 1} = num_type_list;
+% loop_over_var_name{end + 1} = 'num_types';
+% loop_over_var_value{end + 1} = num_type_list;
 % loop_over_var_name{end + 1} = 'num_markers';
 % loop_over_var_value{end + 1} = num_markers_list;
 loop_over_var_name{end + 1} = 'H_lambda';

@@ -18,6 +18,20 @@ function  report_results(results)
             end
 
         end
+        
+        fprintf('==== mean profile baseline ====:\n');
+        for i_region = 1:num_regions
+            fprintf('\t%20s: ', r.regions{i_region}(1:20));
+            fprintf(' %4.2f ', 100*r.baseline_celltype_score{i_region});
+            fprintf(' (avg=%4.2f)\n', 100*r.baseline_region_scores(i_region));
+        end
+        fprintf('==== rand samples baseline ====:\n');
+        for i_region = 1:num_regions
+            fprintf('\t%20s: ', r.regions{i_region}(1:20));
+            fprintf(' %4.2f ', 100*r.randbase_celltype_score{i_region});
+            fprintf(' (avg=%4.2f)\n', 100*r.randbase_region_scores(i_region));
+        end
+        fprintf('===============================:\n');
     end
     
 end

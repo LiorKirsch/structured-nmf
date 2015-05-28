@@ -72,19 +72,30 @@ function results = loopOverHyperparms_real(X, gene_info,...
          
      end
      
-     baseline_celltype_profile = cellfun(@(x) mean(x), curr_X,'UniformOutput',false);
-     baseline_celltype_profile = cellfun(@(x) x(:,gene_inds_predictions)', ...
-                                         baseline_celltype_profile,'UniformOutput',false);
-     baseline_celltype_profile = cellfun(@(x) repmat(x,1,3), ...
-                                         baseline_celltype_profile,'UniformOutput',false);
-     baseline_proportions = cellfun(@(x) zeros(3,3), curr_X ,'UniformOutput',false);
 %      fprintf('\n===AVERAGE PROFILE SCORES===\n');
+     [baseline_celltype_profile, baseline_proportions] =get_mean_baseline(...
+         curr_X,gene_inds_predictions);
      baseline_result = get_all_scores(baseline_celltype_profile, baseline_proportions, ...
                                         true_profiles, region_names,false);  
      for i_vars = 1: length(var_values)
          results{i_vars}.baseline_score = baseline_result.run_score;
-         results{i_vars}.baseline_celltype_score = baseline_result.celltype_region_avg_scores;
+         results{i_vars}.baseline_celltype_region_avg_scores = baseline_result.celltype_region_avg_scores;
+         results{i_vars}.baseline_region_scores = baseline_result.region_scores ;
+         results{i_vars}.baseline_celltype_score = baseline_result.celltype_scores ;
      end
+     
+     
+     [randbase_celltype_profile, randbase_proportions] =...
+           get_randsamp_baseline(curr_X,gene_inds_predictions,parms);
+     randbase_result = get_all_scores(randbase_celltype_profile, randbase_proportions, ...
+                                        true_profiles, region_names,false);  
+     for i_vars = 1: length(var_values)
+         results{i_vars}.randbase_score = randbase_result.run_score;
+         results{i_vars}.randbase_celltype_region_avg_scores = randbase_result.celltype_region_avg_scores;
+         results{i_vars}.randbase_region_scores = randbase_result.region_scores ;
+         results{i_vars}.randbase_celltype_score = randbase_result.celltype_scores ;
+     end
+       
   else
       % Remove one layer from the recursion
       var_name = loop_over_var_name{1};
@@ -192,4 +203,28 @@ function parms = get_current_markers(parms, gene_symbols)
         parms.H_markers = repmat({H_markers}, num_regions,1);
     end
     
+end
+
+function [baseline_celltype_profile, baseline_proportions] =...
+           get_mean_baseline(curr_X,gene_inds_predictions)
+     baseline_celltype_profile = cellfun(@(x) mean(x), curr_X,'UniformOutput',false);
+     baseline_celltype_profile = cellfun(@(x) x(:,gene_inds_predictions)', ...
+                                         baseline_celltype_profile,'UniformOutput',false);
+     baseline_celltype_profile = cellfun(@(x) repmat(x,1,3), ...
+                                         baseline_celltype_profile,'UniformOutput',false);
+     baseline_proportions = cellfun(@(x) zeros(3,3), curr_X ,'UniformOutput',false);
+end
+
+function [baseline_celltype_profile, baseline_proportions] =...
+           get_randsamp_baseline(curr_X,gene_inds_filter,parms)
+     rng(parms.rand_seed);
+     
+     [num_samp, num_genes] = cellfun(@size, curr_X);
+     rand_inds = arrayfun(@(x) randperm(x, parms.num_types), num_samp,'UniformOutput',false);
+     
+     baseline_celltype_profile = cellfun(@(x,samp_inds) x(samp_inds,gene_inds_filter)',...
+         curr_X,rand_inds,'UniformOutput',false);
+%      baseline_celltype_profile = cellfun(@(x) x(:,gene_inds_predictions)', ...
+%                                          baseline_celltype_profile,'UniformOutput',false);
+     baseline_proportions = cellfun(@(x) zeros(3,3), curr_X ,'UniformOutput',false);
 end

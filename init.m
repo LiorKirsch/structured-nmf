@@ -20,9 +20,6 @@ parms.dummy=1;
 
 [do_save, parms] = take_from_struct(parms, 'do_save', false);
 
-
-
-
-delete(gcp('nocreate'));parpool local;
+% delete(gcp('nocreate'));parpool local;
 
 inited = 1;

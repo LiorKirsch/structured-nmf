@@ -5,7 +5,8 @@ function draw_figure(loop_over_var_name, loop_over_var_value, results, parms,y_l
 set(groot,'defaultAxesColorOrder','default');       
         
     recursion_levels = length(loop_over_var_value);
-    
+    n = length(loop_over_var_value{1});
+
     assert(recursion_levels ==2 , ...
            'results should have 2 levels - the first for the legend, the second for the x axis');
     
@@ -19,12 +20,12 @@ set(groot,'defaultAxesColorOrder','default');
        x(isinf(x)) = 10^+7;
     end
 
-    
-    for i = 1:length(legend_strings)
+    plot_h = nan(n,1);
+    for i = 1:n
         curr_results = results{i};
         assert(length(curr_results) ==  length(x),'problem with build the results');
         y = cellfun(@(x) x.run_score, curr_results);
-        plot(x,y);
+        plot_h(i) = plot(x,y);
     end
     
     if ~iscell(legend_strings)
@@ -35,17 +36,26 @@ set(groot,'defaultAxesColorOrder','default');
 
     set(groot,'defaultAxesColorOrder','default');       
     % draw the mean baselines
-    for i = 1:length(legend_strings)
+    for i = 1:n
         curr_results = results{i};
         baseline = cellfun(@(x) x.baseline_score, curr_results);
-        plot(x,baseline,'--');
-        legend_strings{end +1} = sprintf('mean profile (%s)', legend_strings{i});
+        plot_h(n+1) = plot(x,baseline,'--');
     end
+    legend_strings{end +1} = sprintf('mean-profile baseline');
 
     
+    set(groot,'defaultAxesColorOrder','default');       
+    % draw the rand baselines
+    for i = 1:n
+        curr_results = results{i};
+        baseline = cellfun(@(x) x.randbase_score, curr_results);
+        plot_h(n+2) = plot(x,baseline,'.');
+    end
+    legend_strings{end +1} = sprintf('rand-sample baseline');
         
+    
     legend_strings = strrep(legend_strings, '_', ' ');
-    legend(legend_strings, 'location', 'best');
+    legend(plot_h,legend_strings, 'location', 'best');
     x_label = strrep(loop_over_var_name{end},'_',' ') ;
     xlabel(x_label);
     ylabel(y_label);
