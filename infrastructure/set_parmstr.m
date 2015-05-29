@@ -139,6 +139,10 @@ function [parmstr, dirparmstr] = set_parmstr(parms)
         
     end
     
+    if isfield(parms, 'H_lambda_priors')
+        lambda_prior_string = sprintf('%g_', parms.H_lambda_priors);
+        parmstr = sprintf('%s_lambdaPrr%s', parmstr, lambda_prior_string);
+    end
     
     if isfield(parms, 'mix_files')
         mix_files = sort(parms.mix_files);

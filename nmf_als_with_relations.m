@@ -40,7 +40,9 @@ als_solver = take_from_struct(parms, 'als_solver', 'blockpivot');
 W_lambda = take_from_struct(parms, 'W_lambda', 0);
 H_lambda = take_from_struct(parms, 'H_lambda', 0);
 W_prior = take_from_struct(parms, 'W_prior', nan);
-H_prior = take_from_struct(parms, 'H_prior', nan);
+
+H_lambda_priors = take_from_struct(parms, 'H_lambda_prior', zeros(length(H_init_model),1));
+H_prior_models = take_from_struct(parms, 'H_prior_models', repmat({nan},length(H_init_model),1) );
 
 H_markers_models = take_from_struct(parms, 'H_markers', ...
     cellfun(@(x) false(size(x)), H_init_model ,'UniformOutput',false) );
@@ -55,15 +57,21 @@ H_markers_models = take_from_struct(parms, 'H_markers', ...
 % else
 %     W_prior = cellfun(@(x) nan(size(x)),W_init,'UniformOutput',false);
 % end
-% if (H_lambda>0)
-%     if ( isnan(H_prior) )
-%         H_prior = zeros(size(H_init));
-%         disp('H_prior not specified using zero regularization as default');
-%     end
-%     assert( size(H_prior,2) == size(H_init,2) , 'H_prior should have the same number of features as H (dim=2)');
-% else
-%     H_prior = cellfun(@(x) nan(size(x)),H_init,'UniformOutput',false);
-% end
+if any(H_lambda_priors>0)
+    if ~iscell(H_prior_models)
+        disp('Using the same priors for all regions');
+        H_prior_models = repmat({H_prior_models}, length(H_init_model),1);
+    end
+    if length(H_lambda_priors) == 1
+       disp('Using the same priors for all regions');
+       H_lambda_priors = H_lambda_priors *  ones(length(H_init_model),1);
+    end
+    for i =1:length(H_init_model)
+        assert( all(size(H_init_model{i}) == size(H_prior_models{i})) ,...
+            'H_model_prior (%d) should have the same dimentions as H',i);
+    end
+
+end
 
 assert( all(size(H_init_model{1}) == size(H_markers_models{1})) , 'H_markers should be a boolean array with same size as H');
 assert( all(sum(H_markers_models{1},1) <=1)  ,'A marker should only be present for a single type');
@@ -111,7 +119,9 @@ for iter=1:maxiter
         W = W_models{model_iter};
         H = H_models{model_iter};
         X = X_models{model_iter};
+        H_prior = H_prior_models{model_iter};
         H_markers = H_markers_models{model_iter};
+        H_lambda_prior = H_lambda_priors(model_iter);
         
     %==== Minization step
     
@@ -141,6 +151,12 @@ for iter=1:maxiter
             [reg_X_for_H, reg_W_for_H] = get_reg_for_H(reg_X_for_H,...
                 reg_W_for_H, curr_regulerizer, H_models{relation_ind}(:,~all_marker_indices));
         end
+        
+        % add the priors
+        if H_lambda_prior > 0;
+            [reg_X_for_H, reg_W_for_H] = get_reg_for_H(reg_X_for_H,...
+                    reg_W_for_H, H_lambda_prior, H_prior(:,~all_marker_indices));
+        end 
         H_non_marker_parts = solve_als_for_H(H, reg_W_for_H,reg_X_for_H,als_solver);
     
         % join H-markers part and H-non-markers part

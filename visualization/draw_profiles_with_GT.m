@@ -19,7 +19,7 @@ regions = unique(region_name,'stable');
 
 % figure(); 
 hold on;
-gscatter(score(:,1),score(:,2),ids,[],[],23);
+gscatter(score(:,1),score(:,2),ids,[],[],30);
 xlabel('1st Principal Component');
 ylabel('2nd Principal Component');
 

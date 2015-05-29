@@ -15,7 +15,7 @@ if isempty(loop_over_var_value)
     scores = nan(subsample_repeats,1);
     proportions_scores = nan(subsample_repeats,1);
     set_terminal_title(loop_string);
-    for j_sr = 1:subsample_repeats
+    parfor j_sr = 1:subsample_repeats
         
         current_parms = parms; % to activiate parfor
         current_parms.subsample_iter = j_sr;
@@ -74,16 +74,16 @@ if isempty(loop_over_var_value)
         
     end
 
-    figure;
-    subplot(1,2,1);
-    draw_profiles(GT_profiles,GT_proportions,parms);
-    subplot(1,2,2);
-    draw_profiles_with_GT(H,cellfun(@transpose ,W,'UniformOutput',false),GT_profiles,parms);
-    
+%     figure;
+%     ax1 = subplot(1,2,1);
+%     draw_profiles(GT_profiles,GT_proportions,parms);
+%     ax2 = subplot(1,2,2);
+%     draw_profiles_with_GT(H,cellfun(@transpose ,W,'UniformOutput',false),GT_profiles,parms);
+%     linkaxes([ax1,ax2],'xy');
 
 %    figure; draw_profiles(GT_profiles,cellfun(@transpose ,W,'UniformOutput',false),parms);
 %    figure; draw_profiles(H,cellfun(@transpose ,W,'UniformOutput',false),parms);
-    title(set_parmstr(parms));
+%     title(set_parmstr(parms));
 else
     % Remove one layer from the recursion
     var_name = loop_over_var_name{1};

@@ -70,10 +70,10 @@ function [relationMatrix, all_strct] = ...
 
 
     if ~strcmp('tree', relation_type)
-        mask = ismember(all_strct, limit_to);
-
-        relationMatrix = relationMatrix(mask, mask);
-        all_strct = all_strct(mask);
+%         mask = ismember(all_strct, limit_to);
+        [~, reorder] = ismember(limit_to, all_strct);
+        relationMatrix = relationMatrix(reorder, reorder);
+        all_strct = all_strct(reorder);
     end
 
 %     figure;imagesc(relationMatrix);colorbar; colormap(jet);

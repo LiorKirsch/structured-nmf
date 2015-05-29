@@ -9,6 +9,7 @@ dataset = take_from_struct(parms, 'dataset', 'brainspan2014');
 regions = take_from_struct(parms, 'regions', default_regions);
 regions = sort(regions);
 
+
 switch dataset
     case 'kang2011',      %==== Kang ===
       parms.dataset_file = 'kang_regions';
@@ -53,6 +54,7 @@ gross_regions = gross_structures_info(gross_region_vec);
 clear('expression', 'gross_region_vec', 'gross_regions', ...
       'gross_structures_info');
 
+parms.regions = region_names;
 parms.structre_type = 'relations_parent_level';
 parms = get_structure_matrix(parms.dataset_file, parms.structre_type,region_names, parms);
 %=======================================================================
@@ -72,7 +74,7 @@ H_lambda_list = take_from_struct(parms, 'H_lambda_list', [0 0.001 0.01 0.1 1 10 
 gene_subset_list = take_from_struct(parms, 'gene_subset_list', ...
                                     {'all','okaty_anova10000', ...
                     'okaty_anova5000' 'okaty_infogain5000', ...
-                    'okaty_infogain10000'});
+                    'okaty_infogain10000', 'okaty_infogain1000'});
 gene_okaty_filter_list = take_from_struct(parms, 'gene_okaty_filter_list', ...
                                        {'cortex_doyle', 'cortex', 'doyle', 'all'});
 constraints_list = {'on_simplex', 'inside_simplex', 'positive','on_simplex_with_noise'};
