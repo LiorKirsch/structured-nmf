@@ -49,7 +49,8 @@ set(groot,'defaultAxesColorOrder','default');
     for i = 1:n
         curr_results = results{i};
         baseline = cellfun(@(x) x.randbase_score, curr_results);
-        plot_h(n+2) = plot(x,baseline,'.');
+        baseline_sem = cellfun(@(x) x.randbase_score_sem, curr_results);
+        plot_h(n+2) = errorbar(x,baseline,baseline_sem,'.');
     end
     legend_strings{end +1} = sprintf('rand-sample baseline');
         

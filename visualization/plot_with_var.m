@@ -3,14 +3,14 @@ function plot_with_var(loop_over_var_name, loop_over_var_value, scores,score_pro
 % sample_sizes as a vector of size [num_sizes x 1]
 
    
-    subplot(1,2,1);
+%     subplot(1,2,1);
     do_mean_corr = true;
     alg_name = draw_the_main_figure(loop_over_var_name, loop_over_var_value, scores, parms,do_mean_corr,sprintf('1 - %s',parms.corr_type));
    
-    subplot(1,2,2);
-    do_mean_corr = false;
-    draw_the_main_figure(loop_over_var_name, loop_over_var_value, score_proportions, parms,do_mean_corr,'DKL'   );
-    
+%     subplot(1,2,2);
+%     do_mean_corr = false;
+%     draw_the_main_figure(loop_over_var_name, loop_over_var_value, score_proportions, parms,do_mean_corr,'DKL'   );
+%     
 
 %     switch loop_over_var_name{end}
 %         case 'num_types'

@@ -65,7 +65,7 @@ parms = get_structure_matrix(parms.dataset_file, parms.structre_type,region_name
 
 
 parms.W_constraints = 'on_simplex_with_noise';   % 'on_simplex', 'inside_simplex', 'positive','on_simplex_with_noise';
-parms.init_type = 'random';
+parms.init_type = 'random'; %'svd' , 'random'
 % parms.num_markers = 20;
 
 num_type_list = take_from_struct(parms, 'num_type_list', [3]) ;%1:8;
@@ -84,26 +84,26 @@ loop_over_var_name = {};
 loop_over_var_value = {};
 % loop_over_var_name{end + 1} = 'W_constraints';           % this cannot be the last list
 % loop_over_var_value{end + 1} = constraints_list;       % this cannot be the last list
-loop_over_var_name{end + 1} = 'gene_subset';           % this cannot be the last list
-loop_over_var_value{end + 1} = gene_subset_list;       % this cannot be the last list
+% loop_over_var_name{end + 1} = 'gene_subset';           % this cannot be the last list
+% loop_over_var_value{end + 1} = gene_subset_list;       % this cannot be the last list
 % loop_over_var_name{end + 1} = 'gene_okaty_filter';     % this cannot be the last list
 % loop_over_var_value{end + 1} = gene_okaty_filter_list; % this cannot be the last list
-% loop_over_var_name{end + 1} = 'num_types';
-% loop_over_var_value{end + 1} = num_type_list;
+loop_over_var_name{end + 1} = 'num_types';
+loop_over_var_value{end + 1} = num_type_list;
 % loop_over_var_name{end + 1} = 'num_markers';
 % loop_over_var_value{end + 1} = num_markers_list;
 loop_over_var_name{end + 1} = 'H_lambda';
 loop_over_var_value{end + 1} = H_lambda_list;
 
 parms.regions = region_names;
-parms.cell_types = arrayfun(@(x) sprintf('#%d',x),1:parms.num_types,'UniformOutput',false);
+parms.cell_types = arrayfun(@(idx) sprintf('#%d',idx),1:parms.num_types,'UniformOutput',false);
 
 results = loopOverHyperparms_real(X, gene_info, parms, loop_over_var_name, loop_over_var_value ,'');
 
 parms.draw_log_scale = true;
 draw_figure(loop_over_var_name, loop_over_var_value, results, parms, 'Corr');
 draw_indv_figure(loop_over_var_name, loop_over_var_value, results, parms, 'Corr');
-report_results(results);
+% report_results(results);
 
 
 

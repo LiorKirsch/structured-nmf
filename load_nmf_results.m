@@ -58,16 +58,16 @@ function [tree_X,reverse_map] = map_structure_to_region(X, data_regions, tree_re
 
     tree_X = cell(length(tree_regions),1);
     reverse_map = nan(length(data_regions),1);
-    for i = 1:length(tree_regions)
-        tree_region = tree_regions{i};
+    for tree_node_idx = 1:length(tree_regions)
+        tree_region = tree_regions{tree_node_idx};
         
-        z = find(ismember(data_regions,tree_region));
+        data_regions_idx = find(ismember(data_regions,tree_region));
         
-        if isempty(z)
-            tree_X{i} = [];
+        if isempty(data_regions_idx)
+            tree_X{tree_node_idx} = [];
         else
-            tree_X{i} = X{z};
-            reverse_map(z) = i;
+            tree_X{tree_node_idx} = X{data_regions_idx};
+            reverse_map(data_regions_idx) = tree_node_idx;
         end
     end
     

@@ -1,4 +1,5 @@
-function [mean_score, std_score, mean_proportions_score, std_proportions_score] = get_baseline_rand_samples(expression, true_profiles,true_proportions,num_profiles,parms)
+function [mean_score, std_score, mean_proportions_score, std_proportions_score] = ...
+    get_baseline_rand_samples(expression, true_profiles,true_proportions,num_profiles,parms)
 % Pick random samples from the data set as the profiles 
 % and use these samples to match the ground-true profiles.
 %
@@ -19,7 +20,8 @@ function [mean_score, std_score, mean_proportions_score, std_proportions_score] 
             samples = ceil(rand(1,curr_num_profile)*num_tissues);
             HH = expression(samples,:);
             WW = get_proportion_from_profile(expression,HH, parms);
-            [~, ~, randscores(i),rand_proportions_score(i)] = match_profiles_to_gt(WW, HH, true_profiles, true_proportions,parms.corr_type);
+            [~, ~, randscores(i),rand_proportions_score(i)] = match_profiles_to_gt(...
+                WW, HH, true_profiles, true_proportions,parms.corr_type);
         end
 
         mean_score(j) = mean(randscores);

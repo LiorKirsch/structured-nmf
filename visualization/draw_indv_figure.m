@@ -68,7 +68,8 @@ function draw_indv_figure(loop_over_var_name, loop_over_var_value, results, parm
          for j=1:3
             subplot(1,3,j);hold on;
             baseline = cellfun(@(x) x.randbase_celltype_region_avg_scores(j), curr_results);
-            plot_h(n +2) = plot(x,baseline,'.');
+            baseline_sem = cellfun(@(x) x.randbase_celltype_region_avg_scores_sem(j), curr_results);
+            plot_h(n +2) = errorbar(x,baseline,baseline_sem,'.');
         end
         
     end

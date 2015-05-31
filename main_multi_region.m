@@ -16,13 +16,13 @@ parms = conf(parms);
 
 mix_dir = '/cortex/data/microarray/mouse/Okaty2011/Mixtures/';
 mix_files = {};
-mix_files = [ mix_files ,    {'okaty2011-doyle_cortex_l5a_MN0.1_PR70-10-20_PVAR0.1.mat'}];
-mix_files = [ mix_files ,    {'okaty2011-doyle_cortex_l5b_MN0.1_PR70-10-20_PVAR0.1.mat'}];
-mix_files = [ mix_files ,    {'okaty2011-doyle_cortex_l6_MN0.1_PR70-10-20_PVAR0.1.mat'}];
-mix_files = [ mix_files ,    {'okaty2011-doyle_striatum_MN0.1_PR65-10-25_PVAR0.1.mat'}];
-mix_files = [ mix_files ,    {'okaty2011-doyle_cerebellum_MN0.1_PR50-15-35_PVAR0.1.mat'}];
-mix_files = [ mix_files ,    {'okaty2011-doyle_brainstem_MN0.1_PR65-10-25_PVAR0.1.mat'}];
-mix_files = [ mix_files ,    {'okaty2011-doyle_spinal_cord_MN0.1_PR65-10-25_PVAR0.1.mat'}];
+mix_files = [ mix_files ,    {'okaty2011-doyle_cortex_l5a_MN0.2_PR70-10-20_PVAR0.2.mat'}];
+mix_files = [ mix_files ,    {'okaty2011-doyle_cortex_l5b_MN0.2_PR70-10-20_PVAR0.2.mat'}];
+mix_files = [ mix_files ,    {'okaty2011-doyle_cortex_l6_MN0.2_PR70-10-20_PVAR0.2.mat'}];
+mix_files = [ mix_files ,    {'okaty2011-doyle_striatum_MN0.2_PR65-10-25_PVAR0.2.mat'}];
+mix_files = [ mix_files ,    {'okaty2011-doyle_cerebellum_MN0.2_PR50-15-35_PVAR0.2.mat'}];
+mix_files = [ mix_files ,    {'okaty2011-doyle_brainstem_MN0.2_PR65-10-25_PVAR0.2.mat'}];
+mix_files = [ mix_files ,    {'okaty2011-doyle_spinal_cord_MN0.2_PR65-10-25_PVAR0.2.mat'}];
 
 parms.mix_files = mix_files;
 mix_data = create_multi_region_mix(fullfile(mix_dir, mix_files));
@@ -44,7 +44,7 @@ parms.num_samples = 5;
 
 % alg_list = {'alsPinv', 'alsActiveSet', 'mm'}; % 'alsBlockpivot','cjlin', 'prob'}; 
 alg_list = {'alsActiveSet'}; 
-num_samples_list = [5, 10, 20, 50];%, 100,200];
+num_samples_list = [ 5, 10, 20, 50];%, 100,200];
 num_type_list = 3 ;%1:8;
 W_constraints_list = {'on_simplex', 'inside_simplex', 'positive','on_simplex_with_noise'};
 W_constraints_list = { 'on_simplex_with_noise'};
@@ -53,10 +53,10 @@ W_constraints_list = { 'on_simplex_with_noise'};
 % H_lambda_list = [  1 10 ];
 H_lambda_list = [ 0 0.001 0.01 0.1 1 10 100 1000 inf];
 % H_lambda_list = 1;
-% H_lambda_list = [100 1000 inf];
+H_lambda_list = [100 1000 inf];
 
-parms.num_restarts = 5; 
-parms.subsample_repeats = 5; 
+parms.num_restarts = 30; 
+parms.subsample_repeats = 30; 
 parms.init_type = 'random';
 
 
@@ -98,6 +98,10 @@ end
 % loop_over_var_value{end + 1} = rm_list;
 
 % [baseline_scores, baseline_std] = get_baseline_profile_mean(X, GT_profiles,loop_over_var_value{end});
+% [scores,proportions_scores, parmslist] = iterateParms_multi(X, GT_profiles, ...
+%     GT_proportions, rand_subset, parms, ...
+%     loop_over_var_name, loop_over_var_value, true);
+
 [scores, proportions_scores] = loopOverHyperparms_multi(X, GT_profiles, ...
     GT_proportions, rand_subset, parms, ...
     loop_over_var_name, loop_over_var_value, '');

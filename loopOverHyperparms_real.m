@@ -55,11 +55,13 @@ function results = loopOverHyperparms_real(X, gene_info,...
                                         true_profiles, region_names,false);  
      
 	 %===== rand sample baseline ======%
-     [randbase_celltype_profile, randbase_proportions] =...
-           get_randsamp_baseline(curr_X,gene_inds_predictions,parms);
-     randbase_result = get_all_scores(randbase_celltype_profile, randbase_proportions, ...
-                                        true_profiles, region_names,false);  
-                                    
+%      [randbase_celltype_profile, randbase_proportions] =...
+%            get_randsamp_baseline(curr_X,gene_inds_predictions,parms);
+%      randbase_result = get_all_scores(randbase_celltype_profile, randbase_proportions, ...
+%                                         true_profiles, region_names,false);  
+    
+     randbase_result = get_randbaseline(curr_X, gene_inds_predictions,region_names,...
+            true_profiles,parms.num_types,parms);
                                     
                                     
      parfor i_vars = 1: length(var_values)
@@ -94,8 +96,11 @@ function results = loopOverHyperparms_real(X, gene_info,...
          
          
          curr_result.randbase_score = randbase_result.run_score;
+         curr_result.randbase_score_sem = randbase_result.run_score_sem;
          curr_result.randbase_celltype_region_avg_scores = randbase_result.celltype_region_avg_scores;
+         curr_result.randbase_celltype_region_avg_scores_sem = randbase_result.celltype_region_avg_scores_sem;
          curr_result.randbase_region_scores = randbase_result.region_scores ;
+         curr_result.randbase_region_scores_sem = randbase_result.region_scores_sem ;
          curr_result.randbase_celltype_score = randbase_result.celltype_scores ;
          
          parsave(curr_result,current_parms);
