@@ -47,11 +47,11 @@ function plot_with_var(loop_over_var_name, loop_over_var_value, scores,score_pro
 %             errorbar(loop_over_var_value{end},baseline_Mean_prop_score,baseline_Mean_prop_std,'b--','LineWidth',2);
 %     end
         
-    subplot(1,2,2); 
+%     subplot(1,2,2); 
     if ~iscell(alg_name)
         alg_name = arrayfun(@num2str, alg_name, 'UniformOutput', false);
     end
-    legend(alg_name,'Location','southeast');
+    legend(alg_name,'Location','best'); legend('boxoff');
     hold off;
     
 
@@ -134,10 +134,10 @@ function alg_name = draw_the_main_figure(loop_over_var_name, loop_over_var_value
         set(gca,'XTick', x);
         tmp = get(gca,'XTickLabel');
         if any(loop_over_var_value{end} == 0 )
-            tmp{loop_over_var_value{end} == 0} = '0';
+            tmp{loop_over_var_value{end} == 0} = 'seperated models';
         end
         if any(isinf(loop_over_var_value{end}))
-            tmp{isinf(loop_over_var_value{end})} = 'inf';
+            tmp{isinf(loop_over_var_value{end})} = 'no region information';
         end
         set(gca,'XTickLabel', tmp);
     end

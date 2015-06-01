@@ -53,10 +53,10 @@ W_constraints_list = { 'on_simplex_with_noise'};
 % H_lambda_list = [  1 10 ];
 H_lambda_list = [ 0 0.001 0.01 0.1 1 10 100 1000 inf];
 % H_lambda_list = 1;
-H_lambda_list = [100 1000 inf];
+% H_lambda_list = [100 1000 inf];
 
-parms.num_restarts = 30; 
-parms.subsample_repeats = 30; 
+parms.num_restarts = 5; 
+parms.subsample_repeats = 5; 
 parms.init_type = 'random';
 
 
@@ -112,7 +112,8 @@ new_loop_over_var_value = loop_over_var_value(2:end);
 
 
 colors_to_use = linspecer(length(loop_over_var_value{2}));
-colors_to_use = autumn(length(loop_over_var_value{2}));
+colors_to_use = autumn(length(loop_over_var_value{2}) +1);
+colors_to_use = colors_to_use(1:end-1,:);
 set(groot,'defaultAxesColorOrder',colors_to_use);
 
 
@@ -138,12 +139,12 @@ for i = 1:length(loop_over_var_value{1});
     
 
     plot_with_var(new_loop_over_var_name, new_loop_over_var_value, cur_scores,cur_proportions_scores,X,GT_profiles, GT_proportions, parms);
-    ylim([.88 0.95]);
-    subplot(1,2,1);
-    title(sprintf('profile - %s',curr_val_string));
-    subplot(1,2,2);
-    title(sprintf('proportions - %s',curr_val_string));
-    ylim([0 1.5 ]);
+%     ylim([.88 0.95]);
+%     subplot(1,2,1);
+%     title(sprintf('profile - %s',curr_val_string));
+%     subplot(1,2,2);
+%     title(sprintf('proportions - %s',curr_val_string));
+%     ylim([0 1.5 ]);
     
     fig_file_name = set_filenames('figure', parms);
     saveas(gcf,fig_file_name);

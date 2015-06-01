@@ -1,5 +1,5 @@
 function [relationMatrix, all_strct] = ...
-        get_relation_structure(tree_structure_matrix, all_strct, ...
+        get_relation_structure(parms, tree_structure_matrix, all_strct, ...
                                              limit_to, relation_type, X)
 % get the relation matrix
 % the larger the weight the strong the connection between the region is
@@ -8,6 +8,8 @@ function [relationMatrix, all_strct] = ...
     if ~exist('relation_type','var')
         relation_type = 'common_parent_level';
     end
+    
+    structure_filter = take_from_struct(parms, 'structure_filter', nan);
     
 %   [tree_structure_matrix, all_strct] = get_tree_structure(false,limit_to);
     tree_structure_matrix = sparse(double(tree_structure_matrix));
@@ -74,6 +76,10 @@ function [relationMatrix, all_strct] = ...
         [~, reorder] = ismember(limit_to, all_strct);
         relationMatrix = relationMatrix(reorder, reorder);
         all_strct = all_strct(reorder);
+    end
+
+    if ~isnan(structure_filter)
+        relationMatrix( relationMatrix < structure_filter) = 0;
     end
 
 %     figure;imagesc(relationMatrix);colorbar; colormap(jet);
