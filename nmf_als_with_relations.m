@@ -198,9 +198,9 @@ for iter=1:maxiter
         H(:,all_marker_indices) = H_marker_part;
         H(:,~all_marker_indices) = H_non_marker_parts;
     
-
+        %==== Solve for W
         W = solve_als_for_W(W, H,X,als_solver);
-        %==== Projection step
+        %==== Projection step for W
         W = project_proportions( W, W_constraints,parms );
 
         
@@ -230,9 +230,9 @@ for iter=1:maxiter
     end
 end
 
-if (iter==maxiter)
-    fprintf('max limit iteration reached (diff %g)\n', nmf_euclidean_dist(X,W*H) );
-end
+% if (iter==maxiter)
+%     fprintf('max limit iteration reached (diff %g)\n', nmf_euclidean_dist(X,W*H) );
+% end
 end
 
 

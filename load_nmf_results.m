@@ -9,7 +9,7 @@ function  [best_W, best_H, best_diff_record, best_time_record, ...
     vars = {'best_W', 'best_H', 'best_diff_record', ...
             'best_time_record','eucl_dist'};
     filename  = set_filenames('demixing', parms);
-%     disp(filename);
+    %     disp(filename);
     [do_calc, best_W, best_H, best_diff_record, best_time_record, ...
      eucl_dist] = cond_load(filename, 0, vars{1:end});
     if do_calc < 1 
@@ -27,7 +27,7 @@ function  [best_W, best_H, best_diff_record, best_time_record, ...
           best_H = tree_best_H(reverse_map);
           best_W = tree_best_W(reverse_map);
         case {'relations','relations_dist','relations_parentdist', 'relations_parent_level'}
-%           X_models = split_data(X, sample_id);
+          %           X_models = split_data(X, sample_id);
           
           [best_W, best_H, best_diff_record, ...
               best_time_record, eucl_dist] ...
@@ -44,6 +44,7 @@ function  [best_W, best_H, best_diff_record, best_time_record, ...
     fprintf('Saved demixing results into [%s]\n', filename);
 end
 
+
 function X_array = split_data(X, sample_id)
     assert(size(X,1) == sample_id ,'each sample in X should have an id');
     uniq_samp_id = unique(sample_id);
@@ -54,8 +55,9 @@ function X_array = split_data(X, sample_id)
 
 end
 
-function [tree_X,reverse_map] = map_structure_to_region(X, data_regions, tree_regions)
 
+function [tree_X,reverse_map] = map_structure_to_region(X, data_regions, ...
+                                                      tree_regions)
     tree_X = cell(length(tree_regions),1);
     reverse_map = nan(length(data_regions),1);
     for tree_node_idx = 1:length(tree_regions)

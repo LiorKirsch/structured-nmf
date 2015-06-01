@@ -145,7 +145,7 @@ for iter=1:maxiter
 end
 
 if (iter==maxiter)
-    disp('max limit iteration reached');
+    disp(sprintf('max limit iteration (%d) reached', maxiter));
 end
 end
 

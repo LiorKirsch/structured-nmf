@@ -30,9 +30,7 @@ function results = loopOverHyperparms_real(X, gene_info,...
      
      [~, curr_X, ~] = cellfun(@(x) gene_subset_selection(gene_info, ...
                                           x, parms), X,'UniformOutput',false);
-     
-   
-    
+         
      % load the true profiles for each region
      mouse_cell_types = load('mouse_cell_type_profiles.mat');
      mouse_cell_types.expression = 2 .^ mouse_cell_types.expression;
@@ -40,28 +38,27 @@ function results = loopOverHyperparms_real(X, gene_info,...
          match_region_with_true_profile(mouse_cell_types, region_names);
      
      % map the genes used in the true profile in the genes in the data
-     [gene_inds_true_type,gene_inds_predictions] = compare_to_true_profile(...
+     [gene_inds_true_type,gene_inds_predictions] = compare_to_true_profile( ...
          mouse_cell_types,curr_gene_info, parms.species,parms);
       true_profiles = cellfun(@(x) x(gene_inds_true_type,:), ...
-                         true_celltype_per_region,'UniformOutput',false);
-         
-                     
-                     
+                              true_celltype_per_region,'UniformOutput',false);
+                                          
      %===== mean profile baseline ======%
-     [baseline_celltype_profile, baseline_proportions] =get_mean_baseline(...
+     [baseline_celltype_profile, baseline_proportions] = get_mean_baseline( ...
          curr_X,gene_inds_predictions);
-     baseline_result = get_all_scores(baseline_celltype_profile, baseline_proportions, ...
-                                        true_profiles, region_names,false);  
+     baseline_result = get_all_scores(baseline_celltype_profile, ...
+                                      baseline_proportions, ...
+                                      true_profiles, region_names,false);  
      
-	 %===== rand sample baseline ======%
-%      [randbase_celltype_profile, randbase_proportions] =...
-%            get_randsamp_baseline(curr_X,gene_inds_predictions,parms);
-%      randbase_result = get_all_scores(randbase_celltype_profile, randbase_proportions, ...
-%                                         true_profiles, region_names,false);  
-    
-     randbase_result = get_randbaseline(curr_X, gene_inds_predictions,region_names,...
-            true_profiles,parms.num_types,parms);
-                                    
+     %===== rand sample baseline ======%
+     %      [randbase_celltype_profile, randbase_proportions] =...
+     %            get_randsamp_baseline(curr_X,gene_inds_predictions,parms);
+     %      randbase_result = get_all_scores(randbase_celltype_profile, randbase_proportions, ...
+     %                                         true_profiles, region_names,false);           
+     randbase_result = get_randbaseline(curr_X, ...
+                                        gene_inds_predictions,region_names, ...
+                                        true_profiles, ...
+                                        parms.num_types,parms);
                                     
      parfor i_vars = 1: length(var_values)
          current_parms = parms;
@@ -86,14 +83,12 @@ function results = loopOverHyperparms_real(X, gene_info,...
          curr_result.var_name = var_name;
          curr_result.loop_string = new_loop_string;
          curr_result.var_value = var_current_value;
-         
-         
+                  
          curr_result.baseline_score = baseline_result.run_score;
          curr_result.baseline_celltype_region_avg_scores = baseline_result.celltype_region_avg_scores;
          curr_result.baseline_region_scores = baseline_result.region_scores ;
          curr_result.baseline_celltype_score = baseline_result.celltype_scores ;
-         
-         
+                  
          curr_result.randbase_score = randbase_result.run_score;
          curr_result.randbase_score_sem = randbase_result.run_score_sem;
          curr_result.randbase_celltype_region_avg_scores = randbase_result.celltype_region_avg_scores;
@@ -176,14 +171,13 @@ function output = get_all_scores(predicted_profiles, predicted_proportions, ...
         individual_scores{i} = [individual_scores{i}; ...
                 nan( max(0,3 -length(individual_scores{i})),1)]; 
             
-%         fprintf('%25s: %4.2f ',region_name{i}, 100*best_scores(i));
-%         
-%         if show_individual
-%             for individual_i = 1:length(individual_scores{i})
-%                 fprintf('\ttype %d: %4.2f', individual_i, 100*individual_scores{i}(individual_i));
-%             end
-%             fprintf('\n');
-%         end
+        %         fprintf('%25s: %4.2f ',region_name{i}, 100*best_scores(i));%         
+        %         if show_individual
+        %             for individual_i = 1:length(individual_scores{i})
+        %                 fprintf('\ttype %d: %4.2f', individual_i, 100*individual_scores{i}(individual_i));
+        %             end
+        %             fprintf('\n');
+        %         end
     end
     output.celltype_scores =  individual_scores;
     output.region_scores =  best_scores;
@@ -194,11 +188,12 @@ function output = get_all_scores(predicted_profiles, predicted_proportions, ...
     M = cat(dim+1,individual_scores{:});        % Convert to a (dim+1)-dimensional matrix
     output.celltype_region_avg_scores = nanmean(M,dim+1);     % Get the mean across arrays
                 
-%     fprintf('\tREGION MEAN SCORE: %5.3g====\n', output.run_score);
+    %     fprintf('\tREGION MEAN SCORE: %5.3g====\n', output.run_score);
 end
 
-function parms = get_current_markers(parms, gene_symbols)
 
+function parms = get_current_markers(parms, gene_symbols)
+%
     num_genes = length(gene_symbols);
     num_regions = length(parms.relation_regions);
      if isfield(parms,'num_markers')
@@ -221,8 +216,9 @@ function parms = get_current_markers(parms, gene_symbols)
     
 end
 
-function [baseline_celltype_profile, baseline_proportions] =...
-           get_mean_baseline(curr_X,gene_inds_predictions)
+function [baseline_celltype_profile, baseline_proportions] = ...
+        get_mean_baseline(curr_X,gene_inds_predictions)
+%
      baseline_celltype_profile = cellfun(@(x) mean(x), curr_X,'UniformOutput',false);
      baseline_celltype_profile = cellfun(@(x) x(:,gene_inds_predictions)', ...
                                          baseline_celltype_profile,'UniformOutput',false);
@@ -231,21 +227,25 @@ function [baseline_celltype_profile, baseline_proportions] =...
      baseline_proportions = cellfun(@(x) zeros(3,3), curr_X ,'UniformOutput',false);
 end
 
+
 function [baseline_celltype_profile, baseline_proportions] =...
            get_randsamp_baseline(curr_X,gene_inds_filter,parms)
-     rng(parms.rand_seed);
-     
+%
+     rng(parms.rand_seed);     
      [num_samp, num_genes] = cellfun(@size, curr_X);
-     rand_inds = arrayfun(@(x) randperm(x, parms.num_types), num_samp,'UniformOutput',false);
+     rand_inds = arrayfun(@(x) randperm(x, parms.num_types), ...
+                          num_samp,'UniformOutput',false);
      
      baseline_celltype_profile = cellfun(@(x,samp_inds) x(samp_inds,gene_inds_filter)',...
          curr_X,rand_inds,'UniformOutput',false);
-%      baseline_celltype_profile = cellfun(@(x) x(:,gene_inds_predictions)', ...
-%                                          baseline_celltype_profile,'UniformOutput',false);
+     % baseline_celltype_profile = cellfun(@(x) x(:,gene_inds_predictions)', ...
+     %                            baseline_celltype_profile,'UniformOutput',false);
      baseline_proportions = cellfun(@(x) zeros(3,3), curr_X ,'UniformOutput',false);
 end
 
+
 function parsave(curr_result,parms)
+%
     filename  = set_filenames('results', parms);
     save(filename, 'curr_result','parms');
 end

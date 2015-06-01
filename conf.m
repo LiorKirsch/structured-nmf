@@ -2,7 +2,7 @@ function parms = conf(parms)
 
 
 parms.num_types = take_from_struct(parms, 'num_types', 3);  
-parms.maxiter = take_from_struct(parms, 'maxiter', 500);  
+parms.maxiter = take_from_struct(parms, 'maxiter', 500);
 parms.loglevel = take_from_struct(parms, 'loglevel', 0);  
 parms.W_constraints = take_from_struct(parms, 'W_constraints', 'on_simplex_with_noise');  
   % 'on_simplex', 'inside_simplex', 'positive','on_simplex_with_noise';

@@ -33,7 +33,7 @@ function result = get_randbaseline(curr_X, gene_inds_predictions, ...
                 t = t + randbase_result.celltype_scores{1}(:)';
             end
             t = t / num_regions;
-            randbase_celltype_scores(i,1:num_celltypes) = t;
+            randbase_celltype_scores(i,1:3) = t;
     end
 
     result.run_score = mean(randbase_score);

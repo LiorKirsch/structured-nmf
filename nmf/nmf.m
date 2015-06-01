@@ -52,7 +52,7 @@ eucl_dist = nan(num_restarts,1);
 switch init_type
     case 'random'
         for i = 1:num_restarts
-
+            fprintf('====== restart %d (%d) ======\n', i, num_restarts);
             if iscell(X) 
                 [W_init, H_init] = cellfun(@(x) get_random_W_H(x,K,parms),X,'UniformOutput',false);
             else
@@ -83,6 +83,7 @@ switch init_type
         end
 
         fprintf('==== best random restart - %d ====\n',best_iteration);
+
     case 'svd'
         if iscell(X) 
             [W_init, H_init] = cellfun(@(x) nndsvd(x,K,0),X,'UniformOutput',false);
@@ -94,16 +95,15 @@ switch init_type
     otherwise
         error('unkown init option -%s',init_type);
     
+    end
 end
-end
+
 
 function [W,H,diff_record,time_record] = nmf_alg_selection(X,W_init,H_init,alg,parms)
-
-
-loglevel = take_from_struct(parms, 'loglevel', 1);
-do_sep_init = take_from_struct(parms, 'do_sep_init', false);
-diff_record = nan;
-time_record = nan;
+    loglevel = take_from_struct(parms, 'loglevel', 1);
+    do_sep_init = take_from_struct(parms, 'do_sep_init', false);
+    diff_record = nan;
+    time_record = nan;
 
     % switch algorithm 
     switch alg
@@ -148,10 +148,12 @@ time_record = nan;
                     if isfield(curr_parms,'H_markers')
                         curr_parms.H_markers = parms.H_markers{i_cell};
                     end
-                    [W_init{i_cell},H_init{i_cell},diff_record,time_record]=nmf_als(curr_parms,X{i_cell},W_init{i_cell},H_init{i_cell});
+                    [W_init{i_cell}, H_init{i_cell}, diff_record, ...
+                     time_record] = nmf_als(curr_parms,X{i_cell}, ...
+                                            W_init{i_cell},H_init{i_cell});
                 end
                 disp('==warm start done==');
-%                 [W_init,H_init]=cellfun(@(x,w,h) nmf_als(curr_parms,x,w,h) ,X,W_init,H_init,'UniformOutput',false);
+                % [W_init,H_init]=cellfun(@(x,w,h) nmf_als(curr_parms,x,w,h) ,X,W_init,H_init,'UniformOutput',false);
             end
             
             if isinf(parms.H_lambda)
@@ -175,7 +177,7 @@ time_record = nan;
                 curr_W_init = cat(1,W_init{:});  % Concat W_init
                 curr_X = cat(1,X{:});            % Concat X
                 for i_nodes = 1:length(X)
-%                     curr_X = cat(1,curr_X,X{i_nodes});
+                    % curr_X = cat(1,curr_X,X{i_nodes});
                     reverse_map = cat(1,reverse_map, i_nodes*ones(size(X{i_nodes},1),1) );
                 end
                 
@@ -190,10 +192,11 @@ time_record = nan;
                 [W,H,diff_record,time_record]=nmf_als_with_relations(parms,X,...
                         relation_matrix_for_H,W_init, H_init);
             end
-    %     case 'alsobs'
-    %         if loglevel, disp('Using alsobs algorithm'),end
-    %         [W,H]=nmf_alsobs(X,K,maxiter,loglevel);
-        otherwise
+            % case 'alsobs'
+            %   if loglevel, disp('Using alsobs algorithm'),end
+            %   [W,H]=nmf_alsobs(X,K,maxiter,loglevel);
+
+      otherwise
             error('Unknown method. Type "help nmf" for usage.');
             return
     end
