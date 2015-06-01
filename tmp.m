@@ -10,7 +10,15 @@ all_pairs = nchoosek(1:length(region_set), 2);
 all_pairs = all_pairs(randperm(size(all_pairs,1)),:);
 for  i = 1:size(all_pairs,1)
 %     try
-       parms.regions = region_set(all_pairs(i,:) );
+%     parms.structure_filter = 10;
+      parms.regions = region_set(all_pairs(i,:) );
+
+      parms.init_type = 'random';
+      parms.W_constraints = 'positive';
+
+      parms.num_restarts = 30;
+      parms.maxiter = 1000;  
+
        main_real_data 
 %     catch
         

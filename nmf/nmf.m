@@ -141,14 +141,16 @@ time_record = nan;
             end
             
              if do_sep_init
+                disp('=== warm start ===');
                 curr_parms = parms;
                 curr_parms.H_lambda = 0;
                 for i_cell =1 :length(X)
                     if isfield(curr_parms,'H_markers')
                         curr_parms.H_markers = parms.H_markers{i_cell};
                     end
-                    [W_init{i_cell},H_init{i_cell}]=nmf_als(curr_parms,X{i_cell},W_init{i_cell},H_init{i_cell});
+                    [W_init{i_cell},H_init{i_cell},diff_record,time_record]=nmf_als(curr_parms,X{i_cell},W_init{i_cell},H_init{i_cell});
                 end
+                disp('==warm start done==');
 %                 [W_init,H_init]=cellfun(@(x,w,h) nmf_als(curr_parms,x,w,h) ,X,W_init,H_init,'UniformOutput',false);
             end
             

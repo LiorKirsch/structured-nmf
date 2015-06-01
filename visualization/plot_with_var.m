@@ -1,4 +1,6 @@
-function plot_with_var(loop_over_var_name, loop_over_var_value, scores,score_proportions, X,GT_profiles, GT_proportions, parms)
+function plot_with_var(loop_over_var_name, loop_over_var_value, ...
+                       scores,score_proportions, X,GT_profiles, ...
+                       GT_proportions, parms)
 % scores as a matrix of size [num_sizes x repeats]
 % sample_sizes as a vector of size [num_sizes x 1]
 
@@ -53,7 +55,6 @@ function plot_with_var(loop_over_var_name, loop_over_var_value, scores,score_pro
     end
     legend(alg_name,'Location','best'); legend('boxoff');
     hold off;
-    
 
     if isfield(parms,'dataset_file')
         if strncmp('okaty', parms.dataset_file,length('okaty'))
@@ -68,9 +69,6 @@ function plot_with_var(loop_over_var_name, loop_over_var_value, scores,score_pro
             end
         end
     end
-    
-    
-    
 end
 
 function varargout = do_repmat(new_size, varargin)
@@ -79,7 +77,9 @@ function varargout = do_repmat(new_size, varargin)
     end
 end
 
-function alg_name = draw_the_main_figure(loop_over_var_name, loop_over_var_value, scores, parms,do_mean_corr,y_label)
+function alg_name = draw_the_main_figure(loop_over_var_name, ...
+                                         loop_over_var_value, scores, ...
+                                         parms,do_mean_corr,y_label)
     hold on;
     alg_name = loop_over_var_value{1};
     
@@ -112,25 +112,21 @@ function alg_name = draw_the_main_figure(loop_over_var_name, loop_over_var_value
         end
         y_sem = y_std / sqrt(size(curr_scores,2));
         
-        x(x == 0) = 10^-7;
-        x(isinf(x)) = 10^+7;
+        x(x == 0) = 10^-5;
+        x(isinf(x)) = 10^+5;
 
         x_noise = (2*rand(size(x))-1).*x *0.05;
 %         x_noise = ( i-1 )*0.5;
         ax = errorbar(x + x_noise,y,y_sem,'LineWidth',2);
-        
-        
     end
     hold off;
 
-    x_label = strrep(loop_over_var_name{end},'_',' ') ;
+    x_label = strrep(loop_over_var_name{end}, '_', ' ') ;
     xlabel(x_label);
     ylabel(y_label);
     
     if parms.draw_log_scale
         set(gca,'XScale','log')
-        
-
         set(gca,'XTick', x);
         tmp = get(gca,'XTickLabel');
         if any(loop_over_var_value{end} == 0 )
@@ -141,7 +137,4 @@ function alg_name = draw_the_main_figure(loop_over_var_name, loop_over_var_value
         end
         set(gca,'XTickLabel', tmp);
     end
-    
-        
-
 end

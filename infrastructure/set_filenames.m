@@ -14,6 +14,12 @@ function [full_name, file_name, dir_name] = set_filenames(file_type, parms)
       dir_name = fullfile(base_dir_name, dirparmstr);
       file_name = sprintf('results_%s.mat', parmstr);
       auto_mkdir = 1;
+    case 'precision', 
+      base_dir_name = fullfile('/cortex/users/lior/nmf/precision/');
+      [parmstr, dirparmstr] = set_parmstr(parms);
+      dir_name = fullfile(base_dir_name, dirparmstr);
+      file_name = sprintf('precision_%s.mat', parmstr);
+      auto_mkdir = 1;
     case 'gene_subset', 
       base_dir_name = fullfile('/cortex/users/lior/nmf/runs/gene_subset');
       [parmstr, dirparmstr] = set_parmstr(parms);

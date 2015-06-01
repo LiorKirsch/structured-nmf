@@ -1,4 +1,4 @@
-function [W_models,H_models,diff_record,time_record]=nmf_als_with_relations(parms,X_models,relation_matrix_for_H,W_init_model, H_init_model)
+function [W_models,H_models,diff_record_models,time_record]=nmf_als_with_relations(parms,X_models,relation_matrix_for_H,W_init_model, H_init_model)
 % At each iteration it blocks one matrix solve a least squares solution,
 % projects onto the positives and then switches the blocked matrix and does
 % the same thing.
@@ -101,15 +101,42 @@ for i=1:num_models
 
 %     Xr_old = W_init*H_init;
 
-    diff_record =nan(1,maxiter);
     time_record =nan(1,maxiter); tic;
 
     W_models{i} = W_init;
     H_models{i} = H_init;
 end
 
+Xr_old_models = cellfun(@(W,H) W*H,W_models,H_models,'UniformOutput',false);
+diff_record_models = repmat( {nan(1,maxiter)}, num_models,1);
+init_grad = cell(num_models,1);
+init_time = cell(num_models,1);
 
 for iter=1:maxiter
+    
+     if (rem(iter,10)==1 && early_stop) 
+        reached_early = false(num_models,1);
+        for model_iter=1:num_models
+            W = W_models{model_iter};
+            H = H_models{model_iter};
+            X = X_models{model_iter};
+            
+            if iter==1,
+              gradW = W*(H*H') - X*H';     gradH = (W'*W)*H - W'*X;
+              init_grad{model_iter} = norm([gradW; gradH'],'fro');
+              init_time{model_iter} = cputime;  
+    %           fprintf('init grad norm %f\n', init_grad);
+            end
+            reached_early(model_iter) =  check_for_early_stopping(X,W,H,init_time{model_iter},init_grad{model_iter},parms);
+        end
+        
+        if all(reached_early)
+            fprintf(' (Iter = %d)\n', iter);
+          break
+        end
+     end
+    
+     
     for model_iter=1:num_models
     %======
     % for each model solve the problem using the related models as
@@ -122,7 +149,8 @@ for iter=1:maxiter
         H_prior = H_prior_models{model_iter};
         H_markers = H_markers_models{model_iter};
         H_lambda_prior = H_lambda_priors(model_iter);
-        
+        Xr_old = Xr_old_models{model_iter};
+        diff_record = diff_record_models{model_iter};
     %==== Minization step
     
         relation_coeff = relation_matrix_for_H(model_iter,:);
@@ -177,23 +205,27 @@ for iter=1:maxiter
         if (rem(iter,print_interval)==0) && (loglevel >0)
             Xr = W*H;
             diff = sum(sum(abs(Xr_old-Xr)));
-            Xr_old = Xr;
+            
             eucl_dist  = nmf_euclidean_dist(X,W*H);
+            eucl_dist_old  = nmf_euclidean_dist(X,Xr_old);
             errorx=mean(mean(abs(X-W*H)))/mean(mean(X));
-            fprintf('Iter %d ||X-WH||=%g, mean(X-WH)=%g, diff(k,k-1)=%g\n',...
-                iter,eucl_dist,errorx, diff);
+            fprintf('Iter %d ||X-WH||=%g, mean(X-WH)=%g, diff(k,k-1)=%g, ||X-WH||delta=%g\n',...
+                iter,eucl_dist,errorx, diff, eucl_dist_old - eucl_dist);
             if errorx < 10^(-5), break, end
+            
+            Xr_old_models{model_iter} = Xr;
         end
 
          if record_scores
             diff_record(iter) = nmf_euclidean_dist(X,W*H);
             time_record(iter) = toc;
          end
+         diff_record_models{model_iter} = diff_record;
     end
 end
 
 if (iter==maxiter)
-    disp('max limit iteration reached');
+    fprintf('max limit iteration reached (diff %g)\n', nmf_euclidean_dist(X,W*H) );
 end
 end
 

@@ -1,8 +1,9 @@
-function draw_figure(loop_over_var_name, loop_over_var_value, results, parms,y_label)
+function draw_figure(loop_over_var_name, loop_over_var_value, results, ...
+                     parms, y_label)
 %
     FigHandle = figure('Name',parms.dataset_file); clf; hold on;
     set(FigHandle, 'Position', [100, 100, 1600, 1000]);
-set(groot,'defaultAxesColorOrder','default');       
+    set(groot, 'defaultAxesColorOrder','default');       
         
     recursion_levels = length(loop_over_var_value);
     n = length(loop_over_var_value{1});
@@ -32,9 +33,8 @@ set(groot,'defaultAxesColorOrder','default');
         legend_strings = arrayfun(@(x) sprintf('%s %g',loop_over_var_name{1},x), legend_strings, ...
                                   'UniformOutput', false);
     end
-    
 
-    set(groot,'defaultAxesColorOrder','default');       
+    set(groot, 'defaultAxesColorOrder','default');       
     % draw the mean baselines
     for i = 1:n
         curr_results = results{i};
@@ -44,7 +44,7 @@ set(groot,'defaultAxesColorOrder','default');
     legend_strings{end +1} = sprintf('mean-profile baseline');
 
     
-    set(groot,'defaultAxesColorOrder','default');       
+    set(groot, 'defaultAxesColorOrder','default');       
     % draw the rand baselines
     for i = 1:n
         curr_results = results{i};
@@ -54,6 +54,9 @@ set(groot,'defaultAxesColorOrder','default');
     end
     legend_strings{end +1} = sprintf('rand-sample baseline');
         
+    
+    plot_h(n+3) = plot(x,repmat(0.877,size(x)),'k');
+    legend_strings{end +1} = sprintf('Cortex - upper limit');
     
     legend_strings = strrep(legend_strings, '_', ' ');
     legend(plot_h,legend_strings, 'location', 'best');
@@ -79,6 +82,5 @@ set(groot,'defaultAxesColorOrder','default');
     parms.fig_x_axis = x_label;
     [~,file_name,dir_name] = set_filenames('figure_real', parms);
     fprintf('drawing figure - %s\n',fullfile(dir_name,file_name));
-    saveas(gcf,fullfile(dir_name,file_name));  
-
+    saveas(gcf,fullfile(dir_name,file_name));
 end

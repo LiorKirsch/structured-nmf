@@ -121,11 +121,18 @@ for iter=1:maxiter
     if (rem(iter,print_interval)==0) && (loglevel >0)
         Xr = W*H;
         diff = sum(sum(abs(Xr_old-Xr)));
-        Xr_old = Xr;
         eucl_dist  = nmf_euclidean_dist(X,W*H);
+        eucl_dist_old  = nmf_euclidean_dist(X,Xr_old);
         errorx=mean(mean(abs(X-W*H)))/mean(mean(X));
-        fprintf('Iter %d ||X-WH||=%g, mean(X-WH)=%g, diff(k,k-1)=%g\n',...
-            iter,eucl_dist,errorx, diff);
+        fprintf('Iter %d ||X-WH||=%g, mean(X-WH)=%g, diff(k,k-1)=%g, ||X-WH||delta=%g\n',...
+            iter,eucl_dist,errorx, diff, eucl_dist_old - eucl_dist);
+         
+        Xr_old = Xr;
+
+%         eucl_dist  = nmf_euclidean_dist(X,W*H);
+%         errorx=mean(mean(abs(X-W*H)))/mean(mean(X));
+%         fprintf('Iter %d ||X-WH||=%g, mean(X-WH)=%g, diff(k,k-1)=%g\n',...
+%             iter,eucl_dist,errorx, diff);
         if errorx < 10^(-5), break, end
     end
 

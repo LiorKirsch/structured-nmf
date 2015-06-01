@@ -11,12 +11,17 @@ grp =unique(reference);
 grp(3) = [] ; % remove Chung which has no cortex samples
 calibrated_corr = nan(length(grp));
 median_corr = nan(length(grp));
+
+filter = true(length(reference),1);
+% filter = filter & is_cortex_or_hippocampus;
+% filter = filter & is_neuron;
+
 for i =1:length(grp)
-    rel_sampl_i = ismember(reference,grp(i)) & is_cortex_or_hippocampus  &is_neuron ;
+    rel_sampl_i = ismember(reference,grp(i)) & filter ;
     rel_sampl_i = logical(sample2type * double(rel_sampl_i));
     
     for j = i+1: length(grp)
-        rel_sampl_j = ismember(reference,grp(j)) & is_cortex_or_hippocampus;
+        rel_sampl_j = ismember(reference,grp(j)) & filter;
         rel_sampl_j = logical(sample2type * double(rel_sampl_j));
         
         corr_score = corr(expression(:,rel_sampl_i), ...
@@ -39,6 +44,8 @@ end
     
     
 figure;
+median_exp_score = nanmedian(median_corr(:));
+fprintf('The median corr is %g\n',  median_exp_score);
 imagescnan(median_corr,'NanColor',[.94 .94 .94])
 colormap(hot); colorbar;
 

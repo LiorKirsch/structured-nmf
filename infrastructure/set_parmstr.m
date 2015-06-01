@@ -96,9 +96,11 @@ function [parmstr, dirparmstr] = set_parmstr(parms)
             sum_hash = sum(sum(parms.structure_matrix));
             parmstr = sprintf('%s_Hash%g', parmstr, sum_hash);
             
-            parms.
+            
             if isfield(parms, 'structure_filter')
-                parmstr = sprintf('%s_fltr%g', parmstr, parms.structure_filter);
+                if ~isnan(parms.structure_filter)
+                    parmstr = sprintf('%s_fltr%g', parmstr, parms.structure_filter);
+                end
             end
             
             if isfield(parms, 'do_sep_init')

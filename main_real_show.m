@@ -1,8 +1,7 @@
 init;
   
-
 parms = conf(parms);
-%TODO( ? need this? show_results = false;
+
 
 dataset = take_from_struct(parms, 'dataset', 'brainspan2014');
 [default_regions, parms.species] = get_region_set(dataset);
@@ -96,12 +95,13 @@ parms.cell_types = arrayfun(@(x) sprintf('#%d',x),1:parms.num_types,'UniformOutp
 
 results = loopOverResults_real(X, gene_info, parms, loop_over_var_name, loop_over_var_value ,'');
 
-parms.draw_log_scale = true;
-draw_figure(loop_over_var_name, loop_over_var_value, results, parms, 'Corr');
-draw_indv_figure(loop_over_var_name, loop_over_var_value, results, parms, 'Corr');
-report_results(results);
-
-
+do_plot = take_from_struct(parms, 'do_plot', true);
+if do_plot
+    parms.draw_log_scale = true;
+    draw_figure(loop_over_var_name, loop_over_var_value, results, parms, 'Corr');
+    draw_indv_figure(loop_over_var_name, loop_over_var_value, results, parms, 'Corr');
+end
+[best_score, base_score] = report_results(results);
 
 % parms.H_lambda = 0.01;
 % [cell_mix_single.proportions, cell_mix_single.celltype_profile] = ...

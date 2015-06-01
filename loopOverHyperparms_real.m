@@ -15,8 +15,7 @@ function results = loopOverHyperparms_real(X, gene_info,...
 %           1 score for each region.
 %    results.regions - the correpsonding regions  
 %    results.mean_score - the average score (across all regions) - 1 score.
-    
-
+ 
   if length(loop_over_var_value) ==1
      % The stopping phase of the recursion
      region_names = parms.relation_regions;
