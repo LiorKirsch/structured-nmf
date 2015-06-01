@@ -84,18 +84,20 @@ time_record =nan(1,maxiter); tic;
 
 for iter=1:maxiter
 
-    if (rem(iter,10)==1 && early_stop) 
-        if iter==1,
-          gradW = W*(H*H') - X*H';     gradH = (W'*W)*H - W'*X;
-          init_grad = norm([gradW; gradH'],'fro');
-          init_time=cputime;  
-%           fprintf('init grad norm %f\n', init_grad);
-        end
-        if check_for_early_stopping(X,W,H,init_time,init_grad,parms)
-            fprintf(' (Iter = %d)\n', iter);
-          break
-        end
-    end
+    %======== This is just not true ---- I need to check for the gradient with
+    %======== the regulerizers.
+%     if (rem(iter,50)==0 && early_stop) 
+%         if iter==50,
+%           gradW = W*(H*H') - X*H';     gradH = (W'*W)*H - W'*X;
+%           init_grad = norm([gradW; gradH'],'fro');
+%           init_time=cputime;  
+% %           fprintf('init grad norm %f\n', init_grad);
+%         end
+%         if check_for_early_stopping(X,W,H,init_time,init_grad,parms)
+%             fprintf(' (Iter = %d)\n', iter);
+%           break
+%         end
+%     end
 
 %==== Minization step
 

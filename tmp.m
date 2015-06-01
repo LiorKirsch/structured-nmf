@@ -11,14 +11,19 @@ all_pairs = all_pairs(randperm(size(all_pairs,1)),:);
 for  i = 1:size(all_pairs,1)
 %     try
 %     parms.structure_filter = 10;
+      
       parms.regions = region_set(all_pairs(i,:) );
-
       parms.init_type = 'random';
       parms.W_constraints = 'positive';
-
       parms.num_restarts = 30;
       parms.maxiter = 1000;  
+      parms.H_lambda_list = [0, 10.^[-3:0.5:3], inf];
 
+      
+      disp('=========================================');
+      disp(parms.regions);
+      disp('=========================================');
+      
        main_real_data 
 %     catch
         

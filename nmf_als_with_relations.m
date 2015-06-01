@@ -113,28 +113,34 @@ init_grad = cell(num_models,1);
 init_time = cell(num_models,1);
 
 for iter=1:maxiter
+
     
-     if (rem(iter,10)==1 && early_stop) 
-        reached_early = false(num_models,1);
-        for model_iter=1:num_models
-            W = W_models{model_iter};
-            H = H_models{model_iter};
-            X = X_models{model_iter};
-            
-            if iter==1,
-              gradW = W*(H*H') - X*H';     gradH = (W'*W)*H - W'*X;
-              init_grad{model_iter} = norm([gradW; gradH'],'fro');
-              init_time{model_iter} = cputime;  
-    %           fprintf('init grad norm %f\n', init_grad);
-            end
-            reached_early(model_iter) =  check_for_early_stopping(X,W,H,init_time{model_iter},init_grad{model_iter},parms);
-        end
-        
-        if all(reached_early)
-            fprintf(' (Iter = %d)\n', iter);
-          break
-        end
-     end
+    %======== This is just not true ---- I need to check for the gradient with
+    %======== the regulerizers.
+%      if (rem(iter,50)==0 && early_stop) 
+%         reached_early = false(num_models,1);
+%         for model_iter=1:num_models
+%             W = W_models{model_iter};
+%             H = H_models{model_iter};
+%             X = X_models{model_iter};
+%             
+%             if iter==50,
+%               gradW = W*(H*H') - X*H';     gradH = (W'*W)*H - W'*X;
+%               init_grad{model_iter} = norm([gradW; gradH'],'fro');
+%               init_time{model_iter} = cputime;  
+%     %           fprintf('init grad norm %f\n', init_grad);
+%             end
+%             reached_early(model_iter) =  check_for_early_stopping(X,W,H,init_time{model_iter},init_grad{model_iter},parms);
+%             if reached_early(model_iter)
+%                 fprintf(' - "%s"\n', parms.regions{model_iter});
+%             end
+%         end
+%         
+%         if all(reached_early)
+%             fprintf(' (Iter = %d)\n', iter);
+%           break
+%         end
+%      end
     
      
     for model_iter=1:num_models
