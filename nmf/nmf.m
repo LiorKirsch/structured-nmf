@@ -50,14 +50,22 @@ function [best_W,best_H,best_diff_record,best_time_record,eucl_dist] ...
    eucl_dist = nan(num_restarts,1);
    
    % finding genes with zero expression
-   num_genes = size(X,2);
-   genes_with_zero_expression = true(num_genes,1);
-   for j_regions = 1:length(X);
-       genes_with_zero_expression = genes_with_zero_expression & ...
-           all(X{j_regions} ==0,1) ;
+   
+   
+   if iscell(X) 
+       num_genes = size(X{1},2);
+       genes_with_zero_expression = true(1,num_genes);
+       for j_regions = 1:length(X);
+           genes_with_zero_expression = genes_with_zero_expression & ...
+               all(X{j_regions} ==0,1) ;
+       end
+       % I remove gene which have zero expression no and return them at the end
+       X = cellfun(@(x) x(:,~genes_with_zero_expression), X,'UniformOutput',false);
+   else
+      num_genes = size(X,2);
+      genes_with_zero_expression = all(X==0,1) ;
+      X = X(:,~genes_with_zero_expression); 
    end
-   % I remove gene which have zero expression no and return them at the end
-   X = cellfun(@(x) x(:,~genes_with_zero_expression), X,'UniformOutput',false);
    
    switch init_type
      case 'random'
@@ -110,8 +118,8 @@ function [best_W,best_H,best_diff_record,best_time_record,eucl_dist] ...
        best_W = W{best_iteration};
        best_diff_record = diff_record{best_iteration};
        best_time_record = time_record{best_iteration};
-       fprintf('=== nmf: best restart = %d  HL=%4.2g\n', best_iteration, ...
-               parms.H_lambda);
+       fprintf('=== nmf: best restart = %d  HL=%4.2g , best-worst=%4.2g\n', best_iteration, ...
+               parms.H_lambda , max(eucl_dist) - min(eucl_dist) );
        
      case 'svd'
        if iscell(X) 
@@ -127,10 +135,16 @@ function [best_W,best_H,best_diff_record,best_time_record,eucl_dist] ...
    
    
    % I now return genes with zero expression 
-   for i = 1:length(X)
-        new_W = zeros(K, num_genes);
-        new_W(:,~genes_with_zero_expression) = best_W{i};
-        best_W{i} = new_W;
+   if iscell(X) 
+       for i = 1:length(X)
+            new_H = zeros(K, num_genes);
+            new_H(:,~genes_with_zero_expression) = best_H{i};
+            best_H{i} = new_H;
+       end
+   else
+       new_H = zeros(K, num_genes);
+       new_H(:,~genes_with_zero_expression) = best_H;
+       best_H = new_H;
    end
 end
 

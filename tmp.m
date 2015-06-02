@@ -21,7 +21,8 @@ for  i = 1:size(all_pairs,1)
       parms.regions = regions(all_pairs(i,:) );
       parms.init_type = 'random';
       parms.W_constraints = 'positive';
-      parms.num_restarts = 30;
+      parms.init_by =  'samples_with_noise';
+      parms.num_restarts = 50;
       parms.maxiter = 1000;  
       parms.H_lambda_list = [0, 10.^[-3:0.5:3], inf];
 

@@ -114,6 +114,13 @@ function [parmstr, dirparmstr] = set_parmstr(parms)
         parmstr = sprintf('%s_nummrk%d', parmstr, parms.num_markers);
     end
     
+    if isfield(parms,'init_by')
+        if ~strcmp(parms.init_by, 'random')
+            parmstr = sprintf('%s_initby_%s', parmstr, parms.init_by);
+        end
+    end
+    
+    
     if isfield(parms, 'H_markers')
         if iscell(parms.H_markers)
             sum_hash = 0;
