@@ -1,47 +1,16 @@
 init;
-  
-
 parms = conf(parms);
-do_plot = take_from_struct(parms, 'do_plot', true);
 
 dataset = take_from_struct(parms, 'dataset', 'brainspan2014');
 [default_regions, parms.species] = get_region_set(dataset);
 regions = take_from_struct(parms, 'regions', default_regions);
 regions = sort(regions);
 
-
-switch dataset
-    case 'kang2011',      %==== Kang ===
-      parms.dataset_file = 'kang_regions';
-      [expression, gross_region_vec, gene_info, ~, gross_structures_info, ...
-       ~] = load_expression_and_regions('kangCortexAndStriatum', []);
-      
-    case 'brainspan2014', %==== Brainspan ===
-      parms.dataset_file = sprintf('brainspan_rnaseq_%s', strjoin(regions,'_'));
-      [expression, gross_region_vec, gene_info, ~, gross_structures_info] ...
-          = load_expression_and_regions('brainspan_rnaseq', regions);
-    
-    case 'zapala2005',    %==== Zapala selected regions ===
-      parms.dataset_file = 'Zapala_isocortex_medulla_striatum_cerebellum';
-      [expression, gross_region_vec, gene_info, ~, gross_structures_info, ...
-       ~] = load_expression_and_regions('zapalaMouse', regions);
-      gross_structures_info{strcmp(gross_structures_info, 'Isocortex')} ...
-          = 'Cerebral_cortex';
-
-      case 'human6' , %==== Human6 selected regions ===
-        parms.dataset_file = 'Human6_selected_regions';
-        [expression, gross_region_vec, gene_info, ~, gross_structures_info, ...
-         ~] = load_expression_and_regions('human6LimitRegions', regions);
-        gross_structures_info = gross_structures_info(:,4);
-        gene_info.entrez_ids = arrayfun(@(x) sprintf('%d',x), ...
-                                        gene_info.entrez_ids, ...
-                                        'UniformOutput',false);
-    otherwise 
-      error('invalid dataset = [%s]\n', dataset);
-end
+% Load all data
+[parms.dataset_file expression, gross_region_vec, gene_info, ...
+ gross_structures_info] = load_all(dataset, regions);
 
 % limit to a set of specific genes
-
 parms.gene_subset = 'all' ;% 'all'; 'okaty_infogain5000'; 'okaty_anova5000'; 'okaty_gainratio5000'
 parms.gene_okaty_filter = 'all'; % 'all'; 'cortex'; 'doyle;'cortex_doyle'
 % [gene_info, expression, parms] = gene_subset_selection(gene_info, ...
@@ -50,10 +19,11 @@ parms.gene_okaty_filter = 'all'; % 'all'; 'cortex'; 'doyle;'cortex_doyle'
 expression = change_to_linear_scale(expression);
 
 gross_regions = gross_structures_info(gross_region_vec);
-[X,region_names] = split_to_cell(expression, gross_regions);
+[X, region_names] = split_to_cell(expression, gross_regions);
 clear('expression', 'gross_region_vec', 'gross_regions', ...
       'gross_structures_info');
 
+fprintf('main: Get the structure matrix\n');
 parms.regions = region_names;
 parms.structre_type = 'relations_parent_level';
 parms = get_structure_matrix(parms.dataset_file, parms.structre_type,region_names, parms);
@@ -96,12 +66,16 @@ loop_over_var_value{end + 1} = H_lambda_list;
 parms.regions = region_names;
 parms.cell_types = arrayfun(@(idx) sprintf('#%d',idx),1:parms.num_types,'UniformOutput',false);
 
+fprintf('main: loop over hyper parameters\n');
 results = loopOverHyperparms_real(X, gene_info, parms, loop_over_var_name, loop_over_var_value ,'');
 
-parms.draw_log_scale = true;
-draw_figure(loop_over_var_name, loop_over_var_value, results, parms, 'Corr');
-draw_indv_figure(loop_over_var_name, loop_over_var_value, results, parms, 'Corr');
-% report_results(results);
+if take_from_struct(parms, 'do_plot', true);
+    parms.draw_log_scale = true;
+    draw_figure(loop_over_var_name, loop_over_var_value, results, parms, 'Corr');
+    draw_indv_figure(loop_over_var_name, loop_over_var_value, results, parms, 'Corr');
+    report_results(results);
+end
+
 
 
 

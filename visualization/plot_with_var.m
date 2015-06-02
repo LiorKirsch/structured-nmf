@@ -130,10 +130,10 @@ function alg_name = draw_the_main_figure(loop_over_var_name, ...
         set(gca,'XTick', x);
         tmp = get(gca,'XTickLabel');
         if any(loop_over_var_value{end} == 0 )
-            tmp{loop_over_var_value{end} == 0} = 'seperated models';
+            tmp{loop_over_var_value{end} == 0} = 'indv';
         end
         if any(isinf(loop_over_var_value{end}))
-            tmp{isinf(loop_over_var_value{end})} = 'no region information';
+            tmp{isinf(loop_over_var_value{end})} = 'joined';
         end
         set(gca,'XTickLabel', tmp);
     end

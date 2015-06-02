@@ -2,7 +2,9 @@ function draw_figure(loop_over_var_name, loop_over_var_value, results, ...
                      parms, y_label)
 %
     FigHandle = figure('Name',parms.dataset_file); clf; hold on;
-    set(FigHandle, 'Position', [100, 100, 1600, 1000]);
+    switch getenv('USER')
+      case 'lior', set(FigHandle, 'Position', [100, 100, 1600, 1000]);
+    end
     set(groot, 'defaultAxesColorOrder','default');       
         
     recursion_levels = length(loop_over_var_value);
@@ -79,8 +81,8 @@ function draw_figure(loop_over_var_name, loop_over_var_value, results, ...
     
     title(strrep(set_parmstr(parms),'_',' '));
     
-    parms.fig_x_axis = x_label;
-    [~,file_name,dir_name] = set_filenames('figure_real', parms);
+    parms.fig_x_axis = strrep(x_label, ' ', '_');
+    [~, file_name, dir_name] = set_filenames('figure_real', parms);
     fprintf('drawing figure - %s\n',fullfile(dir_name,file_name));
     saveas(gcf,fullfile(dir_name,file_name));
 end

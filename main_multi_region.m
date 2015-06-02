@@ -87,7 +87,7 @@ GT_proportions = mix_data.proportions;
 parms.regions = mix_data.region;
 parms.cell_types = mix_data.cell_types;
 
-parms.loglevel=1;
+% parms.loglevel=1;
 
 if parms.log_transform
     GT_profiles = log2(GT_profiles);

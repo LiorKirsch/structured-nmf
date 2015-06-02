@@ -1,3 +1,4 @@
+parms.do_plot=false
 parms.regions = {'M1C', 'S1C'};
 main_real_show;
 (best_score - base_score) / base_score

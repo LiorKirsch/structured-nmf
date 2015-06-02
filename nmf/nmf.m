@@ -1,4 +1,5 @@
-function [best_W,best_H,best_diff_record,best_time_record,eucl_dist] = nmf(X,K,alg,parms)
+function [best_W,best_H,best_diff_record,best_time_record,eucl_dist] ...
+        = nmf(X, K, alg, parms)
 %
 % NMF wrapper function
 % function [W,H] = nmf(X,K,alg[,maxiter,speak])
@@ -34,72 +35,119 @@ function [best_W,best_H,best_diff_record,best_time_record,eucl_dist] = nmf(X,K,a
 % Lior Kirsch 03/2015
 
 
-% loglevel = take_from_struct(parms, 'loglevel', 1);
-num_restarts = take_from_struct(parms, 'num_restarts', 1);
-rand_seed = take_from_struct(parms, 'rand_seed', 42);
-init_type = take_from_struct(parms, 'init_type', 'random');
-% maxiter = take_from_struct(parms, 'maxiter', 1000);
-% do_sep_init = take_from_struct(parms, 'do_sep_init', false);
+   % loglevel = take_from_struct(parms, 'loglevel', 1);
+   num_restarts = take_from_struct(parms, 'num_restarts', 1);
+   init_type = take_from_struct(parms, 'init_type', 'random');
+   % maxiter = take_from_struct(parms, 'maxiter', 1000);
+   % do_sep_init = take_from_struct(parms, 'do_sep_init', false);
+   
+   % find dimensionallity of X
+   % [D, N] = size(X);
+   parms.debug  =1;
+ 
+   H = cell(1, num_restarts);   
+   diff_record = H; time_record = H; W = H;
+   eucl_dist = nan(num_restarts,1);
+   
+   % finding genes with zero expression
+   num_genes = size(X,2);
+   genes_with_zero_expression = true(num_genes,1);
+   for j_regions = 1:length(X);
+       genes_with_zero_expression = genes_with_zero_expression & ...
+           all(X{j_regions} ==0,1) ;
+   end
+   % I remove gene which have zero expression no and return them at the end
+   X = cellfun(@(x) x(:,~genes_with_zero_expression), X,'UniformOutput',false);
+   
+   switch init_type
+     case 'random'
+       parfor i = 1:num_restarts
+           parms_current = parms;
+           parms_current.restart_ind = i;
+           parms_current = rmfield(parms_current,'num_restarts'); % so we can share the restarts even when the total restart changes
+           
+           fprintf('====== restart %d (%d) HL = %4.2g\n', i, ...
+                   num_restarts, parms_current.H_lambda);
+           
+            filename  = set_filenames('demixing_rand_restart', parms_current);
+           vars = {'current_W', 'current_H', 'current_diff_record', ...
+            'current_time_record','current_eucl_dist'};
+        
+            [do_calc, current_W, current_H, current_diff_record, current_time_record, ...
+             current_eucl_dist] = cond_load(filename, 0, vars{1:end});
 
-% find dimensionallity of X
-[D,N] = size(X);
-parms.debug  =1;
-rng(rand_seed);
-% diff_record = nan(1,maxiter);
-% time_record = nan(1,maxiter);
-eucl_dist = nan(num_restarts,1);
-
-switch init_type
-    case 'random'
-        for i = 1:num_restarts
-            fprintf('====== restart %d (%d) ======\n', i, num_restarts);
-            if iscell(X) 
-                [W_init, H_init] = cellfun(@(x) get_random_W_H(x,K,parms),X,'UniformOutput',false);
+            if do_calc < 1 
+               fprintf('loading random restart from memory - %s\n', filename);
+               % do thing
             else
-                [W_init, H_init] = get_random_W_H(X,K,parms);
+               if iscell(X) 
+                   [W_init, H_init] = cellfun(@(x) get_random_W_H(x, K, ...
+                                                                     parms_current), X, 'UniformOutput', false);
+               else
+                   [W_init, H_init] = get_random_W_H(X,K,parms_current);
+               end
+
+               [current_W, current_H, current_diff_record, current_time_record] = ...
+                   nmf_alg_selection(X,W_init,H_init,alg,parms_current);           
+               current_eucl_dist = compute_eucl_dist(X, current_W,current_H);
+               
+               
+               parsave(filename, current_W, current_H, current_diff_record,...
+                   current_time_record, current_eucl_dist);
+               fprintf('Saved demixing random restart model into [%s]\n', filename);
             end
-
-
-            [W,H,diff_record,time_record] = nmf_alg_selection(X,W_init,H_init,alg,parms);
-
-            eucl_dist(i) = compute_eucl_dist(X,W,H);
+            W{i} = current_W;
+            H{i} = current_H;
+            diff_record{i} = current_diff_record;
+            time_record{i} = current_time_record;
+            eucl_dist(i) = current_eucl_dist;
             
+       end
 
-            if i==1
-                best_W = W;
-                best_H = H;
-                best_diff_record = diff_record;
-                best_time_record = time_record;
-                best_iteration = 1;
-            else
-                if eucl_dist(i) < eucl_dist(best_iteration)
-                    best_H = H;
-                    best_W = W;
-                    best_diff_record = diff_record;
-                    best_time_record = time_record;
-                    best_iteration = i;
-                end
-            end
-        end
-
-        fprintf('==== best random restart - %d ====\n',best_iteration);
-
-    case 'svd'
-        if iscell(X) 
-            [W_init, H_init] = cellfun(@(x) nndsvd(x,K,0),X,'UniformOutput',false);
-        else
-            [W_init, H_init] = nndsvd(X, K,0);
-        end
-        [best_W,best_H,best_diff_record,best_time_record] = nmf_alg_selection(X,W_init,H_init,alg,parms);
-        eucl_dist = compute_eucl_dist(X,best_W,best_H);
-    otherwise
-        error('unkown init option -%s',init_type);
-    
-    end
+       % Select the best 
+       [~, best_iteration] = min(eucl_dist);
+       best_H = H{best_iteration};
+       best_W = W{best_iteration};
+       best_diff_record = diff_record{best_iteration};
+       best_time_record = time_record{best_iteration};
+       fprintf('=== nmf: best restart = %d  HL=%4.2g\n', best_iteration, ...
+               parms.H_lambda);
+       
+     case 'svd'
+       if iscell(X) 
+           [W_init, H_init] = cellfun(@(x) nndsvd(x,K,0),X,'UniformOutput',false);
+       else
+           [W_init, H_init] = nndsvd(X, K,0);
+       end
+       [best_W,best_H,best_diff_record,best_time_record] = nmf_alg_selection(X,W_init,H_init,alg,parms);
+       eucl_dist = compute_eucl_dist(X,best_W,best_H);
+     otherwise
+       error('unkown init option -%s',init_type);    
+   end
+   
+   
+   % I now return genes with zero expression 
+   for i = 1:length(X)
+        new_W = zeros(K, num_genes);
+        new_W(:,~genes_with_zero_expression) = best_W{i};
+        best_W{i} = new_W;
+   end
 end
 
 
-function [W,H,diff_record,time_record] = nmf_alg_selection(X,W_init,H_init,alg,parms)
+function parsave(filename,current_W, current_H, current_diff_record,...
+                   current_time_record, current_eucl_dist)
+%
+    save(filename, 'current_W', 'current_H', 'current_diff_record',...
+                   'current_time_record', 'current_eucl_dist');
+end
+
+function parsave_warm(filename,W_warm, H_warm)
+%
+    save(filename, 'W_warm', 'H_warm');
+end
+
+function [W, H, diff_record, time_record] = nmf_alg_selection(X,W_init,H_init,alg,parms)
     loglevel = take_from_struct(parms, 'loglevel', 1);
     do_sep_init = take_from_struct(parms, 'do_sep_init', false);
     diff_record = nan;
@@ -139,20 +187,38 @@ function [W,H,diff_record,time_record] = nmf_alg_selection(X,W_init,H_init,alg,p
                 otherwise
                     error('Unknown nmf method %s', parms.nmf_method);
             end
-            
+
+            %%% TODO hot start with good HL=0.
              if do_sep_init
-                disp('=== warm start ===');
-                curr_parms = parms;
-                curr_parms.H_lambda = 0;
-                for i_cell =1 :length(X)
-                    if isfield(curr_parms,'H_markers')
-                        curr_parms.H_markers = parms.H_markers{i_cell};
+%                 fprintf('=== warm start === (HL=%4.2g)\n', parms.H_lambda);
+                warm_parms = parms;
+                warm_parms.H_lambda = 0; % !!!! must set lambda to zero 0!!!!
+                
+                
+                 [~, warm_filename, warm_dir]  = set_filenames('demixing_rand_restart', warm_parms);
+                 warm_filename = fullfile(warm_dir,['warm', warm_filename]);
+                   vars = {'W_warm', 'H_warm'};
+        
+                [do_calc, W_warm, H_warm ]= cond_load(warm_filename, 0, vars{1:end});
+
+                if do_calc < 1 
+                   fprintf('loading warm restart from memory %s\n', warm_filename);
+                else
+                    for i_cell =1 :length(X)
+                        if isfield(warm_parms,'H_markers')
+                            warm_parms.H_markers = parms.H_markers{i_cell};
+                        end
+                        [W_warm{i_cell}, H_warm{i_cell}, ~, ~] = ...
+                            nmf_als(warm_parms, X{i_cell}, ...
+                                                W_init{i_cell}, H_init{i_cell});
                     end
-                    [W_init{i_cell}, H_init{i_cell}, diff_record, ...
-                     time_record] = nmf_als(curr_parms,X{i_cell}, ...
-                                            W_init{i_cell},H_init{i_cell});
+                    fprintf('Saving warm restart %s\n', warm_filename);
+                    parsave_warm(warm_filename,W_warm, H_warm);
+                    
                 end
-                disp('==warm start done==');
+                W_init = W_warm;
+                H_init = H_warm;
+                
                 % [W_init,H_init]=cellfun(@(x,w,h) nmf_als(curr_parms,x,w,h) ,X,W_init,H_init,'UniformOutput',false);
             end
             
@@ -169,9 +235,9 @@ function [W,H,diff_record,time_record] = nmf_alg_selection(X,W_init,H_init,alg,p
                 curr_H_init = mean(M,dim+1);     % Get the mean across arrays
                 
                 if isfield(curr_parms,'H_markers')
-                    dim = ndims(curr_parms.H_markers{1});          % Get the number of dimensions for your arrays
-                    M = cat(dim+1,curr_parms.H_markers{:});        % Convert to a (dim+1)-dimensional matrix
-                    curr_parms.H_markers = any(M,dim+1);           % Get any marker
+                    dim = ndims(curr_parms.H_markers{1}); % Get the number of dimensions for your arrays
+                    M = cat(dim+1,curr_parms.H_markers{:}); % Convert to a (dim+1)-dimensional matrix
+                    curr_parms.H_markers = any(M,dim+1); % Get any marker
                 end
                 
                 curr_W_init = cat(1,W_init{:});  % Concat W_init
@@ -181,7 +247,11 @@ function [W,H,diff_record,time_record] = nmf_alg_selection(X,W_init,H_init,alg,p
                     reverse_map = cat(1,reverse_map, i_nodes*ones(size(X{i_nodes},1),1) );
                 end
                 
-                [W_combined,H_combined] = nmf_als(curr_parms,curr_X,curr_W_init,curr_H_init);
+                [W_combined, H_combined] = nmf_als(curr_parms, ...
+                                                   curr_X, ...
+                                                   curr_W_init,curr_H_init);
+                H = cell(1, length(X));
+                W = cell(1, length(X));
                 for i_nodes =1:length(X)
                     H{i_nodes} = H_combined;
                     W{i_nodes} = W_combined(reverse_map==i_nodes,:);
@@ -198,13 +268,12 @@ function [W,H,diff_record,time_record] = nmf_alg_selection(X,W_init,H_init,alg,p
 
       otherwise
             error('Unknown method. Type "help nmf" for usage.');
-            return
     end
 
 end
 
 
-function eucl_dist = compute_eucl_dist(X,W,H)
+function eucl_dist = compute_eucl_dist(X, W, H)
 
     if iscell(X) && iscell(W) && iscell(H)
        num_elements = length(X);

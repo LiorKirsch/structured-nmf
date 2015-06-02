@@ -1,4 +1,4 @@
-function [W,H,diff_record,time_record]=nmf_als(parms,X,W_init, H_init)
+function [W,H,diff_record,time_record]=nmf_als(parms, X, W_init, H_init)
 % At each iteration it blocks one matrix solve a least squares solution,
 % projects onto the positives and then switches the blocked matrix and does
 % the same thing.
@@ -145,7 +145,8 @@ for iter=1:maxiter
 end
 
 if (iter==maxiter)
-    disp(sprintf('max limit iteration (%d) reached', maxiter));
+    disp(sprintf('max limit iteration (%d) reached (HL=%4.2g)', ...
+                 maxiter, parms.H_lambda));
 end
 end
 

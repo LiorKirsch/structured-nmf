@@ -8,13 +8,20 @@ function [gene_inds_true_type,gene_inds_predictions] = ...
         case 'mouse'
             
             % select gene which appear in both datasets according to gene symbol
-            [reorder_mouse_cell_type, reorder_predicted] = reorderUsingId(mouse_cell_types.all_symbols, gene_info.gene_symbols);
-            reorder_mouse_cell_type = mouse_cell_types.refer_to_index(reorder_mouse_cell_type);
-%             mouse_cell_types.expression = mouse_cell_types.expression(reorder_mouse_cell_type,:);
-%             predicted_profiles = cellfun(@(x) x(reorder_predicted,:), predicted_profiles,'UniformOutput',false);
-           gene_inds_true_type = reorder_mouse_cell_type;
-           gene_inds_predictions = reorder_predicted;
-        case {'monkey', 'human'}
+            [reorder_mouse_cell_type, reorder_predicted] = ...
+                reorderUsingId(mouse_cell_types.all_symbols, ...
+                               gene_info.gene_symbols);
+            reorder_mouse_cell_type = ...
+                mouse_cell_types.refer_to_index(reorder_mouse_cell_type);
+            % mouse_cell_types.expression =
+            % mouse_cell_types.expression(reorder_mouse_cell_type,:);
+            % predicted_profiles = cellfun(@(x)
+            % x(reorder_predicted,:),
+            % predicted_profiles,'UniformOutput',false);
+            gene_inds_true_type = reorder_mouse_cell_type;
+            gene_inds_predictions = reorder_predicted;
+            
+      case {'monkey', 'human'}
             addpath('/cortex/code/matlab/homologous_gene_mapping/');
             switch species
                 case 'monkey'
@@ -34,7 +41,7 @@ function [gene_inds_true_type,gene_inds_predictions] = ...
                                               .entrez_ids, 'entrez_gene_ID');
             end
             
-            groups_with_1_to_1 = sum(gene_to_group_mouse,1) == 1  & sum(gene_to_group_primate,1) == 1;
+            groups_with_1_to_1 = sum(gene_to_group_mouse, 1) == 1  & sum(gene_to_group_primate,1) == 1;
             gene_to_group_mouse = gene_to_group_mouse(:,groups_with_1_to_1);
             gene_to_group_primate = gene_to_group_primate(:,groups_with_1_to_1);
             gene_to_group_mouse = (1:size(gene_to_group_mouse,1)) * gene_to_group_mouse ;

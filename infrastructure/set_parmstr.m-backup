@@ -2,67 +2,32 @@ function [parmstr, dirparmstr] = set_parmstr(parms)
 %
 %
 %
-
     parmstr = '';
     dirparmstr = '';
-
-    if isfield(parms, 'num_types')
-        parmstr = sprintf('%s_K%d', parmstr, parms.num_types);
-    end    
-    
-    if isfield(parms, 'num_samples')
-        parmstr = sprintf('%s_N%d', parmstr, parms.num_samples);
-    end
-    
-    if isfield(parms, 'maxiter')
-        parmstr = sprintf('%s_IT%d', parmstr, parms.maxiter);
-    end
         
-    if isfield(parms, 'W_constraints')
-        parmstr = sprintf('%s_%s', parmstr, parms.W_constraints);
-    end    
+    parmstr = add_parameter('num_types', 'K%d', parms, parmstr);
+    parmstr = add_parameter('num_samples', 'N%d', parms, parmstr);
+    parmstr = add_parameter('maxiter', 'IT%d', parms, parmstr);
+    parmstr = add_parameter('W_constraints', '%s', parms, parmstr);
     
     if isfield(parms, 'init_type')
         if strcmp(parms.init_type, 'random')
-            if isfield(parms, 'rand_seed')
-                parmstr = sprintf('%s_S%d', parmstr, parms.rand_seed);
-            end
-            if isfield(parms, 'num_restarts')
-                parmstr = sprintf('%s_NN%d', parmstr, parms.num_restarts);
-            end    
+            parmstr = add_parameter('rand_seed', 'S%d', parms, parmstr);
+            parmstr = add_parameter('num_restarts', 'NN%d', parms, parmstr);
         else
-            parmstr = sprintf('%s_init%s', parmstr, parms.init_type);
+            parmstr = add_parameter('init_type', 'init%s', parms, parmstr);
         end
     else
-        if isfield(parms, 'rand_seed')
-            parmstr = sprintf('%s_S%d', parmstr, parms.rand_seed);
-        end
-        if isfield(parms, 'num_restarts')
-            parmstr = sprintf('%s_NN%d', parmstr, parms.num_restarts);
-        end    
+        parmstr = add_parameter('rand_seed', 'S%d', parms, parmstr);
+        parmstr = add_parameter('num_restarts', 'NN%d', parms, parmstr);        
     end        
     
-    if isfield(parms, 'H_lambda')
-        parmstr = sprintf('%s_HL%g', parmstr, parms.H_lambda);
-    end    
+    parmstr = add_parameter('H_lambda', 'HL%g', parms, parmstr);    
+    parmstr = add_parameter('W_lambda', 'WL%g', parms, parmstr);
+    parmstr = add_parameter('subsample_iter', 'SSI%d', parms, parmstr);
 
-    if isfield(parms, 'W_lambda')
-        parmstr = sprintf('%s_WL%g', parmstr, parms.W_lambda);
-    end    
-    
-    if isfield(parms, 'subsample_iter')
-        parmstr = sprintf('%s_SSI%d', parmstr, parms.subsample_iter);
-    end    
-
-    if isfield(parms, 'subsample_repeats')
-        if parms.subsample_repeats ~= 10
-            parmstr = sprintf('%s_SSR%d', parmstr, parms.subsample_repeats);
-        end
-    end    
-    
-    if isfield(parms, 'nmf_method')
-        parmstr = sprintf('%s_%s', parmstr, parms.nmf_method);
-    end 
+    parmstr = add_parameter('subsample_repeats', 'SSR%d', parms, parmstr, 10);        
+    parmstr = add_parameter('nmf_method', '%s', parms, parmstr);    
 
     if isfield(parms, 'log_transform')
         if parms.log_transform
@@ -74,7 +39,7 @@ function [parmstr, dirparmstr] = set_parmstr(parms)
         if ~strcmp(parms.multi_region,'');
             parmstr = sprintf('%s_%s', parmstr, parms.multi_region);
         end
-    end 
+    end
     
     if isfield(parms, 'prior_dataset')
         parmstr = sprintf('%s_Pri_%s', parmstr,parms.prior_dataset);
@@ -148,10 +113,6 @@ function [parmstr, dirparmstr] = set_parmstr(parms)
         parmstr = sprintf('%s_lambdaPrr%s', parmstr, lambda_prior_string);
     end
     
-    if isfield(parms, 'restart_ind')
-        parmstr = sprintf('%s_RRInd%d', parmstr, parms.restart_ind);
-    end
-    
     if isfield(parms, 'mix_files')
         mix_files = sort(parms.mix_files);
         dirparmstr = fullfile(dirparmstr,strjoin(mix_files,'/'));
@@ -163,15 +124,19 @@ function [parmstr, dirparmstr] = set_parmstr(parms)
         error('cannot specifiy both "dataset_file" and "mix_files"');
     end
     
-    if isfield(parms, 'random_init_spread')
-        if parms.random_init_spread ~= 1
-            parmstr = sprintf('%s_RIS%g', parmstr, parms.random_init_spread);
-        end
-    end
     
-    %parmstr2 = set_parmstr2(parms);
-    %if ~ strcmp(parmstr, parmstr2)
-    %    error('parmstr mismatch\n[%s]\n[%s]', parmstr, parmstr2);
-    %end
+    parmstr = add_parameter('random_init_spread', 'RIS%g', parmstr, 1);
     
+end
+
+% ========================================================
+function parmstr = add_parameter(fieldname, format, ...
+                                 parms, parmstr, value_to_skip)
+    if ~isfield(parms, fieldname)
+        return
+    end    
+    if exist('value_to_skip', 'var') && parms.(fieldname) == value_to_skip
+        return
+    end    
+    parmstr = sprintf(['%s_' format], parmstr, parms.(fieldname));
 end

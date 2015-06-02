@@ -1,7 +1,9 @@
 function draw_indv_figure(loop_over_var_name, loop_over_var_value, results, parms,y_label)
 %
     FigHandle = figure('Name',parms.dataset_file); clf; hold on;
-    set(FigHandle, 'Position', [100, 100, 1600, 1000]);
+    switch getenv('USER')
+      case 'lior', set(FigHandle, 'Position', [100, 100, 1600, 1000]);
+    end
     set(groot,'defaultAxesColorOrder','default');       
     
     n = length(loop_over_var_value{1});
@@ -16,8 +18,8 @@ function draw_indv_figure(loop_over_var_name, loop_over_var_value, results, parm
     assert(length(results) == length(legend_strings), 'problem with build the results');
 
     if parms.draw_log_scale
-       x(x == 0) = 10^-7;
-       x(isinf(x)) = 10^+7;
+       x(x == 0) = 10^-5;
+       x(isinf(x)) = 10^+5;
     end
 
     plot_h = nan(n,1);
@@ -78,34 +80,33 @@ function draw_indv_figure(loop_over_var_name, loop_over_var_value, results, parm
     
     legend_strings = strrep(legend_strings, '_', ' ');
     legend(plot_h, legend_strings, 'location', 'best');
-    x_label = strrep(loop_over_var_name{end},'_',' ') ;
+    x_label = strrep(loop_over_var_name{end}, '_', ' ') ;
     xlabel(x_label);
     ylabel(y_label);
     
     if parms.draw_log_scale
         
         for j=1:3
-            subplot(1,3,j);hold on;
-           
-            set(gca,'XScale','log')
-            set(gca,'XTick', x);
-            tmp = get(gca,'XTickLabel');
+            subplot(1,3,j); hold on;
+            set(gca,'XScale','log');
+            xticks = 10.^[-3:1:3];
+            set(gca,'XTick', xticks);
+            tmp = get(gca, 'XTickLabel');
             if any(loop_over_var_value{end} == 0 )
                 tmp{loop_over_var_value{end} == 0} = '0';
             end
             if any(isinf(loop_over_var_value{end}))
                 tmp{isinf(loop_over_var_value{end})} = 'inf';
             end
-            set(gca,'XTickLabel', tmp);
+            set(gca,'XTickLabel', log10(xticks));
         end
     end
+    keyboard
     
-    suptitle(strrep(set_parmstr(parms),'_',' '));
+    suptitle(strrep(set_parmstr(parms), '_', ' '));
     
     parms.fig_x_axis = x_label;
     [~,file_name,dir_name] = set_filenames('figure_real', parms);
-    fprintf('drawing figure - %s\n',fullfile(dir_name,file_name));
-
+    fprintf('drawing figure %s\n',fullfile(dir_name,file_name));
     saveas(gcf,fullfile(dir_name,['indv_', file_name]));
-
 end

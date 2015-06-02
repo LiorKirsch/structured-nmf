@@ -22,7 +22,7 @@ function report_results_struct(results)
             fprintf('%s  :\n', r.loop_string);
 %             fprintf('%s = %g\n', r.var_name, r.var_value);
             for i_region = 1:num_regions
-                fprintf('\t%20s: ', r.regions{i_region}(1:20));
+                fprintf('\t%20s: ', r.regions{i_region});
                 fprintf(' %4.2f ', 100*r.celltype_scores{i_region});
                 fprintf(' (avg=%4.2f)\n', 100*r.region_scores(i_region));
             end
@@ -30,13 +30,13 @@ function report_results_struct(results)
         
         fprintf('==== mean profile baseline ====:\n');
         for i_region = 1:num_regions
-            fprintf('\t%20s: ', r.regions{i_region}(1:20));
+            fprintf('\t%20s: ', r.regions{i_region});
             fprintf(' %4.2f ', 100*r.baseline_celltype_score{i_region});
             fprintf(' (avg=%4.2f)\n', 100*r.baseline_region_scores(i_region));
         end
         fprintf('==== rand samples baseline ====:\n');
         for i_region = 1:num_regions
-            fprintf('\t%20s: ', r.regions{i_region}(1:20));
+            fprintf('\t%20s: ', r.regions{i_region});
             fprintf(' %4.2f ', 100*r.randbase_celltype_score(i_region));
             fprintf(' (avg=%4.2f)\n', 100*r.randbase_region_scores(i_region));
         end
@@ -81,4 +81,4 @@ function [real_scores, rand_scores] = struct_to_mat(results)
     end
 end
     
-end
+

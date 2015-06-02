@@ -11,8 +11,7 @@ function [gene_info, expression, parms] = gene_subset_selection(gene_info, ...
     if ~isempty(tokens{1}{2})
         num_to_select = str2num(tokens{1}{2});
     end
-    
-    
+        
     switch selection_method
       case 'all', 
         top_gene_symbols = gene_info.gene_symbols; % all genes
@@ -55,7 +54,7 @@ function [gene_info, expression, parms] = gene_subset_selection(gene_info, ...
 %         gene_inds = get_intersecting_genes(...
 %             gene_info.gene_symbols, top_gene_symbols, parms);
 %     end
-    gene_inds = ismember( gene_info.gene_symbols, top_gene_symbols);
+    gene_inds = ismember(gene_info.gene_symbols, top_gene_symbols);
         
     gene_info.gene_symbols = gene_info.gene_symbols(gene_inds);
     gene_info.entrez_ids = gene_info.entrez_ids(gene_inds);    
