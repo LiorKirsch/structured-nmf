@@ -2,15 +2,20 @@ init;
 parms = conf(parms);
 only_collect = take_from_struct(parms, 'only_collect', false);
 
+ dataset = take_from_struct(parms, 'dataset', 'brainspan2014');
+[default_regions, parms.species] = get_region_set(dataset);
+regions_short = take_from_struct(parms, 'regions_short', default_regions);
+regions_short = sort(regions_short);
+
+
 if only_collect
     X = nan;
     gene_info = nan;
+    % Load just the datset file
+    parms.dataset_file = load_all(dataset, regions_short, true);
+
 else
 
-    dataset = take_from_struct(parms, 'dataset', 'brainspan2014');
-    [default_regions, parms.species] = get_region_set(dataset);
-    regions_short = take_from_struct(parms, 'regions_short', default_regions);
-    regions_short = sort(regions_short);
     
     % Load all data
     [parms.dataset_file, expression, gross_region_vec, gene_info, ...
