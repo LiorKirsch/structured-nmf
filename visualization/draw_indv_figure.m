@@ -101,7 +101,7 @@ function draw_indv_figure(loop_over_var_name, loop_over_var_value, results, parm
             set(gca,'XTickLabel', log10(xticks));
         end
     end
-    keyboard
+    
     
     suptitle(strrep(set_parmstr(parms), '_', ' '));
     

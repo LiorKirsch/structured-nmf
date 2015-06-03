@@ -13,7 +13,7 @@ function result = get_randbaseline(curr_X, gene_inds_predictions, ...
     randbase_score = nan(num_repeats,1);
     randbase_celltype_region_avg_scores = nan(num_repeats,K);
     randbase_region_scores = nan(num_repeats, num_regions);
-    randbase_celltype_scores = nan(num_repeats, num_celltypes);
+    randbase_celltype_scores = repmat({nan(num_repeats, num_celltypes)}, num_regions,1);
     
     for i=1:num_repeats
             printPercentCounter(i, num_repeats);
@@ -28,12 +28,15 @@ function result = get_randbaseline(curr_X, gene_inds_predictions, ...
             randbase_celltype_region_avg_scores(i,:) = randbase_result.celltype_region_avg_scores';
             randbase_region_scores(i,:) = randbase_result.region_scores';
 
-            t = zeros(1, num_celltypes);
-            for r = 1:num_celltypes
-                t = t + randbase_result.celltype_scores{1}(:)';
+            for j_regions = 1:num_regions
+                randbase_celltype_scores{j_regions} = randbase_result.celltype_scores{j_regions};
+%                 t = zeros(1, num_celltypes);
+%                 for r = 1:num_celltypes
+%                     t = t + randbase_result.celltype_scores{j_regions}(:)';
+%                 end
+%                 t = t / num_celltypes;
+%                 randbase_celltype_scores{j_regions}(i,1:3) = t;
             end
-            t = t / num_regions;
-            randbase_celltype_scores(i,1:3) = t;
     end
 
     result.run_score = mean(randbase_score);
@@ -42,7 +45,8 @@ function result = get_randbaseline(curr_X, gene_inds_predictions, ...
     result.celltype_region_avg_scores_sem = std(randbase_celltype_region_avg_scores,1,1) /sqrt(num_repeats);
     result.region_scores = mean(randbase_region_scores,1);
     result.region_scores_sem = std(randbase_region_scores,1,1) /sqrt(num_repeats); 
-    result.celltype_scores = mean(randbase_celltype_scores, 1);
+    result.celltype_scores = cellfun(@(x) mean(x,1), randbase_celltype_scores,...
+        'UniformOutput',false);
     result.regions = region_names;
 end
 

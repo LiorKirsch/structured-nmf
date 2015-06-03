@@ -2,9 +2,9 @@ function [best_score, base_score] = report_results(results)
 
     report_results_struct(results);
     [real_scores, rand_scores] = struct_to_mat(results);
-    [num_lambdas, num_regions, num_celltypes] = size(scores);
+    [num_lambdas, num_regions, num_celltypes] = size(real_scores);
     [best_score, ind_lambda] = max(squeeze(median(real_scores(:,:,1), 2)));
-    base_scores = rand_scores(ind_lambda, 1, 1);
+    base_score = rand_scores(ind_lambda, 1, 1);
 end
 
 
@@ -34,14 +34,19 @@ function report_results_struct(results)
             fprintf(' %4.2f ', 100*r.baseline_celltype_score{i_region});
             fprintf(' (avg=%4.2f)\n', 100*r.baseline_region_scores(i_region));
         end
+        fprintf('\t%20s: ', 'mean over regions');
+        fprintf(' %4.2f ', 100* r.baseline_celltype_region_avg_scores);
+        fprintf('\n');
+        fprintf('===============================:\n');
+        
         fprintf('==== rand samples baseline ====:\n');
         for i_region = 1:num_regions
             fprintf('\t%20s: ', r.regions{i_region});
-            fprintf(' %4.2f ', 100*r.randbase_celltype_score(i_region));
+            fprintf(' %4.2f ', 100*r.randbase_celltype_score{i_region});
             fprintf(' (avg=%4.2f)\n', 100*r.randbase_region_scores(i_region));
         end
         fprintf('\t%20s: ', 'mean over regions');
-        fprintf(' %4.2f ', 100* mean(r.randbase_celltype_score(i_region)),1);
+        fprintf(' %4.2f ', 100* r.randbase_celltype_region_avg_scores);
         fprintf('\n');
         fprintf('===============================:\n');
     end
@@ -76,7 +81,7 @@ function [real_scores, rand_scores] = struct_to_mat(results)
         for i_region = 1:num_regions
             real_scores(i_lambda, i_region, 1:num_celltypes) = r.celltype_scores{i_region};
             rand_scores(i_lambda, i_region, 1:num_celltypes) = ...
-                r.randbase_celltype_scores{i_region};
+                r.randbase_celltype_score{i_region};
         end
     end
 end

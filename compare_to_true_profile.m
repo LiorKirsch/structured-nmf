@@ -1,4 +1,5 @@
-function [gene_inds_true_type,gene_inds_predictions] = ...
+function [gene_inds_true_type,gene_inds_predictions, ...
+          gene_symb_true_type, gene_symb_predictions] = ...
         compare_to_true_profile(mouse_cell_types,gene_info, species,parms)
 
     % load doyle
@@ -20,6 +21,9 @@ function [gene_inds_true_type,gene_inds_predictions] = ...
             % predicted_profiles,'UniformOutput',false);
             gene_inds_true_type = reorder_mouse_cell_type;
             gene_inds_predictions = reorder_predicted;
+            
+            gene_symb_true_type  = mouse_cell_types.gene_symbol(reorder_mouse_cell_type);
+            gene_symb_predictions  = gene_info.gene_symbols(reorder_predicted);
             
       case {'monkey', 'human'}
             addpath('/cortex/code/matlab/homologous_gene_mapping/');
@@ -49,6 +53,9 @@ function [gene_inds_true_type,gene_inds_predictions] = ...
 
             gene_inds_true_type = gene_to_group_mouse;
             gene_inds_predictions = gene_to_group_primate;
+            
+            gene_symb_true_type  = mouse_cell_types.gene_symbol(gene_to_group_mouse);
+            gene_symb_predictions  = gene_info.gene_symbols(gene_to_group_primate);
     end
     
     % get true profile for each region
