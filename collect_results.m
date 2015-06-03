@@ -20,7 +20,7 @@ pair_best_scores = nan(size(all_pairs,1),1);
 pair_base_scores = nan(size(all_pairs,1),1);
 
 
-% rng('shuffle') ;% all_pairs = all_pairs(randperm(size(all_pairs,1)),:);
+rng('shuffle') ;% all_pairs = all_pairs(randperm(size(all_pairs,1)),:);
 
 
 for  i = 1:size(all_pairs,1)
@@ -33,7 +33,7 @@ for  i = 1:size(all_pairs,1)
       
 %       parms.num_restarts = 30;
       parms.num_restarts = 8;
-      parms.maxiter = 1000;  
+      parms.maxiter = 2000;  
 %       parms.H_lambda_list = [0, 10.^[-3:0.5:3], inf];
       parms.H_lambda_list = [ 0 0.001 0.01 0.1 1 10 100 1000 inf];
 
@@ -48,9 +48,12 @@ for  i = 1:size(all_pairs,1)
               pair_base_scores(i) = base_score;
               fprintf('=============== file found for');
         case 'generate'
-            parms.only_collect = false;
-            parms.do_plot = false;
-            main
+            try
+                parms.only_collect = false;
+                parms.do_plot = true;
+                main
+            catch
+            end
     end
 
 end

@@ -11,6 +11,11 @@ function [full_name, file_name, dir_name] = set_filenames(file_type, parms)
     case 'baselines', 
       base_dir_name = fullfile('/cortex/users/lior/nmf/baselines/');
       [parmstr, dirparmstr] = set_parmstr(parms);
+      if  isfield(parms, 'true_dataset')
+          if ~strcmp(parms.true_dataset, 'okaty')
+              parmstr = sprintf('%s_%s', parms.true_dataset, parmstr);
+          end
+      end
       dir_name = fullfile(base_dir_name, dirparmstr);
       file_name = sprintf('baseline_%s.mat', parmstr);
       auto_mkdir = 1;
@@ -23,7 +28,12 @@ function [full_name, file_name, dir_name] = set_filenames(file_type, parms)
       auto_mkdir = 1;
     case 'results', 
       base_dir_name = fullfile('/cortex/users/lior/nmf/results/');
-       [parmstr, dirparmstr] = set_parmstr(parms);
+      [parmstr, dirparmstr] = set_parmstr(parms);
+      if  isfield(parms, 'true_dataset')
+          if ~strcmp(parms.true_dataset, 'okaty')
+              parmstr = sprintf('%s_%s', parms.true_dataset, parmstr);
+          end
+      end
       dir_name = fullfile(base_dir_name, dirparmstr);
       file_name = sprintf('results_%s.mat', parmstr);
       auto_mkdir = 1;

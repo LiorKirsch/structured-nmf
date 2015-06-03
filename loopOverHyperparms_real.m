@@ -35,7 +35,7 @@ function [results, H_results, W_results] = loopOverHyperparms_real(X, gene_info,
 % % % %      mouse_cell_types = load('mouse_cell_type_profiles.mat');
 % % % %      mouse_cell_types.expression = 2 .^ mouse_cell_types.expression;
 % % % %      [true_celltype_per_region, celltypes_used] = ...
-% % % %          match_region_with_true_profile(mouse_cell_types, region_names);
+% % % %          match_region_with_true_profile(mouse_cell_types, region_names,parms);
 % % % %      
 % % % %      % map the genes used in the true profile in the genes in the data
 % % % %      [gene_inds_true_type,gene_inds_predictions] = compare_to_true_profile( ...
