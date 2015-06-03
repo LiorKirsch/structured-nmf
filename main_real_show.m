@@ -5,8 +5,9 @@ parms = conf(parms);
 
 dataset = take_from_struct(parms, 'dataset', 'brainspan2014');
 [default_regions, parms.species] = get_region_set(dataset);
-regions = take_from_struct(parms, 'regions', default_regions);
-regions = sort(regions);
+
+regions_short = take_from_struct(parms, 'regions_short', default_regions);
+regions_short = sort(regions_short);
 
 switch dataset
     case 'kang2011',      %==== Kang ===
@@ -15,21 +16,21 @@ switch dataset
        ~] = load_expression_and_regions('kangCortexAndStriatum', []);
       
     case 'brainspan2014', %==== Brainspan ===
-      parms.dataset_file = sprintf('brainspan_rnaseq_%s', strjoin(regions,'_'));
+      parms.dataset_file = sprintf('brainspan_rnaseq_%s', strjoin(regions_short,'_'));
       [expression, gross_region_vec, gene_info, ~, gross_structures_info] ...
-          = load_expression_and_regions('brainspan_rnaseq', regions);
+          = load_expression_and_regions('brainspan_rnaseq', regions_short);
     
     case 'zapala2005',    %==== Zapala selected regions ===
       parms.dataset_file = 'Zapala_isocortex_medulla_striatum_cerebellum';
       [expression, gross_region_vec, gene_info, ~, gross_structures_info, ...
-       ~] = load_expression_and_regions('zapalaMouse', regions);
+       ~] = load_expression_and_regions('zapalaMouse', regions_short);
       gross_structures_info{strcmp(gross_structures_info, 'Isocortex')} ...
           = 'Cerebral_cortex';
 
       case 'human6' , %==== Human6 selected regions ===
         parms.dataset_file = 'Human6_selected_regions';
         [expression, gross_region_vec, gene_info, ~, gross_structures_info, ...
-         ~] = load_expression_and_regions('human6LimitRegions', regions);
+         ~] = load_expression_and_regions('human6LimitRegions', regions_short);
         gross_structures_info = gross_structures_info(:,4);
         gene_info.entrez_ids = arrayfun(@(x) sprintf('%d',x), ...
                                         gene_info.entrez_ids, ...
@@ -63,10 +64,8 @@ parms = get_structure_matrix(parms.dataset_file, parms.structre_type,region_name
 
 parms.W_constraints = 'on_simplex_with_noise';   % 'on_simplex', 'inside_simplex', 'positive','on_simplex_with_noise';
 parms.init_type = 'random';
-% parms.num_markers = 20;
 
 num_type_list = take_from_struct(parms, 'num_type_list', [3]) ;%1:8;
-num_markers_list = take_from_struct(parms, 'num_markers_list', [5 20 50 100 200]);
 H_lambda_list = take_from_struct(parms, 'H_lambda_list', [0 0.001 0.01 0.1 1 10 100]);
 
 gene_subset_list = take_from_struct(parms, 'gene_subset_list', {'all'});
@@ -101,7 +100,7 @@ if do_plot
     draw_figure(loop_over_var_name, loop_over_var_value, results, parms, 'Corr');
     draw_indv_figure(loop_over_var_name, loop_over_var_value, results, parms, 'Corr');
 end
-[best_score, base_score] = report_results(results);
+[best_score, base_score] = report_results(results, parms);
 
 % parms.H_lambda = 0.01;
 % [cell_mix_single.proportions, cell_mix_single.celltype_profile] = ...

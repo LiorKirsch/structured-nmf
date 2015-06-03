@@ -1,7 +1,7 @@
-function [gene_info, expression, parms] = gene_subset_selection(gene_info, ...
+function [gene_info, expression, gene_hash] = gene_subset_selection(gene_info, ...
                                                       expression, parms)
 %
-    gene_subset = take_from_struct(parms, 'gene_subset', 'barres100');
+    gene_subset = take_from_struct(parms, 'gene_subset', 'all');
 %     gene_okaty_filter = take_from_struct(parms, 'gene_okaty_filter', 'all_types');
     num_genes = length(gene_info.gene_symbols);
 
@@ -59,7 +59,7 @@ function [gene_info, expression, parms] = gene_subset_selection(gene_info, ...
     gene_info.gene_symbols = gene_info.gene_symbols(gene_inds);
     gene_info.entrez_ids = gene_info.entrez_ids(gene_inds);    
     expression = expression(:, gene_inds);
-    parms.gene_hash = sum(gene_inds);
+    gene_hash = sum(gene_inds);
 end
 
 % ========================================================

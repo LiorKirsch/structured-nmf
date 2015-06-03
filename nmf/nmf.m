@@ -34,7 +34,6 @@ function [best_W,best_H,best_diff_record,best_time_record,eucl_dist] ...
 % 
 % Lior Kirsch 03/2015
 
-
    % loglevel = take_from_struct(parms, 'loglevel', 1);
    num_restarts = take_from_struct(parms, 'num_restarts', 1);
    init_type = take_from_struct(parms, 'init_type', 'random');
@@ -47,11 +46,7 @@ function [best_W,best_H,best_diff_record,best_time_record,eucl_dist] ...
  
    H = cell(1, num_restarts);   
    diff_record = H; time_record = H; W = H;
-   eucl_dist = nan(num_restarts,1);
-   
-   % finding genes with zero expression
-   
-   
+   eucl_dist = nan(num_restarts,1);   
    if iscell(X) 
        num_genes = size(X{1},2);
        genes_with_zero_expression = true(1,num_genes);
@@ -59,8 +54,8 @@ function [best_W,best_H,best_diff_record,best_time_record,eucl_dist] ...
            genes_with_zero_expression = genes_with_zero_expression & ...
                all(X{j_regions} ==0,1) ;
        end
-       % I remove gene which have zero expression no and return them at the end
-       X = cellfun(@(x) x(:,~genes_with_zero_expression), X,'UniformOutput',false);
+       % Emove gene qith zero expression; return them at the end
+       X = cellfun(@(x) x(:,~genes_with_zero_expression), X, 'UniformOutput',false);
    else
       num_genes = size(X,2);
       genes_with_zero_expression = all(X==0,1) ;
@@ -72,25 +67,26 @@ function [best_W,best_H,best_diff_record,best_time_record,eucl_dist] ...
        parfor i = 1:num_restarts
            parms_current = parms;
            parms_current.restart_ind = i;
-           parms_current = rmfield(parms_current,'num_restarts'); % so we can share the restarts even when the total restart changes
+           parms_current = rmfield(parms_current,'num_restarts'); 
+           % so we can share the restarts even when the total restart changes
            
-           fprintf('====== restart %d (%d) HL = %4.2g\n', i, ...
-                   num_restarts, parms_current.H_lambda);
+           fprintf('====== restart %d (%d) HL=%g INIT=%s\n', i, ...
+                   num_restarts, parms_current.H_lambda, parms.init_subtype);
            
-            filename  = set_filenames('demixing_rand_restart', parms_current);
+           filename  = set_filenames('demixing_rand_restart', parms_current);
            vars = {'current_W', 'current_H', 'current_diff_record', ...
-            'current_time_record','current_eucl_dist'};
+                   'current_time_record','current_eucl_dist'};
         
             [do_calc, current_W, current_H, current_diff_record, current_time_record, ...
              current_eucl_dist] = cond_load(filename, 0, vars{1:end});
-
             if do_calc < 1 
                fprintf('loading random restart from memory - %s\n', filename);
                % do thing
             else
                if iscell(X) 
-                   [W_init, H_init] = cellfun(@(x) get_random_W_H(x, K, ...
-                                                                     parms_current), X, 'UniformOutput', false);
+                   [W_init, H_init] = ...
+                       cellfun(@(x) get_random_W_H(x, ...
+                                                   K, parms_current), X, 'UniformOutput', false);
                else
                    [W_init, H_init] = get_random_W_H(X,K,parms_current);
                end
@@ -98,8 +94,7 @@ function [best_W,best_H,best_diff_record,best_time_record,eucl_dist] ...
                [current_W, current_H, current_diff_record, current_time_record] = ...
                    nmf_alg_selection(X,W_init,H_init,alg,parms_current);           
                current_eucl_dist = compute_eucl_dist(X, current_W,current_H);
-               
-               
+
                parsave(filename, current_W, current_H, current_diff_record,...
                    current_time_record, current_eucl_dist);
                fprintf('Saved demixing random restart model into [%s]\n', filename);
@@ -127,10 +122,11 @@ function [best_W,best_H,best_diff_record,best_time_record,eucl_dist] ...
        else
            [W_init, H_init] = nndsvd(X, K,0);
        end
-       [best_W,best_H,best_diff_record,best_time_record] = nmf_alg_selection(X,W_init,H_init,alg,parms);
+       [best_W,best_H, best_diff_record, best_time_record] = ...
+           nmf_alg_selection(X,W_init,H_init,alg,parms);
        eucl_dist = compute_eucl_dist(X,best_W,best_H);
      otherwise
-       error('unkown init option -%s',init_type);    
+       error('unkown init option [%s]', init_type);    
    end
    
    
@@ -161,62 +157,58 @@ function parsave_warm(filename,W_warm, H_warm)
     save(filename, 'W_warm', 'H_warm');
 end
 
-function [W, H, diff_record, time_record] = nmf_alg_selection(X,W_init,H_init,alg,parms)
+
+% ===========================================================
+function [W, H, diff_record, time_record] = nmf_alg_selection(X, ...
+                                                      W_init, H_init, ...
+                                                      alg, parms)
     loglevel = take_from_struct(parms, 'loglevel', 1);
     do_sep_init = take_from_struct(parms, 'do_sep_init', false);
     diff_record = nan;
     time_record = nan;
 
-    % switch algorithm 
     switch alg
         case 'mm'
             if loglevel, disp('Using mm algorithm'),end
-            [W,H,diff_record,time_record]=nmf_mm(parms,X,W_init,H_init);
+            [W,H,diff_record,time_record] = nmf_mm(parms,X,W_init,H_init);
         case 'prob' 
             if loglevel, disp('Using prob algorithm'),end
-            [W,H,diff_record,time_record]=nmf_prob(parms,X,W_init,H_init);
+            [W,H,diff_record,time_record] = nmf_prob(parms,X,W_init,H_init);
         case 'cjlin'
             if loglevel, disp('Using cjlin algorithm'),end
-            [W,H,diff_record,time_record]=nmf_cjlin(parms,X,W_init,H_init);
+            [W,H,diff_record,time_record] = nmf_cjlin(parms,X,W_init,H_init);
         case 'alsPinv'
             parms.als_solver= 'pinv_project';
             if loglevel, disp('Using als pinv and project'),end
-            [W,H,diff_record,time_record]=nmf_als(parms,X,W_init,H_init);
+            [W,H,diff_record,time_record] = nmf_als(parms,X,W_init,H_init);
         case 'alsBlockpivot'
             parms.als_solver= 'blockpivot';
             if loglevel, disp('Using als-blockpivot algorithm'),end
-            [W,H,diff_record,time_record]=nmf_als(parms,X,W_init,H_init);
+            [W,H,diff_record,time_record] = nmf_als(parms,X,W_init,H_init);
         case 'alsActiveSet'
             parms.als_solver= 'active_set';
             if loglevel, disp('Using als-active-set algorithm'),end
-            [W,H,diff_record,time_record]=nmf_als(parms,X,W_init,H_init);
+            [W,H,diff_record,time_record] = nmf_als(parms,X,W_init,H_init);
         case 'alsWithRelations'
             switch parms.nmf_method
-                case 'alsActiveSet'
-                    parms.als_solver= 'active_set';
-                case 'alsBlockpivot'
-                    parms.als_solver= 'blockpivot';
-                case 'alsPinv'
-                    parms.als_solver= 'pinv_project';
-                otherwise
-                    error('Unknown nmf method %s', parms.nmf_method);
+                case 'alsActiveSet', parms.als_solver= 'active_set';
+                case 'alsBlockpivot', parms.als_solver= 'blockpivot';
+                case 'alsPinv', parms.als_solver= 'pinv_project';
+                otherwise, error('Unknown nmf method [%s]', parms.nmf_method);
             end
 
             %%% TODO hot start with good HL=0.
              if do_sep_init
-%                 fprintf('=== warm start === (HL=%4.2g)\n', parms.H_lambda);
+                fprintf('=== warm start === (HL=%4.2g)\n', parms.H_lambda);
                 warm_parms = parms;
                 warm_parms.H_lambda = 0; % !!!! must set lambda to zero 0!!!!
-                
-                
-                 [~, warm_filename, warm_dir]  = set_filenames('demixing_rand_restart', warm_parms);
+                 [~, warm_filename, warm_dir]  = ...
+                     set_filenames('demixing_rand_restart', warm_parms);
                  warm_filename = fullfile(warm_dir,['warm', warm_filename]);
                    vars = {'W_warm', 'H_warm'};
-        
-                [do_calc, W_warm, H_warm ]= cond_load(warm_filename, 0, vars{1:end});
-
+                [do_calc, W_warm, H_warm ]= cond_load(warm_filename, ...
+                                                      0, vars{1:end});
                 if do_calc < 1 
-                   fprintf('loading warm restart from memory %s\n', warm_filename);
                 else
                     for i_cell =1 :length(X)
                         if isfield(warm_parms,'H_markers')
@@ -226,14 +218,13 @@ function [W, H, diff_record, time_record] = nmf_alg_selection(X,W_init,H_init,al
                             nmf_als(warm_parms, X{i_cell}, ...
                                                 W_init{i_cell}, H_init{i_cell});
                     end
-                    fprintf('Saving warm restart %s\n', warm_filename);
+                    % fprintf('nmf: Save warm restart %s\n', warm_filename);
                     parsave_warm(warm_filename,W_warm, H_warm);
-                    
                 end
                 W_init = W_warm;
                 H_init = H_warm;
-                
-                % [W_init,H_init]=cellfun(@(x,w,h) nmf_als(curr_parms,x,w,h) ,X,W_init,H_init,'UniformOutput',false);
+                % [W_init,H_init]=cellfun(@(x,w,h) nmf_als(curr_parms,x,w,h)
+                % ,X,W_init,H_init,'UniformOutput',false);
             end
             
             if isinf(parms.H_lambda)
@@ -244,13 +235,19 @@ function [W, H, diff_record, time_record] = nmf_alg_selection(X,W_init,H_init,al
                 
                 reverse_map = [];
                 
-                dim = ndims(H_init{1});          % Get the number of dimensions for your arrays
-                M = cat(dim+1,H_init{:});        % Convert to a (dim+1)-dimensional matrix
-                curr_H_init = mean(M,dim+1);     % Get the mean across arrays
+                % Get the number of dimensions for your arrays                
+                dim = ndims(H_init{1});
+                % Convert to a (dim+1)-dimensional matrix                
+                M = cat(dim+1,H_init{:});
+                % Get the mean across arrays                
+                curr_H_init = mean(M,dim+1);     
                 
                 if isfield(curr_parms,'H_markers')
-                    dim = ndims(curr_parms.H_markers{1}); % Get the number of dimensions for your arrays
-                    M = cat(dim+1,curr_parms.H_markers{:}); % Convert to a (dim+1)-dimensional matrix
+                    % Get #dims for your arrays                    
+                    dim = ndims(curr_parms.H_markers{1}); 
+                    % Convert to a (dim+1)-dimensional matrix
+                    M = cat(dim+1,curr_parms.H_markers{:}); 
+
                     curr_parms.H_markers = any(M,dim+1); % Get any marker
                 end
                 
@@ -288,7 +285,6 @@ end
 
 
 function eucl_dist = compute_eucl_dist(X, W, H)
-
     if iscell(X) && iscell(W) && iscell(H)
        num_elements = length(X);
        assert(length(W) == num_elements, ' X and W should have the same number of elements');

@@ -8,6 +8,13 @@ function [full_name, file_name, dir_name] = set_filenames(file_type, parms)
       dir_name = fullfile(base_dir_name, dirparmstr);
       file_name = sprintf('demix_%s.mat', parmstr);
       auto_mkdir = 1;
+    case 'baselines', 
+      base_dir_name = fullfile('/cortex/users/lior/nmf/baselines/');
+      [parmstr, dirparmstr] = set_parmstr(parms);
+      dir_name = fullfile(base_dir_name, dirparmstr);
+      file_name = sprintf('baseline_%s.mat', parmstr);
+      auto_mkdir = 1;
+    
     case 'demixing_rand_restart', 
       base_dir_name = fullfile('/cortex/users/lior/nmf/runs/rand_restarts/');
       [parmstr, dirparmstr] = set_parmstr(parms);
@@ -16,7 +23,7 @@ function [full_name, file_name, dir_name] = set_filenames(file_type, parms)
       auto_mkdir = 1;
     case 'results', 
       base_dir_name = fullfile('/cortex/users/lior/nmf/results/');
-      [parmstr, dirparmstr] = set_parmstr(parms);
+       [parmstr, dirparmstr] = set_parmstr(parms);
       dir_name = fullfile(base_dir_name, dirparmstr);
       file_name = sprintf('results_%s.mat', parmstr);
       auto_mkdir = 1;

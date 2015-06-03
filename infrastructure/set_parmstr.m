@@ -89,10 +89,10 @@ function [parmstr, dirparmstr] = set_parmstr(parms)
 
           case {'relations','relations_dist','relations_parentdist',...
                 'relations_parent_level'}
-            %add a hash for the matrix
-            sum_hash = sum(sum(parms.structure_matrix));
-            parmstr = sprintf('%s_Hash%g', parmstr, sum_hash);
-            
+% %             %add a hash for the matrix
+% %             sum_hash = sum(sum(parms.structure_matrix));
+% %             parmstr = sprintf('%s_Hash%g', parmstr, sum_hash);
+% %             
             
             if isfield(parms, 'structure_filter')
                 if ~isnan(parms.structure_filter)
@@ -114,35 +114,36 @@ function [parmstr, dirparmstr] = set_parmstr(parms)
         parmstr = sprintf('%s_nummrk%d', parmstr, parms.num_markers);
     end
     
-    if isfield(parms,'init_by')
-        if ~strcmp(parms.init_by, 'random')
-            parmstr = sprintf('%s_initby_%s', parmstr, parms.init_by);
+   
+    if isfield(parms,'init_subtype')
+        if ~strcmp(parms.init_subtype, 'random')
+            parmstr = sprintf('%s_initby_%s', parmstr, parms.init_subtype);
         end
     end
     
     
-    if isfield(parms, 'H_markers')
-        if iscell(parms.H_markers)
-            sum_hash = 0;
-            for i_cell = 1:length(parms.H_markers)
-                tmp_matrix = reshape(1:numel(parms.H_markers{i_cell}), size(parms.H_markers{i_cell}));
-                tmp_matrix = tmp_matrix .* parms.H_markers{i_cell};
-                sum_hash = sum_hash +    sum(tmp_matrix(:)) ;
-            end
-        else
-            tmp_matrix = reshape(1:numel(parms.H_markers), size(parms.H_markers));
-            tmp_matrix = tmp_matrix .* parms.H_markers;
-            sum_hash = sum(tmp_matrix(:)) ;
-        end
-        parmstr = sprintf('%s_MrkHash%g', parmstr, sum_hash);
-    end 
+%     if isfield(parms, 'H_markers')
+%         if iscell(parms.H_markers)
+%             sum_hash = 0;
+%             for i_cell = 1:length(parms.H_markers)
+%                 tmp_matrix = reshape(1:numel(parms.H_markers{i_cell}), size(parms.H_markers{i_cell}));
+%                 tmp_matrix = tmp_matrix .* parms.H_markers{i_cell};
+%                 sum_hash = sum_hash +    sum(tmp_matrix(:)) ;
+%             end
+%         else
+%             tmp_matrix = reshape(1:numel(parms.H_markers), size(parms.H_markers));
+%             tmp_matrix = tmp_matrix .* parms.H_markers;
+%             sum_hash = sum(tmp_matrix(:)) ;
+%         end
+%         parmstr = sprintf('%s_MrkHash%g', parmstr, sum_hash);
+%     end 
 
     if isfield(parms, 'gene_subset')
         if ~strcmp( parms.gene_subset,'all')
             parmstr = sprintf('%s_%s', parmstr, parms.gene_subset);
-            if isfield(parms, 'gene_hash')
-                parmstr = sprintf('%s_GenesHash%g', parmstr, parms.gene_hash);
-            end
+% %             if isfield(parms, 'gene_hash')
+% %                 parmstr = sprintf('%s_GenesHash%g', parmstr, parms.gene_hash);
+% %             end
             if isfield(parms, 'gene_okaty_filter')
                 parmstr = sprintf('%s_fltr%s', parmstr, parms.gene_okaty_filter);
             end

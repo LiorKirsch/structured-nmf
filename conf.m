@@ -18,7 +18,12 @@ function parms = conf(parms)
     [~, parms] = take_from_struct(parms, 'nmf_method', 'alsActiveSet');  
     [~, parms] = take_from_struct(parms, 'draw_log_scale', false);
     [~, parms] = take_from_struct(parms, 'do_sep_init', true);
-    [~, parms] = take_from_struct(parms, 'init_type', 'random');%'svd'
+    [~, parms] = take_from_struct(parms, 'init_type', 'random'); %'svd'
+    [~, parms] = take_from_struct(parms, 'init_subtype', 'noise10');
     [~, parms] = take_from_struct(parms, 'random_init_spread', 1);
     [~, parms] = take_from_struct(parms, 'structure_filter', nan);
+    [~, parms] = take_from_struct(parms, 'structre_type', 'relations_parent_level');
+    [~, parms] = take_from_struct(parms, 'gene_subset', 'all');    
+    [~, parms] = take_from_struct(parms, 'gene_okaty_filter', 'all');    
+    
 end

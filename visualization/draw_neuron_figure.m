@@ -1,25 +1,34 @@
-function draw_indv_figure(loop_over_var_name, loop_over_var_value, results, parms,y_label)
+function draw_neuron_figure(loop_over_var_name, loop_over_var_value, ...
+                            results, parms, y_label)
 %
-    FigHandle = figure('Name',parms.dataset_file); clf; hold on;
-    switch getenv('USER')
-      case 'lior', set(FigHandle, 'Position', [100, 100, 1600, 1000]);
-    end
-    set(groot,'defaultAxesColorOrder','default');       
-    
-    n = length(loop_over_var_value{1});    
-    check_argins(loop_over_var_value, results);    
-    legend_strings = loop_over_var_value{1};
-    x = loop_over_var_value{2};    
 
-    if take_from_struct(parms, 'draw_log_scale')
+    [real_scores, rand_scores] = results_struct_to_mat(results);
+    % scores has dims: [num_lambdas, num_regions, num_types]
+    x = loop_over_var_value{2};
+    if numel(x) ~= size(real_scores, 1)
+        error();
+    end
+    
+    if take_from_struct(parms, 'draw_log_scale', true)
        x(x == 0) = 10^-5;
        x(isinf(x)) = 10^+5;
     end
-
-    plot_h = nan(n,1);
-    for i = 1:n
-        curr_results = results{i};
-        for j=1:3
+    
+    % For plotting neuron data, we take the first cell type only
+    scores = squeeze(real_scores(:,:,1));
+    rands = squeeze(rand_scores(:,:,1));
+    
+    clrs = set_colors();
+    y = mean(scores, 2); y = y(:)';
+    figure(1); clf; hold on;
+    plot(x, y, '-', 'Color', clrs{0})
+    
+    
+    
+    
+    curr_results = results{1};
+      cell_type=1;
+XXX      for j=1:3
             assert(length(curr_results) ==  length(x),'problem with build the results');
             y = cellfun(@(x) x.celltype_region_avg_scores(j), curr_results);
             subplot(1,3,j);hold on;
