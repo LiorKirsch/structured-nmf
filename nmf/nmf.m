@@ -201,7 +201,9 @@ function [W, H, diff_record, time_record] = nmf_alg_selection(X, ...
              if do_sep_init
                 fprintf('=== warm start === (HL=%4.2g)\n', parms.H_lambda);
                 warm_parms = parms;
-                warm_parms.H_lambda = 0; % !!!! must set lambda to zero 0!!!!
+                
+                warm_parms.H_lambda = warm_parms.sep_H_lambda;
+%                 warm_parms.H_lambda = 0; % !!!! must set lambda to zero 0!!!!
                  [~, warm_filename, warm_dir]  = ...
                      set_filenames('demixing_rand_restart', warm_parms);
                  warm_filename = fullfile(warm_dir,['warm', warm_filename]);
@@ -210,13 +212,19 @@ function [W, H, diff_record, time_record] = nmf_alg_selection(X, ...
                                                       0, vars{1:end});
                 if do_calc < 1 
                 else
-                    for i_cell =1 :length(X)
-                        if isfield(warm_parms,'H_markers')
-                            warm_parms.H_markers = parms.H_markers{i_cell};
+                    if warm_parms.H_lambda == 0
+                        for i_cell =1 :length(X)
+                            if isfield(warm_parms,'H_markers')
+                                warm_parms.H_markers = parms.H_markers{i_cell};
+                            end
+                            [W_warm{i_cell}, H_warm{i_cell}, ~, ~] = ...
+                                nmf_als(warm_parms, X{i_cell}, ...
+                                                    W_init{i_cell}, H_init{i_cell});
                         end
-                        [W_warm{i_cell}, H_warm{i_cell}, ~, ~] = ...
-                            nmf_als(warm_parms, X{i_cell}, ...
-                                                W_init{i_cell}, H_init{i_cell});
+                    else
+                        relation_matrix_for_H = warm_parms.structure_matrix;
+                        [W_warm, H_warm, ~, ~]=nmf_als_with_relations(warm_parms,X,...
+                                relation_matrix_for_H,W_init, H_init);
                     end
                     % fprintf('nmf: Save warm restart %s\n', warm_filename);
                     parsave_warm(warm_filename,W_warm, H_warm);

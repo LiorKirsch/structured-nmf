@@ -26,7 +26,7 @@ function report_results_struct(results, parms)
             header = strrep(header, '   ', ' ');
             header = strrep(header, '  ', ' ');
             header = strrep(header, 'num_types 3', '');
-            fprintf('\n    %s\n', header);
+            fprintf('    %s\n', header);
             scrs = zeros(num_regions, 3);
             for i_region = 1:num_regions
                 fprintf('\t%-40s', r.regions{i_region});

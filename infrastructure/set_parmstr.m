@@ -104,6 +104,12 @@ function [parmstr, dirparmstr] = set_parmstr(parms)
                 if parms.do_sep_init
                     parmstr = sprintf('%s_sepInit', parmstr);
                 end
+                
+               if isfield(parms, 'sep_H_lambda')
+                   if parms.sep_H_lambda ~=0
+                        parmstr = sprintf('%s_sepHL%g', parmstr,parms.sep_H_lambda);
+                   end
+               end
             end
             otherwise
                 error('unkown strcuture type %s',parms.structre_type);
