@@ -52,12 +52,22 @@ function [full_name, file_name, dir_name] = set_filenames(file_type, parms)
     case 'figure'
         base_dir_name = 'figures';
         [parmstr, dirparmstr] = set_parmstr(parms);
+         if  isfield(parms, 'true_dataset')
+          if ~strcmp(parms.true_dataset, 'okaty')
+              parmstr = sprintf('%s_%s', parms.true_dataset, parmstr);
+          end
+         end
         dir_name = fullfile(base_dir_name, dirparmstr);
         file_name = sprintf('%s_%s_%s.png', parms.fig_x_axis, parms.corr_type,parmstr);
         auto_mkdir = 1;
     case 'figure_real'
         base_dir_name = 'figures_real';
         [parmstr, dirparmstr] = set_parmstr(parms);
+         if  isfield(parms, 'true_dataset')
+          if ~strcmp(parms.true_dataset, 'okaty')
+              parmstr = sprintf('%s_%s', parms.true_dataset, parmstr);
+          end
+         end
         dir_name = fullfile(base_dir_name, dirparmstr);
         file_name = sprintf('%s_%s_%s.png', parms.fig_x_axis, parms.corr_type,parmstr);
         auto_mkdir = 1;

@@ -6,10 +6,13 @@ function plot_with_var(loop_over_var_name, loop_over_var_value, ...
 
    
 %     subplot(1,2,1);
+ if parms.draw_log_scale
+        set(gca,'XScale','log')
+ end
     do_mean_corr = true;
     y_label = 'unexplained variance';
 %     y_label = sprintf('1 - %s',parms.corr_type);
-    alg_name = draw_the_main_figure(loop_over_var_name, ...
+    [alg_name, alg_type] = draw_the_main_figure(loop_over_var_name, ...
                loop_over_var_value, scores, parms,do_mean_corr,y_label);
    
 %     subplot(1,2,2);
@@ -53,10 +56,45 @@ function plot_with_var(loop_over_var_name, loop_over_var_value, ...
 %     end
         
 %     subplot(1,2,2); 
-    if ~iscell(alg_name)
-        alg_name = arrayfun(@num2str, alg_name, 'UniformOutput', false);
+    if iscell(alg_name)
+        legend_strings = alg_name;
+         switch alg_type
+            case 'nmf_method'
+                legend_strings = strrep(legend_strings, 'mm', 'Multiplicative updates') ;
+                legend_strings = strrep(legend_strings, 'alsActiveSet', 'Active set') ;
+                legend_strings = strrep(legend_strings, 'alsBlockpivot', 'Block pivoting') ;
+                legend_strings = strrep(legend_strings, 'cjlin', 'Projected gradient') ;
+                legend(legend_strings,'Location','northeast'); legend('boxoff');    
+             otherwise
+                legend(legend_strings,'Location','best'); legend('boxoff');
+         end
+        
+    else
+        switch alg_type
+            case 'num_samples'
+                legend_strings = cell(size(alg_name));
+                for i = 1:length(legend_strings)
+                    legend_strings{i} = sprintf('%d samples',alg_name(i));
+                end
+                legend(legend_strings,'Location','northwest'); legend('boxoff');
+
+%                 NumTicks = 5;
+%                 L = get(gca,'YLim');
+                set(gca,'YTick',[0.06:0.03:0.15])
+            case 'num_types'
+                legend_strings = cell(size(alg_name));
+                for i = 1:length(legend_strings)
+                    legend_strings{i} = sprintf('%d types',alg_name(i));
+                end
+                legend(legend_strings,'Location','northwest'); legend('boxoff');
+
+            otherwise
+                legend_strings = arrayfun(@num2str, alg_name, 'UniformOutput', false);
+                legend(legend_strings,'Location','best'); legend('boxoff');
+        end
+        
     end
-    legend(alg_name,'Location','best'); legend('boxoff');
+%     
     hold off;
 
     if isfield(parms,'dataset_file')
@@ -80,11 +118,12 @@ function varargout = do_repmat(new_size, varargin)
     end
 end
 
-function alg_name = draw_the_main_figure(loop_over_var_name, ...
+function [alg_name,alg_type] = draw_the_main_figure(loop_over_var_name, ...
                                          loop_over_var_value, scores, ...
                                          parms,do_mean_corr,y_label)
     hold on;
     alg_name = loop_over_var_value{1};
+    alg_type = loop_over_var_name{1};
     
 %     assert( strcmp('nmf_method', loop_over_var_name{1} ),'nmf_method should be the first');
     
@@ -107,7 +146,7 @@ function alg_name = draw_the_main_figure(loop_over_var_name, ...
             y_std = nan(size(curr_scores,1),1);
             for m =1:size(curr_scores,1);
                 [y(m),y_std(m)] = mean_corr_coeff(curr_scores(m,:));
-                y(m) = 1 - y(m);
+                y(m) = 1 - y(m).^2;
             end
         else
             y = mean(curr_scores,2);
@@ -120,24 +159,41 @@ function alg_name = draw_the_main_figure(loop_over_var_name, ...
 
         x_noise = (2*rand(size(x))-1).*x *0.05;
 %         x_noise = ( i-1 )*0.5;
-        ax = errorbar(x + x_noise,y,y_sem,'LineWidth',2);
+%         ax = errorbar(x + x_noise,y,y_sem,'LineWidth',2);
+        ax = errorbar(x ,y,y_sem,'LineWidth',2);
+        
+        
     end
     hold off;
 
-    x_label = strrep(loop_over_var_name{end}, '_', ' ') ;
+   
+       x_label = strrep(loop_over_var_name{end}, '_', ' ') ;
+    x_label = strrep(x_label, 'H lambda', '\lambda') ;
     xlabel(x_label);
     ylabel(y_label);
-    
-    if parms.draw_log_scale
-        set(gca,'XScale','log')
-        set(gca,'XTick', x);
-        tmp = get(gca,'XTickLabel');
-        if any(loop_over_var_value{end} == 0 )
-            tmp{loop_over_var_value{end} == 0} = 'indv';
-        end
-        if any(isinf(loop_over_var_value{end}))
-            tmp{isinf(loop_over_var_value{end})} = 'joined';
-        end
-        set(gca,'XTickLabel', tmp);
+    switch x_label
+        case '\lambda'
+            
+  
+
+            xlim([10^-5.5, 10^5.5]);
+            if parms.draw_log_scale 
+        %         set(gca,'XScale','log')
+                skip_array = [1,2,4,6,8,9];
+                x_ticks = x(skip_array);
+                set(gca,'XTick', x_ticks);
+                tmp = get(gca,'XTickLabel');
+        %         if any(loop_over_var_value{end} == 0 )
+        %             tmp{loop_over_var_value{end} == 0} = 'indv';
+        %         end
+        %         if any(isinf(loop_over_var_value{end}))
+        %             tmp{isinf(loop_over_var_value{end})} = 'joined';
+        %         end
+                 tmp = strrep(tmp, '10^{-5}','indv') ;
+                 tmp = strrep(tmp, '10^{5}','joined') ;
+                set(gca,'XTickLabel', tmp);
+            end
+        case 'num samples'
+            
     end
 end

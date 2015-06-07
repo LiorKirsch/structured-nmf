@@ -102,6 +102,7 @@ for iter=1:maxiter
 %==== Minization step
 
     % split H to markers and non markers
+ 
     all_marker_indices = any(H_markers,1);
     H_marker_part = update_H_markers(X(:,all_marker_indices), W, H_markers(:,all_marker_indices),H_lambda,H_prior(:,all_marker_indices));
     [reg_X_for_H, reg_W_for_H] = get_reg_for_H(X(:,~all_marker_indices),W, H_lambda, H_prior(:,~all_marker_indices));

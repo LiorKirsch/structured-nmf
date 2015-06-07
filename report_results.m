@@ -29,9 +29,11 @@ function report_results_struct(results, parms)
             fprintf('    %s\n', header);
             scrs = zeros(num_regions, 3);
             for i_region = 1:num_regions
-                fprintf('\t%-40s', r.regions{i_region});
-                fprintf(' %4.2f ', 100*r.celltype_scores{i_region});
-                fprintf(' (avg=%4.2f)\n', 100* r.region_scores(i_region));
+                region_short = parms.regions_short{i_region};
+                region = r.regions{i_region};
+                %fprintf('\t%-40s', regions_short):
+                %fprintf(' %4.2f ', 100*r.celltype_scores{i_region});
+                %fprintf(' (avg=%4.2f)\n', 100* r.region_scores(i_region));
                 scrs(i_region,1:3) = r.celltype_scores{i_region};
             end
             fprintf('\t%-40s', 'mean over regions');
@@ -40,17 +42,19 @@ function report_results_struct(results, parms)
         end
         
         fprintf('     mean profile baseline\n');
-        %for i_region = 1:num_regions
+        % for i_region = 1:num_regions
         %    fprintf('\t%-40s', r.regions{i_region});
         %    fprintf(' %4.2f ', 100*r.baseline_celltype_score{i_region});
         %    fprintf(' (avg=%4.2f)\n', 100*r.baseline_region_scores(i_region));
-        %end
+        % end
         fprintf('\t%-40s', 'mean over regions');
         fprintf(' %4.2f ', 100* r.baseline_celltype_region_avg_scores);
         fprintf('\n');
         
         fprintf('     rand samples baseline\n');
         % for i_region = 1:num_regions
+        %    region_short = parms.regions_short{i_region};
+        %    region = r.regions{i_region};        
         %    fprintf('\t%-40s', r.regions{i_region});
         %    fprintf(' %4.2f ', 100*r.randbase_celltype_score{i_region});
         %    fprintf(' (avg=%4.2f)\n', 100*r.randbase_region_scores(i_region));

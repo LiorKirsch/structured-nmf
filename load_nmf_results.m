@@ -5,6 +5,8 @@ function  [best_W, best_H, best_diff_record, best_time_record, ...
 %
 
     structre_type = take_from_struct(parms, 'structre_type', 'none');
+    only_collect = take_from_struct(parms, 'only_collect', false);
+
     
     vars = {'best_W', 'best_H', 'best_diff_record', ...
             'best_time_record','eucl_dist'};
@@ -14,6 +16,10 @@ function  [best_W, best_H, best_diff_record, best_time_record, ...
      eucl_dist] = cond_load(filename, 0, vars{1:end});
     if do_calc < 1 
        return
+    end
+    
+    if only_collect
+        return
     end
     
     switch structre_type

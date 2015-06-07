@@ -68,8 +68,15 @@ fprintf('main: loop over hyper parameters\n');
 if take_from_struct(parms, 'do_plot', true);
     parms.draw_log_scale = true;
     % draw_figure(loop_over_var_name, loop_over_var_value, results, parms, 'Corr');
-    draw_indv_figure(loop_over_var_name, loop_over_var_value, results, ...
-                     parms, 'Corr');
+
+    switch getenv('USER')
+        case 'lior', 
+          draw_indv_figure(loop_over_var_name, loop_over_var_value, ...
+                           results, parms, 'Corr');
+      case 'gal', 
+          draw_indv_figure_gal(loop_over_var_name, loop_over_var_value, ...
+                               results, parms, 'Corr');
+    end
 end
 
 [best_score, base_score] = report_results(results, parms);

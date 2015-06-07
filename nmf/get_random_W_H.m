@@ -2,7 +2,7 @@ function [W_init, H_init] = get_random_W_H(X, K, parms)
 %
 % init the random using the seed + the current restart index
     rand_seed = take_from_struct(parms, 'rand_seed', 42);
-    init_subtype = take_from_struct(parms, 'init_subtype');
+    init_subtype = take_from_struct(parms, 'init_subtype','random');
     rng(rand_seed + parms.restart_ind);
     W_constraints = take_from_struct(parms, 'W_constraints', 'positive');
     [D, N] = size(X);

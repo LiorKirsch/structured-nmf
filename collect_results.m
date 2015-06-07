@@ -13,14 +13,14 @@ all_regions =  {'A1C','CBC','DFC','HIP', 'IPC','ITC', ...
 % task = 'collect';
 task = 'generate';
 
-all_pairs = nchoosek(1:length(all_regions), 2);
+all_pairs = nchoosek(1:length(all_regions), 5);
 
 
 pair_best_scores = nan(size(all_pairs,1),1);
 pair_base_scores = nan(size(all_pairs,1),1);
 
 
-rng('shuffle') ;% all_pairs = all_pairs(randperm(size(all_pairs,1)),:);
+rng('shuffle') ; all_pairs = all_pairs(randperm(size(all_pairs,1)),:);
 
 
 for  i = 1:size(all_pairs,1)
@@ -29,17 +29,20 @@ for  i = 1:size(all_pairs,1)
 %     parms.regions_short = {'S1C','V1C'};
       
       parms.W_constraints = 'positive';
+      parms.true_dataset = 'barres';
+      
 %       parms.W_constraints = 'on_simplex_with_noise';
       
 %       parms.num_restarts = 30;
       parms.num_restarts = 8;
-      parms.maxiter = 2000;  
+      parms.maxiter = 1000;  
 %       parms.H_lambda_list = [0, 10.^[-3:0.5:3], inf];
       parms.H_lambda_list = [ 0 0.001 0.01 0.1 1 10 100 1000 inf];
 
 
     switch task
         case 'collect'
+            try
             parms.only_collect = true;
             parms.do_plot = false;
               main
@@ -47,6 +50,8 @@ for  i = 1:size(all_pairs,1)
               pair_best_scores(i) = best_score;
               pair_base_scores(i) = base_score;
               fprintf('=============== file found for');
+            catch
+            end
         case 'generate'
             try
                 parms.only_collect = false;
@@ -63,3 +68,11 @@ end
 fprintf('best score %g for :', best_diff);
 disp( all_regions(all_pairs(best_ind,:) ) );
 
+
+[sort_vals, sort_inds] = sort( (pair_best_scores - pair_base_scores) );
+sort_inds = sort_inds(~isnan(sort_vals));
+
+for i =1:length(sort_inds)
+    fprintf('diff %g:' , (pair_best_scores(sort_inds(i)) - pair_base_scores(sort_inds(i))   ));
+    disp( all_regions(all_pairs(sort_inds(i),:) ) );
+end

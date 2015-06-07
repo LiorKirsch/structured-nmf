@@ -83,6 +83,6 @@ function draw_figure(loop_over_var_name, loop_over_var_value, results, ...
     
     parms.fig_x_axis = strrep(x_label, ' ', '_');
     [~, file_name, dir_name] = set_filenames('figure_real', parms);
-    fprintf('drawing figure - %s\n',fullfile(dir_name,file_name));
+    fprintf('save figure [%s]\n',fullfile(dir_name, file_name));
     saveas(gcf,fullfile(dir_name,file_name));
 end

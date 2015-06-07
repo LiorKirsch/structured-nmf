@@ -1,0 +1,1152 @@
+MATLAB is selecting SOFTWARE OPENGL rendering.
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2014 The MathWorks, Inc.
+                   R2014b (8.4.0.150421) 64-bit (glnxa64)
+                             September 15, 2014
+
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+Add matlab toolboxes
+>> Start initialization: begin init.m
+>> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> Already inited, skip.
+brainspan_rnaseq: loading data from disk
+data seems to be in linear scale.
+main: Get the structure matrix
+main: loop over hyper parameters
+
+set_filenames.m:
+	Auto-Make directory "/cortex/users/lior/nmf/baselines/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC" for filename baseline_barres__K3_S42_SSR5_relations_parent_level.mat
+File "/cortex/users/lior/nmf/baselines/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/baseline_barres__K3_S42_SSR5_relations_parent_level.mat" doesnt exist.
+> Calculate all vars 02:18:15
+loopoverhyperparms_real: create mean baseline
+loopoverhyperparms_real: create random baseline
+1%2%3%4%5%6%7%8%9%10%11%12%13%14%15%16%17%18%19%20%21%22%23%24%25%26%27%28%29%30%31%32%33%34%35%36%37%38%39%40%41%42%43%44%45%46%47%48%49%50%51%52%53%54%55%56%57%58%59%60%61%62%63%64%65%66%67%68%69%70%71%72%73%74%75%76%77%78%79%80%81%82%83%84%85%86%87%88%89%90%91%92%93%94%95%96%97%98%99%100%loopoverhyperparms_real: start lop over values
+]0;ctx17 -  - num_types     3 - H_lambda     0
+set_filenames.m:
+	Auto-Make directory "/cortex/users/lior/nmf/runs/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC" for filename demix__K3_IT500_on_simplex_with_noise_S42_NN50_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10.mat
+File "/cortex/users/lior/nmf/runs/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/demix__K3_IT500_on_simplex_with_noise_S42_NN50_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10.mat" doesnt exist.
+> Calculate all vars 02:18:57
+Starting parallel pool (parpool) using the 'local' profile ... connected to 12 workers.
+====== restart 9 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd9.mat" doesnt exist.
+> Calculate all vars 02:19:22
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd9.mat" doesnt exist.
+> Calculate all vars 02:19:22
+max limit iteration (500) reached (HL=   0)
+====== restart 18 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd18.mat" doesnt exist.
+> Calculate all vars 02:19:22
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd18.mat" doesnt exist.
+> Calculate all vars 02:19:22
+max limit iteration (500) reached (HL=   0)
+====== restart 12 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd12.mat" doesnt exist.
+> Calculate all vars 02:19:22
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd12.mat" doesnt exist.
+> Calculate all vars 02:19:22
+max limit iteration (500) reached (HL=   0)
+====== restart 27 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd27.mat" doesnt exist.
+> Calculate all vars 02:19:22
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd27.mat" doesnt exist.
+> Calculate all vars 02:19:22
+max limit iteration (500) reached (HL=   0)
+====== restart 31 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd31.mat" doesnt exist.
+> Calculate all vars 02:19:22
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd31.mat" doesnt exist.
+> Calculate all vars 02:19:22
+max limit iteration (500) reached (HL=   0)
+====== restart 21 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd21.mat" doesnt exist.
+> Calculate all vars 02:19:22
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd21.mat" doesnt exist.
+> Calculate all vars 02:19:22
+max limit iteration (500) reached (HL=   0)
+====== restart 6 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd6.mat" doesnt exist.
+> Calculate all vars 02:19:22
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd6.mat" doesnt exist.
+> Calculate all vars 02:19:22
+max limit iteration (500) reached (HL=   0)
+====== restart 24 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd24.mat" doesnt exist.
+> Calculate all vars 02:19:22
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd24.mat" doesnt exist.
+> Calculate all vars 02:19:22
+max limit iteration (500) reached (HL=   0)
+====== restart 15 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd15.mat" doesnt exist.
+> Calculate all vars 02:19:22
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd15.mat" doesnt exist.
+> Calculate all vars 02:19:22
+max limit iteration (500) reached (HL=   0)
+====== restart 33 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd33.mat" doesnt exist.
+> Calculate all vars 02:19:22
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd33.mat" doesnt exist.
+> Calculate all vars 02:19:22
+max limit iteration (500) reached (HL=   0)
+====== restart 3 (50) HL=0 INIT=noise10
+
+set_filenames.m:
+	Auto-Make directory "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC" for filename restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd3.mat
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd3.mat" doesnt exist.
+> Calculate all vars 02:19:22
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd3.mat" doesnt exist.
+> Calculate all vars 02:19:22
+max limit iteration (500) reached (HL=   0)
+====== restart 29 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd29.mat" doesnt exist.
+> Calculate all vars 02:19:22
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd29.mat" doesnt exist.
+> Calculate all vars 02:19:22
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd21.mat]
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd18.mat]
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd6.mat]
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd31.mat]
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd3.mat]
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd9.mat]
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd24.mat]
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd33.mat]
+====== restart 20 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd20.mat" doesnt exist.
+> Calculate all vars 02:33:49
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd20.mat" doesnt exist.
+> Calculate all vars 02:33:49
+max limit iteration (500) reached (HL=   0)
+====== restart 17 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd17.mat" doesnt exist.
+> Calculate all vars 02:33:51
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd17.mat" doesnt exist.
+> Calculate all vars 02:33:52
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd12.mat]
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd15.mat]
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd27.mat]
+====== restart 5 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd5.mat" doesnt exist.
+> Calculate all vars 02:34:05
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd5.mat" doesnt exist.
+> Calculate all vars 02:34:05
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd29.mat]
+====== restart 30 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd30.mat" doesnt exist.
+> Calculate all vars 02:34:07
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd30.mat" doesnt exist.
+> Calculate all vars 02:34:07
+max limit iteration (500) reached (HL=   0)
+====== restart 8 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd8.mat" doesnt exist.
+> Calculate all vars 02:34:11
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd8.mat" doesnt exist.
+> Calculate all vars 02:34:11
+max limit iteration (500) reached (HL=   0)
+====== restart 2 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd2.mat" doesnt exist.
+> Calculate all vars 02:34:10
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd2.mat" doesnt exist.
+> Calculate all vars 02:34:10
+max limit iteration (500) reached (HL=   0)
+====== restart 23 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd23.mat" doesnt exist.
+> Calculate all vars 02:34:11
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd23.mat" doesnt exist.
+> Calculate all vars 02:34:11
+max limit iteration (500) reached (HL=   0)
+====== restart 32 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd32.mat" doesnt exist.
+> Calculate all vars 02:34:17
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd32.mat" doesnt exist.
+> Calculate all vars 02:34:17
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+====== restart 11 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd11.mat" doesnt exist.
+> Calculate all vars 02:34:22
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd11.mat" doesnt exist.
+> Calculate all vars 02:34:22
+max limit iteration (500) reached (HL=   0)
+====== restart 14 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd14.mat" doesnt exist.
+> Calculate all vars 02:34:30
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd14.mat" doesnt exist.
+> Calculate all vars 02:34:30
+max limit iteration (500) reached (HL=   0)
+====== restart 26 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd26.mat" doesnt exist.
+> Calculate all vars 02:34:30
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd26.mat" doesnt exist.
+> Calculate all vars 02:34:30
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+====== restart 28 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd28.mat" doesnt exist.
+> Calculate all vars 02:34:34
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd28.mat" doesnt exist.
+> Calculate all vars 02:34:35
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd17.mat]
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd5.mat]
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd8.mat]
+====== restart 16 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd16.mat" doesnt exist.
+> Calculate all vars 02:48:10
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd16.mat" doesnt exist.
+> Calculate all vars 02:48:11
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd20.mat]
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd11.mat]
+====== restart 4 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd4.mat" doesnt exist.
+> Calculate all vars 02:48:31
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd4.mat" doesnt exist.
+> Calculate all vars 02:48:31
+max limit iteration (500) reached (HL=   0)
+====== restart 7 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd7.mat" doesnt exist.
+> Calculate all vars 02:48:33
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd7.mat" doesnt exist.
+> Calculate all vars 02:48:33
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd14.mat]
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd30.mat]
+====== restart 19 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd19.mat" doesnt exist.
+> Calculate all vars 02:48:52
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd19.mat" doesnt exist.
+> Calculate all vars 02:48:52
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+====== restart 10 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd10.mat" doesnt exist.
+> Calculate all vars 02:48:58
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd10.mat" doesnt exist.
+> Calculate all vars 02:48:58
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd2.mat]
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd32.mat]
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd26.mat]
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd23.mat]
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd28.mat]
+====== restart 13 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd13.mat" doesnt exist.
+> Calculate all vars 02:49:10
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd13.mat" doesnt exist.
+> Calculate all vars 02:49:10
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+====== restart 35 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd35.mat" doesnt exist.
+> Calculate all vars 02:49:24
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd35.mat" doesnt exist.
+> Calculate all vars 02:49:24
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+====== restart 1 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd1.mat" doesnt exist.
+> Calculate all vars 02:49:30
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd1.mat" doesnt exist.
+> Calculate all vars 02:49:30
+max limit iteration (500) reached (HL=   0)
+====== restart 37 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd37.mat" doesnt exist.
+> Calculate all vars 02:49:34
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd37.mat" doesnt exist.
+> Calculate all vars 02:49:34
+max limit iteration (500) reached (HL=   0)
+====== restart 25 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd25.mat" doesnt exist.
+> Calculate all vars 02:49:35
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd25.mat" doesnt exist.
+> Calculate all vars 02:49:35
+max limit iteration (500) reached (HL=   0)
+====== restart 22 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd22.mat" doesnt exist.
+> Calculate all vars 02:49:37
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd22.mat" doesnt exist.
+> Calculate all vars 02:49:37
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+====== restart 39 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd39.mat" doesnt exist.
+> Calculate all vars 02:49:39
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd39.mat" doesnt exist.
+> Calculate all vars 02:49:39
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd16.mat]
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd7.mat]
+====== restart 40 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd40.mat" doesnt exist.
+> Calculate all vars 03:02:24
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd40.mat" doesnt exist.
+> Calculate all vars 03:02:24
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+====== restart 41 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd41.mat" doesnt exist.
+> Calculate all vars 03:02:53
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd41.mat" doesnt exist.
+> Calculate all vars 03:02:54
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd13.mat]
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd10.mat]
+====== restart 42 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd42.mat" doesnt exist.
+> Calculate all vars 03:03:39
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd42.mat" doesnt exist.
+> Calculate all vars 03:03:39
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd37.mat]
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd4.mat]
+====== restart 43 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd43.mat" doesnt exist.
+> Calculate all vars 03:04:03
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd43.mat" doesnt exist.
+> Calculate all vars 03:04:03
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd35.mat]
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd22.mat]
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd25.mat]
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd19.mat]
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd1.mat]
+====== restart 36 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd36.mat" doesnt exist.
+> Calculate all vars 03:04:19
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd36.mat" doesnt exist.
+> Calculate all vars 03:04:19
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+====== restart 45 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd45.mat" doesnt exist.
+> Calculate all vars 03:04:35
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd45.mat" doesnt exist.
+> Calculate all vars 03:04:35
+max limit iteration (500) reached (HL=   0)
+====== restart 44 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd44.mat" doesnt exist.
+> Calculate all vars 03:04:31
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd44.mat" doesnt exist.
+> Calculate all vars 03:04:32
+max limit iteration (500) reached (HL=   0)
+====== restart 34 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd34.mat" doesnt exist.
+> Calculate all vars 03:04:35
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd34.mat" doesnt exist.
+> Calculate all vars 03:04:35
+max limit iteration (500) reached (HL=   0)
+====== restart 46 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd46.mat" doesnt exist.
+> Calculate all vars 03:04:40
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd46.mat" doesnt exist.
+> Calculate all vars 03:04:40
+max limit iteration (500) reached (HL=   0)
+====== restart 47 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd47.mat" doesnt exist.
+> Calculate all vars 03:04:45
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd47.mat" doesnt exist.
+> Calculate all vars 03:04:46
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+====== restart 48 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd48.mat" doesnt exist.
+> Calculate all vars 03:04:52
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd48.mat" doesnt exist.
+> Calculate all vars 03:04:52
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd39.mat]
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+====== restart 38 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd38.mat" doesnt exist.
+> Calculate all vars 03:06:03
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd38.mat" doesnt exist.
+> Calculate all vars 03:06:03
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd40.mat]
+====== restart 49 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd49.mat" doesnt exist.
+> Calculate all vars 03:17:08
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd49.mat" doesnt exist.
+> Calculate all vars 03:17:08
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd43.mat]
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd42.mat]
+====== restart 50 (50) HL=0 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd50.mat" doesnt exist.
+> Calculate all vars 03:17:56
+=== warm start === (HL=   0)
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/warmrestart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd50.mat" doesnt exist.
+> Calculate all vars 03:17:56
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd41.mat]
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd47.mat]
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd36.mat]
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd48.mat]
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd46.mat]
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd45.mat]
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd44.mat]
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd34.mat]
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd38.mat]
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+max limit iteration (500) reached (HL=   0)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd50.mat]
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd49.mat]
+=== nmf: best restart = 22  HL=   0 , best-worst=9.7e+09
+Saved demixing results into [/cortex/users/lior/nmf/runs/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/demix__K3_IT500_on_simplex_with_noise_S42_NN50_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10.mat]
+
+set_filenames.m:
+	Auto-Make directory "/cortex/users/lior/nmf/results/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC" for filename results_barres__K3_IT500_on_simplex_with_noise_S42_NN50_HL0_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10.mat
+]0;ctx17 -  - num_types     3 - H_lambda   0.1File "/cortex/users/lior/nmf/runs/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/demix__K3_IT500_on_simplex_with_noise_S42_NN50_HL0.1_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10.mat" doesnt exist.
+> Calculate all vars 03:25:41
+====== restart 6 (50) HL=0.1 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0.1_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd6.mat" doesnt exist.
+> Calculate all vars 03:25:41
+=== warm start === (HL= 0.1)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0.1_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd6.mat]
+====== restart 9 (50) HL=0.1 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0.1_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd9.mat" doesnt exist.
+> Calculate all vars 03:25:41
+=== warm start === (HL= 0.1)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0.1_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd9.mat]
+====== restart 29 (50) HL=0.1 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0.1_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd29.mat" doesnt exist.
+> Calculate all vars 03:25:41
+=== warm start === (HL= 0.1)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0.1_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd29.mat]
+====== restart 12 (50) HL=0.1 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0.1_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd12.mat" doesnt exist.
+> Calculate all vars 03:25:41
+=== warm start === (HL= 0.1)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0.1_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd12.mat]
+====== restart 31 (50) HL=0.1 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0.1_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd31.mat" doesnt exist.
+> Calculate all vars 03:25:41
+=== warm start === (HL= 0.1)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0.1_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd31.mat]
+====== restart 18 (50) HL=0.1 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0.1_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd18.mat" doesnt exist.
+> Calculate all vars 03:25:41
+=== warm start === (HL= 0.1)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0.1_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd18.mat]
+====== restart 15 (50) HL=0.1 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0.1_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd15.mat" doesnt exist.
+> Calculate all vars 03:25:41
+=== warm start === (HL= 0.1)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0.1_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd15.mat]
+====== restart 33 (50) HL=0.1 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0.1_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd33.mat" doesnt exist.
+> Calculate all vars 03:25:41
+=== warm start === (HL= 0.1)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0.1_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd33.mat]
+====== restart 27 (50) HL=0.1 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0.1_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd27.mat" doesnt exist.
+> Calculate all vars 03:25:41
+=== warm start === (HL= 0.1)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0.1_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd27.mat]
+====== restart 24 (50) HL=0.1 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0.1_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd24.mat" doesnt exist.
+> Calculate all vars 03:25:41
+=== warm start === (HL= 0.1)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0.1_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd24.mat]
+====== restart 3 (50) HL=0.1 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0.1_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd3.mat" doesnt exist.
+> Calculate all vars 03:25:41
+=== warm start === (HL= 0.1)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0.1_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd3.mat]
+====== restart 21 (50) HL=0.1 INIT=noise10
+File "/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0.1_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd21.mat" doesnt exist.
+> Calculate all vars 03:25:41
+=== warm start === (HL= 0.1)
+Saved demixing random restart model into [/cortex/users/lior/nmf/runs/rand_restarts/brainspan_rnaseq_A1C_AMY_CBC_DFC_HIP_IPC_ITC_M1C_MFC_OFC_S1C_STC_V1C_VFC/restart__K3_IT500_on_simplex_with_noise_S42_HL0.1_WL0_SSR5_alsActiveSet_relations_parent_level_sepInit_initby_noise10_RRInd21.mat]

@@ -1,6 +1,6 @@
 function [gene_hash, region_names, curr_gene_info,curr_X, gene_inds_true_type,...
           gene_inds_predictions, true_profiles, baseline_result ,...
-          randbase_result, true_cell_types, celltypes_used] = ...
+          randbase_result, mouse_cell_types, celltypes_used] = ...
           load_cached_baseline_and_genesubsets(...
           parms, X, gene_info)
 
@@ -15,7 +15,8 @@ function [gene_hash, region_names, curr_gene_info,curr_X, gene_inds_true_type,..
         cache_parms = rmfield(cache_parms,'num_restarts');
         cache_parms = rmfield(cache_parms,'nmf_method');
         
-     
+        true_dataset = take_from_struct(cache_parms, 'true_dataset', 'okaty');   %'barres'  
+
 
         
        filename  = set_filenames('baselines', cache_parms);
@@ -27,7 +28,7 @@ function [gene_hash, region_names, curr_gene_info,curr_X, gene_inds_true_type,..
         
             [do_calc, gene_hash, curr_gene_info, curr_X, gene_inds_true_type, ...
              gene_inds_predictions, true_profiles, baseline_result, randbase_result, ...
-             true_cell_types, celltypes_used,region_names] = cond_load(filename, 0, vars{1:end});
+             mouse_cell_types, celltypes_used,region_names] = cond_load(filename, 0, vars{1:end});
          
         if do_calc < 1 
                fprintf('loading baselines from cache - %s\n', filename);
@@ -45,21 +46,24 @@ function [gene_hash, region_names, curr_gene_info,curr_X, gene_inds_true_type,..
              % load the true profiles for each region
               switch true_dataset
                  case 'barres'
-                    true_cell_types = load_data('barres2014');
-                    true_cell_types.expression = true_cell_types.data;
+                    mouse_cell_types = load_data('barres2014');
+                    mouse_cell_types.expression = mouse_cell_types.data;
+                    mouse_cell_types.all_symbols = mouse_cell_types.gene_symbols;
+                    mouse_cell_types.gene_symbol = mouse_cell_types.gene_symbols;
+                    mouse_cell_types.refer_to_index = 1:length(mouse_cell_types.gene_symbol);
                   case 'okaty'
-                      true_cell_types = load('mouse_cell_type_profiles.mat');
-                      true_cell_types.expression = 2 .^ true_cell_types.expression;
+                      mouse_cell_types = load('mouse_cell_type_profiles.mat');
+                      mouse_cell_types.expression = 2 .^ mouse_cell_types.expression;
                   otherwise
                       error('unkown ground true dataset - %s', true_dataset)
               end
              
              [true_celltype_per_region, celltypes_used] = ...
-                 match_region_with_true_profile(true_cell_types, region_names, parms);
+                 match_region_with_true_profile(mouse_cell_types, region_names, parms);
 
              % map the genes used in the true profile in the genes in the data
              [gene_inds_true_type,gene_inds_predictions] = compare_to_true_profile( ...
-                 true_cell_types,curr_gene_info, cache_parms.species,cache_parms);
+                 mouse_cell_types,curr_gene_info, cache_parms.species,cache_parms);
               true_profiles = cellfun(@(x) x(gene_inds_true_type,:), ...
                                       true_celltype_per_region,'UniformOutput',false);
 

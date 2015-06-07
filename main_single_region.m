@@ -56,14 +56,15 @@ parms.H_prior = prior_data;
 
 parms.W_lambda = 0;
 parms.loglevel = 1;
+parms.random_init_spread = 1;
 
 parms.log_transform = false;
 
 parms.subsample_repeats = 5; % <=== increase to 30 
 alg_list = {'alsPinv', 'alsActiveSet', 'mm'}; % 'alsBlockpivot','cjlin', 'prob'}; 
-alg_list = {'alsBlockpivot'}; % 'alsBlockpivot','cjlin', 'prob'}; 
+% alg_list = {'alsBlockpivot'}; % 'alsBlockpivot','cjlin', 'prob'}; 
 num_samples_list = 10;% [5, 10, 20, 50, 100,200];
-num_type_list = 3 ;%1:8;
+num_type_list = 1:8;
 W_constraints_list = {'on_simplex', 'inside_simplex', 'positive','on_simplex_with_noise'};
 W_constraints_list = {'on_simplex_with_noise'};
 % W_constraints_list = {'inside_simplex'};
@@ -82,8 +83,8 @@ loop_over_var_name{end + 1} = 'num_samples';
 loop_over_var_value{end + 1} =  num_samples_list;
 loop_over_var_name{end + 1} = 'num_types';
 loop_over_var_value{end + 1} = num_type_list;
-loop_over_var_name{end + 1} = 'H_lambda';
-loop_over_var_value{end + 1} = H_lambda_list;
+% loop_over_var_name{end + 1} = 'H_lambda';
+% loop_over_var_value{end + 1} = H_lambda_list;
 
 
 

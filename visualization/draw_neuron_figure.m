@@ -8,6 +8,8 @@ function draw_neuron_figure(H_lambda_list, results, parms)
     % scores has dims: [num_lambdas, num_regions, num_types]
     xxx = H_lambda_list;
     if numel(xxx) ~= size(real_scores, 1)
+        xxx
+        real_scores
         error();
     end
     
@@ -30,9 +32,9 @@ function draw_neuron_figure(H_lambda_list, results, parms)
         scores = 1- scores.^2;
         rands = 1- rands.^2;        
     end
-    y_mmm = mean(scores, 2)'
+    y_mmm = median(scores, 2)'
     y_sss = std(scores, [], 2)' / sqrt(2)
-    r_mmm = mean(rands, 2)'
+    r_mmm = median(rands, 2)'
     r_sss = std(rands, [], 2)' / sqrt(2);
     b_mmm = y_mmm(lambda0_ind)*ones(size(xxx))
     b_sss = y_sss(lambda0_ind)*ones(size(xxx)) / sqrt(2);
