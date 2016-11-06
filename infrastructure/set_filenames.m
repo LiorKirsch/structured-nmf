@@ -3,13 +3,13 @@ function [full_name, file_name, dir_name] = set_filenames(file_type, parms)
   switch file_type
       
     case 'demixing', 
-      base_dir_name = fullfile('/cortex/users/lior/nmf/runs/');
+      base_dir_name = fullfile('runs/');
       [parmstr, dirparmstr] = set_parmstr(parms);
       dir_name = fullfile(base_dir_name, dirparmstr);
       file_name = sprintf('demix_%s.mat', parmstr);
       auto_mkdir = 1;
     case 'baselines', 
-      base_dir_name = fullfile('/cortex/users/lior/nmf/baselines/');
+      base_dir_name = fullfile('baselines_cache/');
       [parmstr, dirparmstr] = set_parmstr(parms);
       if  isfield(parms, 'true_dataset')
           if ~strcmp(parms.true_dataset, 'okaty')
@@ -21,13 +21,13 @@ function [full_name, file_name, dir_name] = set_filenames(file_type, parms)
       auto_mkdir = 1;
     
     case 'demixing_rand_restart', 
-      base_dir_name = fullfile('/cortex/users/lior/nmf/runs/rand_restarts/');
+      base_dir_name = fullfile('runs/rand_restarts/');
       [parmstr, dirparmstr] = set_parmstr(parms);
       dir_name = fullfile(base_dir_name, dirparmstr);
       file_name = sprintf('restart_%s.mat', parmstr);
       auto_mkdir = 1;
     case 'results', 
-      base_dir_name = fullfile('/cortex/users/lior/nmf/results/');
+      base_dir_name = fullfile('results/');
       [parmstr, dirparmstr] = set_parmstr(parms);
       if  isfield(parms, 'true_dataset')
           if ~strcmp(parms.true_dataset, 'okaty')
@@ -38,13 +38,13 @@ function [full_name, file_name, dir_name] = set_filenames(file_type, parms)
       file_name = sprintf('results_%s.mat', parmstr);
       auto_mkdir = 1;
     case 'precision', 
-      base_dir_name = fullfile('/cortex/users/lior/nmf/precision/');
+      base_dir_name = fullfile('precision/');
       [parmstr, dirparmstr] = set_parmstr(parms);
       dir_name = fullfile(base_dir_name, dirparmstr);
       file_name = sprintf('precision_%s.mat', parmstr);
       auto_mkdir = 1;
     case 'gene_subset', 
-      base_dir_name = fullfile('/cortex/users/lior/nmf/runs/gene_subset');
+      base_dir_name = fullfile('runs/gene_subset');
       [parmstr, dirparmstr] = set_parmstr(parms);
       dir_name = fullfile(base_dir_name, dirparmstr);
       file_name = sprintf('gene_subset%s.mat', parmstr);

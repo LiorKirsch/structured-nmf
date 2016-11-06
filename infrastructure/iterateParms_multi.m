@@ -6,8 +6,7 @@ function [scores,proportions_scores, parmslist] = iterateParms_multi(X, ...
 % it loops over the set of parms provided in 
 % it returns the scores in a nested cell array.
 
-    parmslist = get_parms_list(parms, loop_over_var_name, ...
-                    loop_over_var_value,[],[]);
+    [parmslist, parms_strings] = get_parms_list(parms, loop_over_var_name, loop_over_var_value);
                                  
     num_parms = length(parmslist);
     scores = cell(num_parms,1);

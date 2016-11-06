@@ -29,4 +29,5 @@ function parms = conf(parms)
     [~, parms] = take_from_struct(parms, 'sep_H_lambda', 0);    
     [~, parms] = take_from_struct(parms, 'true_dataset', 'okaty');   %'barres'  
     
+    [~, parms] = take_from_struct(parms, 'is_synthetic', false);
 end

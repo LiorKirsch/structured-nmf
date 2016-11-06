@@ -16,14 +16,18 @@ function [best_W,best_H,best_diff_record,best_time_record,eucl_dist] ...
 %                   'prob'   probabilistic NFM interpretating X as samples
 %                            from a multinomial, author: Lars Kai Hansen,
 %                            Technical University of Denmark
-%                   'als'    Alternating Least Squares. Set negative
-%                            elements to zero. 
-%                   'alsobs' Alternating Least Squares. Set negative elements
-%                            to zero and adjusts the other elements acording
-%                            to Optimal Brain Surgeon. 
-%           'maxiter'   Maximum number of iterations, default = 1000.
-%           'speak'     Print information to screen unless speak = 0,
-%                       default = 0
+%                   'alsActiveSet'    Alternating Least Squares. Set negative
+%                            elements to zero, uses the active set method. 
+%                   'alsBlockpivot' Alternating Least Squares. Set negative elements
+%                            to zero. uses block pivoting.
+%                   'alsAccProj' Alternating Least Squares. using projected gradient 
+%                            descent, with 	acceleration.
+%           'parms'  A struct with the following optional fields:
+%               'maxiter'       Maximum number of iterations, default = 1000.
+%               'loglevel'      Print information to screen unless (default = 0).
+%               'num_restarts'  Number of restart, default = 1.
+%               'init_type'     Type of initlization for W,H {'random' (default), 'svd'}
+%               'init_sub_type' Sub-type of initlization for W,H {'random' (default), 'samples', 'samples_with_noise','noise10','combination'
 %
 % OUTPUT:
 % W       : N x K matrix
@@ -178,7 +182,18 @@ function [W, H, diff_record, time_record] = nmf_alg_selection(X, ...
             [W,H,diff_record,time_record] = nmf_prob(parms,X,W_init,H_init);
         case 'cjlin'
             if loglevel, disp('Using cjlin algorithm'),end
-            [W,H,diff_record,time_record] = nmf_cjlin(parms,X,W_init,H_init);
+            curr_parms = parms;
+            curr_parms.accelerated = false;
+            [W,H,diff_record,time_record] = nmf_acc_proj(curr_parms,X,W_init,H_init);
+        case 'accProj'
+            if loglevel, disp('Using accelerated projected gradient'),end
+            curr_parms = parms;
+            curr_parms.accelerated = false;
+            [W,H,diff_record,time_record] = nmf_acc_proj(curr_parms,X,W_init,H_init);
+        case 'alsAccProj'
+            parms.als_solver= 'accel_proj';
+            if loglevel, disp('Using als-accProj algorithm'),end
+            [W,H,diff_record,time_record] = nmf_als(parms,X,W_init,H_init);
         case 'alsPinv'
             parms.als_solver= 'pinv_project';
             if loglevel, disp('Using als pinv and project'),end
@@ -196,6 +211,8 @@ function [W, H, diff_record, time_record] = nmf_alg_selection(X, ...
                 case 'alsActiveSet', parms.als_solver= 'active_set';
                 case 'alsBlockpivot', parms.als_solver= 'blockpivot';
                 case 'alsPinv', parms.als_solver= 'pinv_project';
+                case 'alsAccProj', parms.als_solver= 'accel_proj';
+                case 'cjlin', parms.als_solver= 'cjlin';
                 otherwise, error('Unknown nmf method [%s]', parms.nmf_method);
             end
 

@@ -80,7 +80,7 @@ function draw_indv_figure(loop_over_var_name, loop_over_var_value, results, parm
         x_label = strrep(loop_over_var_name{end}, '_', ' ') ;
         x_label = strrep(x_label, 'H lambda', '\lambda') ;
         xlabel(x_label);
-        '
+        
         switch x_label
             case '\lambda'
                 xlim([10^-5.5, 10^5.5]);

@@ -10,6 +10,12 @@ function [parmstr, dirparmstr] = set_parmstr(parms)
         parmstr = sprintf('%s_K%d', parmstr, parms.num_types);
     end    
     
+    if isfield(parms, 'tolerance')
+        if ~(parms.tolerance == 10^-6)
+            parmstr = sprintf('%s_tolK%g', parmstr, parms.tolerance);
+        end
+    end 
+    
     if isfield(parms, 'num_samples')
         parmstr = sprintf('%s_N%d', parmstr, parms.num_samples);
     end
